@@ -1,10 +1,36 @@
 const state = {
   activeCategory: 'All',
+  selectedFlavors: new Set(),
   query: '',
   data: null,
 };
 
+const defaultFlavorProfiles = [
+  'Apple',
+  'Banana',
+  'Blackberry',
+  'Blueberry',
+  'Blue Raspberry',
+  'Cherry',
+  'Coconut',
+  'Cranberry',
+  'Grape',
+  'Lemonade',
+  'Lime',
+  'Limeade',
+  'Mango',
+  'Orange',
+  'Passion Fruit',
+  'Peach',
+  'Pineapple',
+  'Pomegranate',
+  'Raspberry',
+  'Strawberry',
+  'Watermelon',
+];
+const previousDefaultFlavorProfiles = ['Mango', 'Lime', 'Peach'];
 const categoryFilters = document.getElementById('categoryFilters');
+const flavorFilters = document.getElementById('flavorFilters');
 const recipeGrid = document.getElementById('recipeGrid');
 const searchInput = document.getElementById('searchInput');
 const storeName = document.getElementById('storeName');
@@ -17,6 +43,15 @@ function normalizeData(raw) {
   const rawStores = Array.isArray(raw.stores) ? raw.stores : [];
   const store = raw.store || rawStores.find((item) => item.active !== false) || rawStores[0] || { name: 'My Nutrition Recipes' };
   const categories = Array.isArray(raw.categories) ? raw.categories : [];
+  if (!Array.isArray(store.flavorProfiles)) {
+    store.flavorProfiles = [...defaultFlavorProfiles];
+  } else if (
+    store.flavorProfiles.length === previousDefaultFlavorProfiles.length &&
+    previousDefaultFlavorProfiles.every((flavor) => store.flavorProfiles.includes(flavor))
+  ) {
+    store.flavorProfiles = [...defaultFlavorProfiles];
+  }
+
   const drinks = Array.isArray(raw.drinkRecipes)
     ? raw.drinkRecipes
     : Array.isArray(raw.drinks)
@@ -56,8 +91,34 @@ async function loadData() {
   state.data = normalizeData(raw);
 
   storeName.textContent = state.data.store?.name || 'My Nutrition Recipes';
+  applyStoreTheme(state.data.store);
   renderFilters();
+  renderFlavorFilters();
   renderRecipes();
+}
+
+function colorOr(value, fallback) {
+  return /^#[0-9a-f]{6}$/i.test(value || '') ? value : fallback;
+}
+
+function contrastingTextColor(hex) {
+  const channels = hex.slice(1).match(/.{2}/g).map((value) => parseInt(value, 16) / 255);
+  const luminance =
+    channels
+      .map((channel) => (channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4))
+      .reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+  return luminance > 0.179 ? '#17212b' : '#ffffff';
+}
+
+function applyStoreTheme(store) {
+  const buttonColor = colorOr(store?.buttonColor, '#126e68');
+  const rootStyle = document.documentElement.style;
+  rootStyle.setProperty('--bg', colorOr(store?.backgroundColor, '#f4f1ea'));
+  rootStyle.setProperty('--ink', colorOr(store?.textColor, '#17212b'));
+  rootStyle.setProperty('--card', colorOr(store?.cardBackgroundColor, '#ffffff'));
+  rootStyle.setProperty('--card-ink', colorOr(store?.cardTextColor, '#17212b'));
+  rootStyle.setProperty('--button', buttonColor);
+  rootStyle.setProperty('--button-ink', colorOr(store?.buttonTextColor, contrastingTextColor(buttonColor)));
 }
 
 function renderFilters() {
@@ -86,6 +147,45 @@ function renderFilters() {
   });
 }
 
+function renderFlavorFilters() {
+  const profiles = state.data.store?.flavorProfiles || [];
+  flavorFilters.innerHTML = profiles.length
+    ? profiles
+        .map(
+          (flavor) => `
+            <label>
+              <input type="checkbox" value="${escapeHtml(flavor)}" ${state.selectedFlavors.has(flavor) ? 'checked' : ''} />
+              ${escapeHtml(flavor)}
+            </label>
+          `
+        )
+        .join('')
+    : '<span>No flavor profiles have been added for this store.</span>';
+
+  flavorFilters.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        state.selectedFlavors.add(checkbox.value);
+      } else {
+        state.selectedFlavors.delete(checkbox.value);
+      }
+      renderRecipes();
+    });
+  });
+}
+
+function containsFlavor(text, flavor) {
+  const words = (value) => String(value || '').toLocaleLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
+  const textWords = words(text);
+  const flavorWords = words(flavor);
+  return (
+    flavorWords.length > 0 &&
+    textWords.some((_, index) =>
+      flavorWords.every((word, offset) => textWords[index + offset] === word)
+    )
+  );
+}
+
 function recipeMatchesCategory(drink) {
   const categoryValue = drink.categoryId ?? drink.category ?? 'All';
   return state.activeCategory === 'All' || getCategoryName(categoryValue) === state.activeCategory;
@@ -95,7 +195,14 @@ function renderRecipes() {
   const recipeList = (state.data?.drinks || []).filter((drink) => {
     const haystack = `${drink.name || ''} ${(drink.ingredients || []).map((item) => item.name || '').join(' ')}`.toLowerCase();
     const matchesQuery = haystack.includes(state.query.toLowerCase());
-    return recipeMatchesCategory(drink) && matchesQuery;
+    const matchesFlavor =
+      state.selectedFlavors.size === 0 ||
+      [...state.selectedFlavors].some((flavor) =>
+        [drink.name, ...(drink.ingredients || []).map((item) => item.name)].some((name) =>
+          containsFlavor(name, flavor)
+        )
+      );
+    return recipeMatchesCategory(drink) && matchesQuery && matchesFlavor;
   });
 
   if (recipeList.length === 0) {

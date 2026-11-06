@@ -7,7 +7,9 @@
   --primary: #126e68;
   --secondary: #d88d45;
   --card: #f8f2f6;
+  --card-ink: #17212b;
   --button: #bda4f9;
+  --button-ink: #17212b;
   --shadow: rgba(23, 33, 43, 0.12);
 }
 
@@ -31,7 +33,7 @@ body {
   align-items: center;
   gap: 1rem;
   padding: 1.25rem clamp(1rem, 3vw, 2rem);
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
 }
@@ -73,8 +75,8 @@ h1 {
   border-radius: 999px;
   padding: 0.8rem 1rem;
   font: inherit;
-  background: white;
-  color: var(--ink);
+  background: var(--card);
+  color: var(--card-ink);
 }
 
 main {
@@ -94,8 +96,8 @@ main {
   appearance: none;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--panel);
-  color: var(--ink);
+  background: var(--card);
+  color: var(--card-ink);
   cursor: pointer;
   padding: 0.7rem 1rem;
   font: inherit;
@@ -104,9 +106,38 @@ main {
 }
 
 .filter-btn.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
+  background: var(--button);
+  border-color: var(--button);
+  color: var(--button-ink);
+}
+
+.flavor-filter {
+  margin: 0 0 1.5rem;
+  padding: 0.8rem 1rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.flavor-filter legend {
+  padding: 0 0.35rem;
+  font-weight: 700;
+}
+
+.flavor-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+}
+
+.flavor-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+.flavor-options input {
+  accent-color: var(--button);
 }
 
 .recipe-grid {
@@ -116,7 +147,8 @@ main {
 }
 
 .recipe-card {
-  background: var(--panel);
+  background: var(--card);
+  color: var(--card-ink);
   border: 1px solid var(--line);
   border-radius: 18px;
   box-shadow: 0 10px 18px var(--shadow);
