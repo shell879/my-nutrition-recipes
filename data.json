@@ -1,0 +1,139 @@
+{
+  "store": {
+    "name": "My Nutrition Recipes",
+    "backgroundColor": "#77577a",
+    "textColor": "#f2f2f2",
+    "cardBackgroundColor": "#f8f2f6",
+    "cardTextColor": "#6507f2",
+    "buttonColor": "#bda4f9"
+  },
+  "categories": [
+    { "id": 1, "name": "Teas" },
+    { "id": 2, "name": "Beauty" },
+    { "id": 3, "name": "Mega Teas" },
+    { "id": 4, "name": "Refreshers" }
+  ],
+  "drinks": [
+    {
+      "id": 1,
+      "name": "Alien",
+      "category": "Teas",
+      "ingredients": [
+        { "name": "Blackberry Lift", "side": "TOP" },
+        { "name": "Nrg +Lemon Tea", "side": "TOP" },
+        { "name": "¼ Grape", "side": "TOP" },
+        { "name": "¼ Green Apple", "side": "BOTTOM" },
+        { "name": "¼ Pineapple", "side": "BOTTOM" },
+        { "name": "Mandarin Aloe", "side": "BOTTOM" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Allen Pina Colada (No Caff)",
+      "category": "Teas",
+      "ingredients": [
+        { "name": "2 Scoops H30", "side": "TOP" },
+        { "name": "1 Scoop Beauty", "side": "TOP" },
+        { "name": "½ Pina Colada", "side": "BOTTOM" },
+        { "name": "Mandarin Aloe", "side": "BOTTOM" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Apple Toddy",
+      "category": "Teas",
+      "ingredients": [
+        { "name": "Orange Lift", "side": "TOP" },
+        { "name": "Nrg+ Chai Tea", "side": "TOP" },
+        { "name": "½ Green Apple", "side": "BOTTOM" },
+        { "name": "Mandarin Aloe", "side": "BOTTOM" }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Aloha Dream",
+      "category": "Beauty",
+      "ingredients": [
+        { "name": "Tropical Lift", "side": "TOP" },
+        { "name": "Nrg+ Peach Tea", "side": "TOP" },
+        { "name": "¼ Pineapple", "side": "TOP" },
+        { "name": "¼ Orange", "side": "TOP" },
+        { "name": "¼ Cherry", "side": "BOTTOM" },
+        { "name": "Mango Aloe", "side": "BOTTOM" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Arnold Palmer",
+      "category": "Beauty",
+      "ingredients": [
+        { "name": "Lime Lift", "side": "TOP" },
+        { "name": "Nrg+ Peach Tea", "side": "TOP" },
+        { "name": "½ Lemonade", "side": "BOTTOM" },
+        { "name": "Cranberry Aloe", "side": "BOTTOM" }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Berry Blue",
+      "category": "Mega Teas",
+      "ingredients": [
+        { "name": "Pomegranate Lift", "side": "TOP" },
+        { "name": "Nrg+ Pomegranate Green Tea", "side": "TOP" },
+        { "name": "½ Blue Blast", "side": "BOTTOM" },
+        { "name": "Aloe", "side": "BOTTOM" }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Beach Bum",
+      "category": "Mega Teas",
+      "ingredients": [
+        { "name": "Lime Lift", "side": "TOP" },
+        { "name": "Nrg+ Lemon Tea", "side": "TOP" },
+        { "name": "¼ Cherry", "side": "TOP" },
+        { "name": "¼ Pineapple", "side": "BOTTOM" },
+        { "name": "¼ Coconut", "side": "BOTTOM" },
+        { "name": "Aloe", "side": "BOTTOM" }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Birthday Cake",
+      "category": "Refreshers",
+      "ingredients": [
+        { "name": "Pomegranate Lift", "side": "TOP" },
+        { "name": "Nrg+ ½ Hibiscus ½ Raspberry Tea", "side": "TOP" },
+        { "name": "¼ Raspberry, Whip, 1 Pumps Birthday", "side": "TOP" },
+        { "name": "¼ Blue Raz", "side": "BOTTOM" },
+        { "name": "Whip", "side": "BOTTOM" },
+        { "name": "Aloe", "side": "BOTTOM" },
+        { "name": "1 Pump Cake Batter", "side": "BOTTOM" }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Blackberry Smash",
+      "category": "Refreshers",
+      "ingredients": [
+        { "name": "Blackberry Lift", "side": "TOP" },
+        { "name": "Nrg+ Lemon Tea", "side": "TOP" },
+        { "name": "¼ Blackberry", "side": "TOP" },
+        { "name": "¼ White Grape", "side": "BOTTOM" },
+        { "name": "Aloe", "side": "BOTTOM" }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Blue Dragon",
+      "category": "Refreshers",
+      "ingredients": [
+        { "name": "Tropical Lift", "side": "TOP" },
+        { "name": "Nrg+ Peach Tea", "side": "TOP" },
+        { "name": "¼ Blue Blast", "side": "TOP" },
+        { "name": "½ Lemonade", "side": "BOTTOM" },
+        { "name": "Aloe", "side": "BOTTOM" }
+      ]
+    }
+  ]
+}
