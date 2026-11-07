@@ -23,12 +23,9 @@ Then open http://localhost:8000
 Open http://localhost:8000/admin.html to manage recipes. The admin page can load
 the local `data.json` file or the same-origin `/api/data` endpoint. Changes can
 be saved as a browser draft and downloaded as `data.json`; publish the
-downloaded file to update the public menu. API loading is read-only until the
-API supports authenticated writes. Configure the Cloudflare Worker route for
-`shelldesignz.com/api/data` before selecting API mode.
-
-Protect the admin URL with Cloudflare Access before sharing it. Do not rely on
-the admin page itself for authentication.
+downloaded file to update the public menu. API mode is read-only: edits are not
+written back to the API. Protect the admin URL with Cloudflare Access before
+sharing it; do not rely on the admin page itself for authentication.
 
 ## Deploy to GitHub Pages
 

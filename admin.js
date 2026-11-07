@@ -44,12 +44,9 @@ $('#cancelDrinkButton').addEventListener('click', () => $('#drinkDialog').close(
 $('#drinkForm').addEventListener('submit', saveDrink);
 
 async function loadData() {
-  if (sourceMode.value !== 'local') {
-    status.textContent = 'API loading is disabled until the Worker is set up.';
-    return;
-  }
-  state.sourceMode = 'local';
+  state.sourceMode = sourceMode.value;
   localStorage.setItem('mnr-admin-source', state.sourceMode);
+  status.classList.remove('error');
   status.textContent = 'Loading data…';
 
   try {
@@ -66,9 +63,17 @@ async function loadData() {
         return;
       }
       response = await fetch('./data.json');
+    } else {
+      response = await fetch('/api/data');
     }
 
-    if (!response.ok) throw new Error(`Could not load data (HTTP ${response.status}).`);
+    if (!response.ok) {
+      const details = (await response.text()).trim().slice(0, 300);
+      throw new Error(
+        `Could not load ${state.sourceMode} data (HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}).`
+        + (details ? ` Server response: ${details}` : ''),
+      );
+    }
     const data = await response.json();
     validateData(data);
     state.data = data;
@@ -77,7 +82,11 @@ async function loadData() {
     render();
     status.textContent = `Loaded ${state.sourceMode === 'local' ? 'site' : 'API'} data.`;
   } catch (error) {
-    status.textContent = error.message || 'Unable to load data.';
+    console.error(`Failed to load ${state.sourceMode} data:`, error);
+    status.classList.add('error');
+    status.textContent = state.sourceMode === 'api' && error instanceof TypeError
+      ? `Could not reach /api/data. Check that the Worker route is deployed and allows requests from this site. (${error.message})`
+      : error.message || 'Unable to load data.';
     $('#editor').classList.add('hidden');
   }
 }

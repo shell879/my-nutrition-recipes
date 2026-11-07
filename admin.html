@@ -19,14 +19,14 @@
             Load data from
             <select id="sourceMode">
               <option value="local">This site (data.json)</option>
-              <option value="api" disabled>API (not set up yet)</option>
+              <option value="api">API (/api/data)</option>
             </select>
           </label>
           <button id="loadButton" type="button">Load data</button>
           <button id="resetDraftButton" type="button" class="hidden">Discard local draft and reload data.json</button>
         </div>
         <p id="status" role="status">Choose a source and load the data.</p>
-        <p class="note">API loading is temporarily disabled until the Worker is set up. Local changes can be saved as a browser draft or downloaded as JSON.</p>
+        <p class="note">API mode loads from /api/data. Changes are not saved to the API; download the JSON to keep them. Local changes can also be saved as a browser draft.</p>
       </section>
 
       <section id="editor" class="hidden">
