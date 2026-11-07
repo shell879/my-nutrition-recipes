@@ -5,6 +5,7 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 ## What this repo includes
 
 - A static HTML/CSS/JS storefront that reads recipe data from `data.json`
+- A separate `admin.html` maintenance page for editing categories and drinks
 - Category filtering and text search
 - Mobile-friendly cards with ingredient grouping for TOP/BOTTOM items
 - Easy deployment to GitHub Pages, Cloudflare Pages, or Netlify
@@ -19,6 +20,16 @@ python -m http.server 8000
 
 Then open http://localhost:8000
 
+Open http://localhost:8000/admin.html to manage recipes. The admin page can load
+the local `data.json` file or the same-origin `/api/data` endpoint. Changes can
+be saved as a browser draft and downloaded as `data.json`; publish the
+downloaded file to update the public menu. API loading is read-only until the
+API supports authenticated writes. Configure the Cloudflare Worker route for
+`shelldesignz.com/api/data` before selecting API mode.
+
+Protect the admin URL with Cloudflare Access before sharing it. Do not rely on
+the admin page itself for authentication.
+
 ## Deploy to GitHub Pages
 
 1. Push this repo to GitHub.
@@ -32,7 +43,3 @@ This repo is intentionally static so you can connect a custom domain to a static
 
 - A record or CNAME to the GitHub Pages host
 - A `CNAME` file in the repo root if you want the site to bind to a subdomain
-
-## Future path
-
-This is the public/static foundation. The next step is to keep the admin/dashboard version separate from the public display version, then generate the final `data.json` file from a managed source.

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Admin</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <header>
+      <a href="./">My Nutrition Recipes</a>
+      <h1>Recipe Admin</h1>
+    </header>
+    <main>
+      <section class="panel source-panel" aria-labelledby="sourceHeading">
+        <h2 id="sourceHeading">Data source</h2>
+        <div class="source-controls">
+          <label>
+            Load data from
+            <select id="sourceMode">
+              <option value="local">This site (data.json)</option>
+              <option value="api" disabled>API (not set up yet)</option>
+            </select>
+          </label>
+          <button id="loadButton" type="button">Load data</button>
+          <button id="resetDraftButton" type="button" class="hidden">Discard local draft and reload data.json</button>
+        </div>
+        <p id="status" role="status">Choose a source and load the data.</p>
+        <p class="note">API loading is temporarily disabled until the Worker is set up. Local changes can be saved as a browser draft or downloaded as JSON.</p>
+      </section>
+
+      <section id="editor" class="hidden">
+        <div class="toolbar">
+          <label>
+            Store
+            <select id="storeSelect"></select>
+          </label>
+          <button id="addCategoryButton" type="button">Add category</button>
+          <button id="addDrinkButton" type="button" class="primary">Add drink</button>
+          <button id="saveButton" type="button">Save draft</button>
+          <button id="downloadButton" type="button">Download JSON</button>
+        </div>
+        <section class="panel">
+          <h2>Categories</h2>
+          <div id="categoryList" class="item-list"></div>
+        </section>
+        <section class="panel">
+          <div class="section-heading">
+            <h2>Flavor profiles</h2>
+            <button id="addFlavorButton" type="button">Add flavor</button>
+          </div>
+          <div id="flavorList" class="item-list"></div>
+        </section>
+        <section class="panel">
+          <h2>Drinks</h2>
+          <div id="drinkList" class="item-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="drinkDialog">
+      <form id="drinkForm">
+        <h2 id="drinkDialogTitle">Add drink</h2>
+        <label>
+          Drink name
+          <input id="drinkName" required />
+        </label>
+        <label>
+          Category
+          <select id="drinkCategory" required></select>
+        </label>
+        <label>
+          Ingredients (one per line: TOP or BOTTOM | ingredient | cost)
+          <textarea id="drinkIngredients" rows="10" placeholder="TOP|Mango|0&#10;BOTTOM|Herbal Aloe|0"></textarea>
+        </label>
+        <p id="formError" class="error" role="alert"></p>
+        <div class="dialog-actions">
+          <button id="cancelDrinkButton" type="button">Cancel</button>
+          <button type="submit" class="primary">Save drink</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

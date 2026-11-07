@@ -1,0 +1,89 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #17212b;
+  background: #f4f1ea;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; }
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1rem, 4vw, 3rem);
+  color: white;
+  background: #173a3a;
+}
+
+header a { color: inherit; }
+h1, h2 { margin-top: 0; }
+h1 { margin-bottom: 0; font-size: 1.5rem; }
+
+main {
+  display: grid;
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.panel {
+  padding: 1.1rem;
+  border: 1px solid #ddd7cc;
+  border-radius: 14px;
+  background: white;
+}
+
+.panel h2 { margin-bottom: 0.8rem; font-size: 1.2rem; }
+.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.source-controls, .toolbar, .item-row, .dialog-actions { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.toolbar { padding: 0 0 1rem; }
+label { display: grid; gap: 0.35rem; font-weight: 600; }
+input, select, textarea, button { font: inherit; }
+input, select, textarea {
+  min-width: 12rem;
+  padding: 0.65rem;
+  border: 1px solid #b8b4ac;
+  border-radius: 8px;
+  background: white;
+}
+textarea { width: 100%; resize: vertical; }
+button {
+  padding: 0.65rem 0.9rem;
+  border: 1px solid #b8b4ac;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+button:hover { background: #f4f1ea; }
+button.primary { color: white; border-color: #126e68; background: #126e68; }
+.hidden { display: none !important; }
+.note { color: #667582; }
+#status { min-height: 1.4em; }
+.error { color: #a32121; }
+.item-list { display: grid; }
+.item-row { justify-content: space-between; padding: 0.7rem 0; border-top: 1px solid #eee; }
+.item-row:first-child { border-top: 0; }
+.item-actions { display: flex; gap: 0.5rem; }
+dialog {
+  width: min(620px, calc(100vw - 2rem));
+  border: 0;
+  border-radius: 14px;
+  padding: 1.3rem;
+  box-shadow: 0 18px 55px #0004;
+}
+dialog::backdrop { background: #10252299; }
+form { display: grid; gap: 1rem; }
+form label { gap: 0.45rem; }
+.dialog-actions { justify-content: flex-end; }
+
+@media (max-width: 600px) {
+  header { align-items: flex-start; flex-direction: column; }
+  .source-controls, .toolbar { align-items: stretch; flex-direction: column; }
+  .source-controls > *, .toolbar > * { width: 100%; }
+  .item-row { align-items: flex-start; flex-direction: column; }
+}
