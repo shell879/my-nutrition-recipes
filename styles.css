@@ -164,8 +164,9 @@ main {
 }
 
 .ingredients {
-  border-top: 1px solid var(--line);
-  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .ingredients ul {
@@ -174,6 +175,13 @@ main {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+}
+
+.ingredient-divider {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--line);
 }
 
 .empty-state {

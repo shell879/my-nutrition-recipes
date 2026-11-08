@@ -219,6 +219,8 @@ function renderRecipes() {
   recipeGrid.innerHTML = recipeList
     .map((drink) => {
       const ingredients = Array.isArray(drink.ingredients) ? drink.ingredients : [];
+      const topIngredients = ingredients.filter((item) => String(item.side || '').toUpperCase() === 'TOP');
+      const bottomIngredients = ingredients.filter((item) => String(item.side || '').toUpperCase() === 'BOTTOM');
 
       const ingredientMarkup = (items) =>
         items.length
@@ -231,7 +233,9 @@ function renderRecipes() {
           <article class="recipe-card">
             <h2>${escapeHtml(drink.name || 'Untitled recipe')}</h2>
             <div class="ingredients">
-              ${ingredientMarkup(ingredients)}
+              ${ingredientMarkup(topIngredients)}
+              <hr class="ingredient-divider" />
+              ${ingredientMarkup(bottomIngredients)}
             </div>
           </article>
       `;
