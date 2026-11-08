@@ -84,8 +84,14 @@ function getCategoryName(categoryId) {
 }
 
 async function loadData() {
-  const response = await fetch('./data.json');
-  if (!response.ok) throw new Error('Unable to load recipe data');
+  const response = await fetch('/api/data');
+  if (!response.ok) {
+    const details = (await response.text()).trim().slice(0, 300);
+    throw new Error(
+      `Could not load recipe data (HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}).`
+      + (details ? ` Server response: ${details}` : ''),
+    );
+  }
 
   const raw = await response.json();
   state.data = normalizeData(raw);
@@ -213,8 +219,6 @@ function renderRecipes() {
   recipeGrid.innerHTML = recipeList
     .map((drink) => {
       const ingredients = Array.isArray(drink.ingredients) ? drink.ingredients : [];
-      const topIngredients = ingredients.filter((item) => String(item.side || '').toUpperCase() === 'TOP');
-      const bottomIngredients = ingredients.filter((item) => String(item.side || '').toUpperCase() === 'BOTTOM');
 
       const ingredientMarkup = (items) =>
         items.length
@@ -224,19 +228,12 @@ function renderRecipes() {
           : '<ul><li>—</li></ul>';
 
       return `
-        <article class="recipe-card">
-          <h2>${escapeHtml(drink.name || 'Untitled recipe')}</h2>
-          <div class="ingredients">
-            <div class="ingredient-group">
-              <strong>Top</strong>
-              ${ingredientMarkup(topIngredients)}
+          <article class="recipe-card">
+            <h2>${escapeHtml(drink.name || 'Untitled recipe')}</h2>
+            <div class="ingredients">
+              ${ingredientMarkup(ingredients)}
             </div>
-            <div class="ingredient-group">
-              <strong>Bottom</strong>
-              ${ingredientMarkup(bottomIngredients)}
-            </div>
-          </div>
-        </article>
+          </article>
       `;
     })
     .join('');
@@ -257,5 +254,6 @@ function escapeHtml(value) {
 }
 
 loadData().catch((error) => {
-  recipeGrid.innerHTML = `<div class="empty-state">${escapeHtml(error.message)}</div>`;
+  console.error('Failed to load recipe data:', error);
+  recipeGrid.innerHTML = `<div class="empty-state">${escapeHtml(error.message || 'Unable to load recipe data.')}</div>`;
 });

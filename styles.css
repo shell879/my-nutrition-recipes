@@ -164,31 +164,11 @@ main {
 }
 
 .ingredients {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.ingredient-group {
   border-top: 1px solid var(--line);
   padding-top: 0.5rem;
 }
 
-.ingredient-group:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
-.ingredient-group strong {
-  display: inline-block;
-  margin-bottom: 0.35rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 0.72rem;
-  color: var(--muted);
-}
-
-.ingredient-group ul {
+.ingredients ul {
   margin: 0;
   padding-left: 1.2rem;
   display: flex;

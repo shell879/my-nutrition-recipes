@@ -2,6 +2,7 @@ const state = {
   data: null,
   storeId: null,
   editingDrinkId: null,
+  editingFlavorIndex: null,
   sourceMode: 'local',
 };
 
@@ -10,6 +11,13 @@ const defaultFlavorProfiles = [
   'Cranberry', 'Grape', 'Lemonade', 'Lime', 'Limeade', 'Mango', 'Orange', 'Passion Fruit',
   'Peach', 'Pineapple', 'Pomegranate', 'Raspberry', 'Strawberry', 'Watermelon',
 ];
+const defaultStoreColors = {
+  backgroundColor: '#f4f1ea',
+  textColor: '#17212b',
+  cardBackgroundColor: '#ffffff',
+  cardTextColor: '#17212b',
+  buttonColor: '#126e68',
+};
 const $ = (selector) => document.querySelector(selector);
 const sourceMode = $('#sourceMode');
 const status = $('#status');
@@ -17,13 +25,12 @@ const status = $('#status');
 localStorage.setItem('mnr-admin-source', state.sourceMode);
 sourceMode.value = state.sourceMode;
 $('#resetDraftButton').classList.toggle('hidden', state.sourceMode !== 'local');
-$('#saveButton').classList.toggle('hidden', state.sourceMode !== 'local');
 
 sourceMode.addEventListener('change', () => {
   state.sourceMode = sourceMode.value;
   localStorage.setItem('mnr-admin-source', state.sourceMode);
   $('#resetDraftButton').classList.toggle('hidden', state.sourceMode !== 'local');
-  $('#saveButton').classList.toggle('hidden', state.sourceMode !== 'local');
+  $('#saveButton').textContent = state.sourceMode === 'api' ? 'Save all to API' : 'Save draft';
 });
 
 $('#loadButton').addEventListener('click', loadData);
@@ -35,13 +42,24 @@ $('#storeSelect').addEventListener('change', () => {
   state.storeId = Number($('#storeSelect').value);
   render();
 });
+$('#storeColors').addEventListener('input', (event) => {
+  const input = event.target.closest('input[data-color-field]');
+  if (!input) return;
+  const store = state.data.stores.find((item) => item.id === state.storeId);
+  if (!store) return;
+  store[input.dataset.colorField] = input.value;
+  markChanged();
+});
 $('#addCategoryButton').addEventListener('click', addCategory);
 $('#addDrinkButton').addEventListener('click', () => openDrinkDialog());
 $('#addFlavorButton').addEventListener('click', addFlavor);
-$('#saveButton').addEventListener('click', saveDraft);
+$('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
+$('#addIngredientButton').addEventListener('click', () => addIngredientRow());
 $('#cancelDrinkButton').addEventListener('click', () => $('#drinkDialog').close());
 $('#drinkForm').addEventListener('submit', saveDrink);
+$('#cancelFlavorButton').addEventListener('click', () => $('#flavorDialog').close());
+$('#flavorForm').addEventListener('submit', saveFlavor);
 
 async function loadData() {
   state.sourceMode = sourceMode.value;
@@ -97,6 +115,14 @@ function validateData(data) {
   }
 }
 
+function contrastingTextColor(hex) {
+  const channels = hex.slice(1).match(/.{2}/g).map((value) => parseInt(value, 16) / 255);
+  const luminance = channels
+    .map((channel) => (channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4))
+    .reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+  return luminance > 0.179 ? '#17212b' : '#ffffff';
+}
+
 function storeCategories() {
   return state.data.categories.filter((category) => category.storeId === state.storeId);
 }
@@ -117,6 +143,19 @@ function render() {
     .map((store) => `<option value="${escapeHtml(store.id)}">${escapeHtml(store.name)}</option>`)
     .join('');
   $('#storeSelect').value = String(state.storeId);
+  const store = stores.find((item) => item.id === state.storeId);
+  $('#storeColors').querySelectorAll('input[data-color-field]').forEach((input) => {
+    const field = input.dataset.colorField;
+    const color = store?.[field];
+    const buttonColor = /^#[0-9a-f]{6}$/i.test(store?.buttonColor || '')
+      ? store.buttonColor
+      : defaultStoreColors.buttonColor;
+    input.value = /^#[0-9a-f]{6}$/i.test(color || '')
+      ? color
+      : field === 'buttonTextColor'
+        ? contrastingTextColor(buttonColor)
+        : defaultStoreColors[field];
+  });
 
   const categories = storeCategories();
   $('#categoryList').innerHTML = categories.length
@@ -194,28 +233,41 @@ function editCategory(id) {
 }
 
 function addFlavor() {
-  const flavor = prompt('Flavor profile name:')?.trim();
-  if (!flavor) return;
-  if (storeFlavorProfiles().some((item) => item.toLocaleLowerCase() === flavor.toLocaleLowerCase())) {
-    status.textContent = 'That flavor profile already exists for this store.';
-    return;
-  }
-  storeFlavorProfiles().push(flavor);
-  render();
-  markChanged();
+  openFlavorDialog();
 }
 
 function editFlavor(index) {
   const flavors = storeFlavorProfiles();
-  const current = flavors[index];
-  if (current == null) return;
-  const flavor = prompt('Flavor profile name:', current)?.trim();
-  if (!flavor) return;
-  if (flavors.some((item, itemIndex) => itemIndex !== index && item.toLocaleLowerCase() === flavor.toLocaleLowerCase())) {
-    status.textContent = 'That flavor profile already exists for this store.';
+  if (flavors[index] == null) return;
+  openFlavorDialog(index);
+}
+
+function openFlavorDialog(index = null) {
+  state.editingFlavorIndex = index;
+  $('#flavorDialogTitle').textContent = index == null ? 'Add flavor' : 'Edit flavor';
+  $('#flavorName').value = index == null ? '' : storeFlavorProfiles()[index];
+  $('#flavorFormError').textContent = '';
+  $('#flavorDialog').showModal();
+  $('#flavorName').focus();
+}
+
+function saveFlavor(event) {
+  event.preventDefault();
+  const flavor = $('#flavorName').value.trim();
+  const flavors = storeFlavorProfiles();
+  const duplicate = flavors.some((item, index) =>
+    index !== state.editingFlavorIndex && item.toLocaleLowerCase() === flavor.toLocaleLowerCase(),
+  );
+  if (duplicate) {
+    $('#flavorFormError').textContent = 'That flavor profile already exists for this store.';
     return;
   }
-  flavors[index] = flavor;
+  if (state.editingFlavorIndex == null) {
+    flavors.push(flavor);
+  } else {
+    flavors[state.editingFlavorIndex] = flavor;
+  }
+  $('#flavorDialog').close();
   render();
   markChanged();
 }
@@ -239,34 +291,80 @@ function openDrinkDialog(id = null) {
     .map((category) => `<option value="${escapeHtml(category.id)}">${escapeHtml(category.name)}</option>`)
     .join('');
   if (drink) $('#drinkCategory').value = String(drink.categoryId);
-  $('#drinkIngredients').value = (drink?.ingredients || [])
-    .map((ingredient) => `${normalizeSide(ingredient.side)}|${ingredient.name}|${ingredient.cost || 0}`)
-    .join('\n');
+  $('#drinkIngredients').replaceChildren();
+  const ingredients = drink?.ingredients || [];
+  if (ingredients.length) {
+    ingredients.forEach(addIngredientRow);
+  } else {
+    addIngredientRow();
+  }
   $('#formError').textContent = '';
   $('#drinkDialog').showModal();
+}
+
+function addIngredientRow(ingredient = {}) {
+  const row = document.createElement('div');
+  row.className = 'ingredient-row';
+  if (ingredient.id != null) row.dataset.ingredientId = ingredient.id;
+
+  const nameLabel = document.createElement('label');
+  nameLabel.textContent = 'Ingredient';
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.className = 'ingredient-name';
+  nameInput.value = ingredient.name || '';
+  nameLabel.append(nameInput);
+
+  const sideLabel = document.createElement('label');
+  sideLabel.textContent = 'Position';
+  const sideSelect = document.createElement('select');
+  sideSelect.className = 'ingredient-side';
+  sideSelect.innerHTML = '<option value="TOP">Top</option><option value="BOTTOM">Bottom</option>';
+  sideSelect.value = normalizeSide(ingredient.side);
+  sideLabel.append(sideSelect);
+
+  const costLabel = document.createElement('label');
+  costLabel.textContent = 'Cost';
+  const costInput = document.createElement('input');
+  costInput.type = 'number';
+  costInput.className = 'ingredient-cost';
+  costInput.min = '0';
+  costInput.step = 'any';
+  costInput.value = ingredient.cost ?? 0;
+  costLabel.append(costInput);
+
+  const removeButton = document.createElement('button');
+  removeButton.type = 'button';
+  removeButton.className = 'remove-ingredient';
+  removeButton.textContent = 'Remove';
+  removeButton.setAttribute('aria-label', `Remove ${ingredient.name || 'ingredient'}`);
+  removeButton.addEventListener('click', () => row.remove());
+
+  row.append(nameLabel, sideLabel, costLabel, removeButton);
+  $('#drinkIngredients').append(row);
 }
 
 function saveDrink(event) {
   event.preventDefault();
   const name = $('#drinkName').value.trim();
   const categoryId = Number($('#drinkCategory').value);
-  const ingredientLines = $('#drinkIngredients').value.split(/\r?\n/).filter((line) => line.trim());
   const ingredients = [];
 
-  for (const [index, line] of ingredientLines.entries()) {
-    const [side, ingredientName, costText = '0'] = line.split('|').map((part) => part.trim());
+  for (const [index, row] of [...$('#drinkIngredients').children].entries()) {
+    const ingredientName = row.querySelector('.ingredient-name').value.trim();
+    const side = row.querySelector('.ingredient-side').value;
+    const costText = row.querySelector('.ingredient-cost').value;
+    if (!ingredientName && costText === '0') continue;
     const cost = Number(costText);
-    if (!['TOP', 'BOTTOM'].includes(side?.toUpperCase()) || !ingredientName || !Number.isFinite(cost) || cost < 0) {
-      $('#formError').textContent = `Ingredient line ${index + 1} must be TOP|name|cost or BOTTOM|name|cost.`;
+    if (!ingredientName || !['TOP', 'BOTTOM'].includes(side) || costText === '' || !Number.isFinite(cost) || cost < 0) {
+      $('#formError').textContent = `Ingredient ${index + 1} needs a name and a valid non-negative cost.`;
       return;
     }
-    const current = state.editingDrinkId == null ? null : state.data.drinkRecipes.find((drink) => drink.id === state.editingDrinkId);
-    const existing = current?.ingredients?.[index];
     ingredients.push({
-      id: existing?.id ?? nextId(ingredients),
+      id: row.dataset.ingredientId ? Number(row.dataset.ingredientId) : nextId(ingredients),
       name: ingredientName,
       cost,
-      side: side.toUpperCase(),
+      side,
       displayOrder: index + 1,
     });
   }
@@ -302,7 +400,42 @@ function deleteDrink(id) {
 function markChanged() {
   status.textContent = state.sourceMode === 'local'
     ? 'Unsaved changes. Save a browser draft or download the JSON.'
-    : 'Changes are not saved to the API. Download the JSON to keep them.';
+    : 'Changes staged in this page. Save all to API when ready, or download the JSON.';
+}
+
+async function saveData() {
+  if (state.sourceMode === 'local') {
+    saveDraft();
+    return;
+  }
+
+  const saveButton = $('#saveButton');
+  saveButton.disabled = true;
+  status.classList.remove('error');
+  status.textContent = 'Saving all changes to API…';
+  try {
+    const response = await fetch('/api/data', {
+      method: 'POST',
+      body: JSON.stringify(state.data),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!response.ok) {
+      const details = (await response.text()).trim().slice(0, 300);
+      throw new Error(
+        `Could not save API data (HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}).`
+        + (details ? ` Server response: ${details}` : ''),
+      );
+    }
+    status.textContent = 'Saved all changes to the API.';
+  } catch (error) {
+    console.error('Failed to save API data:', error);
+    status.classList.add('error');
+    status.textContent = error instanceof TypeError
+      ? `Could not reach /api/data. Check that the Worker route is deployed and allows requests from this site. (${error.message})`
+      : error.message || 'Unable to save data to the API.';
+  } finally {
+    saveButton.disabled = false;
+  }
 }
 
 function saveDraft() {
