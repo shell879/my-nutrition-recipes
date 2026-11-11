@@ -4,8 +4,9 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 
 ## What this repo includes
 
-- An HTML/CSS/JS storefront that reads recipe data from the same-origin `/api/data` endpoint
-- A separate `admin.html` maintenance page for editing categories and drinks
+- A landing page at `/` with links to the public menu and recipe administration
+- An HTML/CSS/JS storefront at `/callahannutrition` that reads recipe data from the same-origin `/api/data` endpoint
+- A separate `/admin` maintenance page for editing categories and drinks
 - Category filtering and text search
 - Mobile-friendly cards with ingredient grouping for TOP/BOTTOM items
 - Easy deployment to GitHub Pages, Cloudflare Pages, or Netlify
@@ -20,7 +21,8 @@ python -m http.server 8000
 
 Then open http://localhost:8000
 
-Open http://localhost:8000/admin.html to manage recipes. The admin page can load
+Open http://localhost:8000/callahannutrition to browse recipes or
+http://localhost:8000/admin to manage them. The admin page can load
 the local `data.json` file or the same-origin `/api/data` endpoint. Changes can
 be saved to the API with a `POST` to `/api/data`, saved as a browser draft, or
 downloaded as `data.json`; publish the downloaded file to update the public

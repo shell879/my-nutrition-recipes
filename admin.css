@@ -41,6 +41,11 @@ main {
 .panel h2 { margin-bottom: 0.8rem; font-size: 1.2rem; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .source-controls, .toolbar, .item-row, .dialog-actions { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.source-mode { margin: 0; padding: 0; border: 0; }
+.source-mode legend { margin-bottom: 0.35rem; font-weight: 600; }
+.source-mode-options { display: flex; align-items: center; gap: 1rem; }
+.source-mode-options label { display: flex; align-items: center; gap: 0.4rem; font-weight: 400; cursor: pointer; }
+.source-mode-options input[type="radio"] { min-width: 0; margin: 0; accent-color: #126e68; }
 .toolbar { padding: 0 0 1rem; }
 .store-colors { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.8rem; }
 .store-colors input[type="color"] { width: 100%; min-width: 0; height: 2.8rem; padding: 0.25rem; }
@@ -65,7 +70,6 @@ button:hover { background: #f4f1ea; }
 button.primary { color: white; border-color: #126e68; background: #126e68; }
 .hidden { display: none !important; }
 .note { color: #667582; }
-#status { min-height: 1.4em; }
 .error { color: #a32121; }
 .item-list { display: grid; }
 .item-row { justify-content: space-between; padding: 0.7rem 0; border-top: 1px solid #eee; }

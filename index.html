@@ -3,33 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Nutrition Recipes</title>
-    <meta name="description" content="Public menu and recipe catalog for My Nutrition Recipes." />
+    <meta name="description" content="Choose the Callahan Nutrition menu or recipe administration." />
+    <title>Shell Designz</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <header class="site-header">
-      <div class="brand-wrap">
-        <p class="eyebrow">Fresh favorites</p>
-        <h1 id="storeName">My Nutrition Recipes</h1>
-      </div>
-      <div class="header-tools">
-        <label class="search-wrap">
-          <span class="visually-hidden">Search recipes</span>
-          <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
-        </label>
-      </div>
-    </header>
-
-    <main>
-      <nav id="categoryFilters" class="category-filters" aria-label="Recipe categories"></nav>
-      <fieldset class="flavor-filter">
-        <legend>Filter by flavor</legend>
-        <div id="flavorFilters" class="flavor-options"></div>
-      </fieldset>
-      <section id="recipeGrid" class="recipe-grid" aria-live="polite"></section>
+  <body class="landing-page">
+    <main class="landing-main">
+      <p class="eyebrow">Welcome to Shell Designz</p>
+      <p class="landing-intro">Where would you like to go?</p>
+      <nav class="landing-links" aria-label="Site navigation">
+        <a class="landing-card" href="/callahannutrition">
+          <span class="landing-card-title">Callahan Nutrition</span>
+          <span>Browse recipes and ingredients.</span>
+        </a>
+        <a class="landing-card" href="/admin">
+          <span class="landing-card-title">Callahan Nutrition Admin</span>
+          <span>Manage Callahan Nutritionrecipe catalog.</span>
+        </a>
+      </nav>
     </main>
-
-    <script src="app.js"></script>
   </body>
 </html>

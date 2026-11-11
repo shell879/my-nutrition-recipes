@@ -19,19 +19,20 @@ const defaultStoreColors = {
   buttonColor: '#126e68',
 };
 const $ = (selector) => document.querySelector(selector);
-const sourceMode = $('#sourceMode');
-const status = $('#status');
+const sourceModes = document.querySelectorAll('input[name="sourceMode"]');
 
 localStorage.setItem('mnr-admin-source', state.sourceMode);
-sourceMode.value = state.sourceMode;
+$(`input[name="sourceMode"][value="${state.sourceMode}"]`).checked = true;
 $('#resetDraftButton').classList.toggle('hidden', state.sourceMode !== 'local');
+setStatus('Choose a source and load the data.');
 
-sourceMode.addEventListener('change', () => {
+sourceModes.forEach((sourceMode) => sourceMode.addEventListener('change', () => {
   state.sourceMode = sourceMode.value;
   localStorage.setItem('mnr-admin-source', state.sourceMode);
   $('#resetDraftButton').classList.toggle('hidden', state.sourceMode !== 'local');
   $('#saveButton').textContent = state.sourceMode === 'api' ? 'Save all to API' : 'Save draft';
-});
+  setStatus(`Selected ${sourceMode.value === 'api' ? 'API' : 'Local'}. Click Load data to load this source.`);
+}));
 
 $('#loadButton').addEventListener('click', loadData);
 $('#resetDraftButton').addEventListener('click', () => {
@@ -62,10 +63,9 @@ $('#cancelFlavorButton').addEventListener('click', () => $('#flavorDialog').clos
 $('#flavorForm').addEventListener('submit', saveFlavor);
 
 async function loadData() {
-  state.sourceMode = sourceMode.value;
+  state.sourceMode = $('input[name="sourceMode"]:checked').value;
   localStorage.setItem('mnr-admin-source', state.sourceMode);
-  status.classList.remove('error');
-  status.textContent = 'Loading data…';
+  setStatus('Loading data…');
 
   try {
     let response;
@@ -77,10 +77,10 @@ async function loadData() {
         state.storeId = state.data.stores.find((store) => store.active !== false)?.id ?? state.data.stores[0]?.id ?? null;
         $('#editor').classList.remove('hidden');
         render();
-        status.textContent = 'Loaded saved browser draft. Discard it to reload data.json.';
+        setStatus('Loaded saved browser draft. Discard it to reload data.json.');
         return;
       }
-      response = await fetch('./data.json');
+      response = await fetch('/data.json');
     } else {
       response = await fetch('/api/data');
     }
@@ -98,15 +98,20 @@ async function loadData() {
     state.storeId = data.stores.find((store) => store.active !== false)?.id ?? data.stores[0]?.id ?? null;
     $('#editor').classList.remove('hidden');
     render();
-    status.textContent = `Loaded ${state.sourceMode === 'local' ? 'site' : 'API'} data.`;
+    setStatus(`Loaded ${state.sourceMode === 'local' ? 'Local' : 'API'} data.`);
   } catch (error) {
     console.error(`Failed to load ${state.sourceMode} data:`, error);
-    status.classList.add('error');
-    status.textContent = state.sourceMode === 'api' && error instanceof TypeError
+    setStatus(state.sourceMode === 'api' && error instanceof TypeError
       ? `Could not reach /api/data. Check that the Worker route is deployed and allows requests from this site. (${error.message})`
-      : error.message || 'Unable to load data.';
+      : error.message || 'Unable to load data.');
     $('#editor').classList.add('hidden');
   }
+}
+
+function setStatus(message) {
+  sourceModes.forEach((sourceMode) => {
+    sourceMode.title = sourceMode.checked ? message : '';
+  });
 }
 
 function validateData(data) {
@@ -398,9 +403,9 @@ function deleteDrink(id) {
 }
 
 function markChanged() {
-  status.textContent = state.sourceMode === 'local'
+  setStatus(state.sourceMode === 'local'
     ? 'Unsaved changes. Save a browser draft or download the JSON.'
-    : 'Changes staged in this page. Save all to API when ready, or download the JSON.';
+    : 'Changes staged in this page. Save all to API when ready, or download the JSON.');
 }
 
 async function saveData() {
@@ -411,8 +416,7 @@ async function saveData() {
 
   const saveButton = $('#saveButton');
   saveButton.disabled = true;
-  status.classList.remove('error');
-  status.textContent = 'Saving all changes to API…';
+  setStatus('Saving all changes to API…');
   try {
     const response = await fetch('/api/data', {
       method: 'POST',
@@ -426,13 +430,12 @@ async function saveData() {
         + (details ? ` Server response: ${details}` : ''),
       );
     }
-    status.textContent = 'Saved all changes to the API.';
+    setStatus('Saved all changes to the API.');
   } catch (error) {
     console.error('Failed to save API data:', error);
-    status.classList.add('error');
-    status.textContent = error instanceof TypeError
+    setStatus(error instanceof TypeError
       ? `Could not reach /api/data. Check that the Worker route is deployed and allows requests from this site. (${error.message})`
-      : error.message || 'Unable to save data to the API.';
+      : error.message || 'Unable to save data to the API.');
   } finally {
     saveButton.disabled = false;
   }
@@ -441,9 +444,9 @@ async function saveData() {
 function saveDraft() {
   try {
     localStorage.setItem('mnr-admin-local-draft', JSON.stringify(state.data));
-    status.textContent = 'Draft saved in this browser. Download JSON to publish the changes.';
+    setStatus('Draft saved in this browser. Download JSON to publish the changes.');
   } catch (error) {
-    status.textContent = `Could not save browser draft: ${error.message}`;
+    setStatus(`Could not save browser draft: ${error.message}`);
   }
 }
 
@@ -455,7 +458,7 @@ function downloadData() {
   link.download = 'data.json';
   link.click();
   URL.revokeObjectURL(url);
-  status.textContent = 'Downloaded data.json. Replace the site data file or upload it to your API to publish changes.';
+  setStatus('Downloaded data.json. Replace the site data file or upload it to your API to publish changes.');
 }
 
 function normalizeSide(side) {

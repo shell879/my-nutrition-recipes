@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CallahanNutrition Recipes</title>
+    <meta name="description" content="Public menu and recipe catalog for My Nutrition Recipes." />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand-wrap">
+        <p class="eyebrow">Local favorites</p>
+        <h1 id="storeName">Callahan Nutrition Recipes</h1>
+      </div>
+      <div class="header-tools">
+        <label class="search-wrap">
+          <span class="visually-hidden">Search recipes</span>
+          <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <nav id="categoryFilters" class="category-filters" aria-label="Recipe categories"></nav>
+      <fieldset class="flavor-filter">
+        <legend>Filter by flavor</legend>
+        <div id="flavorFilters" class="flavor-options"></div>
+      </fieldset>
+      <section id="recipeGrid" class="recipe-grid" aria-live="polite"></section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
