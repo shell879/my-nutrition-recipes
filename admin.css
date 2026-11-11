@@ -1,13 +1,19 @@
 :root {
+  --page-background: #f4f1ea;
+  --page-text: #17212b;
+  --card-background: #ffffff;
+  --card-text: #17212b;
+  --button-background: #126e68;
+  --button-text: #ffffff;
   color-scheme: light;
   font-family: "Segoe UI", Arial, sans-serif;
-  color: #17212b;
-  background: #f4f1ea;
+  color: var(--page-text);
+  background: var(--page-background);
 }
 
 * { box-sizing: border-box; }
 
-body { margin: 0; }
+body { margin: 0; color: var(--page-text); background: var(--page-background); }
 
 header {
   display: flex;
@@ -15,8 +21,8 @@ header {
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem clamp(1rem, 4vw, 3rem);
-  color: white;
-  background: #173a3a;
+  color: var(--button-text);
+  background: var(--button-background);
 }
 
 header a { color: inherit; }
@@ -35,7 +41,8 @@ main {
   padding: 1.1rem;
   border: 1px solid #ddd7cc;
   border-radius: 14px;
-  background: white;
+  color: var(--card-text);
+  background: var(--card-background);
 }
 
 .panel h2 { margin-bottom: 0.8rem; font-size: 1.2rem; }
@@ -56,7 +63,8 @@ input, select, textarea {
   padding: 0.65rem;
   border: 1px solid #b8b4ac;
   border-radius: 8px;
-  background: white;
+  color: var(--card-text);
+  background: var(--card-background);
 }
 textarea { width: 100%; resize: vertical; }
 button {
@@ -67,7 +75,7 @@ button {
   cursor: pointer;
 }
 button:hover { background: #f4f1ea; }
-button.primary { color: white; border-color: #126e68; background: #126e68; }
+button.primary { color: var(--button-text); border-color: var(--button-background); background: var(--button-background); }
 .hidden { display: none !important; }
 .note { color: #667582; }
 .error { color: #a32121; }

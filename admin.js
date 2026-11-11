@@ -49,6 +49,7 @@ $('#storeColors').addEventListener('input', (event) => {
   const store = state.data.stores.find((item) => item.id === state.storeId);
   if (!store) return;
   store[input.dataset.colorField] = input.value;
+  applyStoreTheme(store);
   markChanged();
 });
 $('#addCategoryButton').addEventListener('click', addCategory);
@@ -128,6 +129,18 @@ function contrastingTextColor(hex) {
   return luminance > 0.179 ? '#17212b' : '#ffffff';
 }
 
+function applyStoreTheme(store) {
+  const colorOr = (value, fallback) => /^#[0-9a-f]{6}$/i.test(value || '') ? value : fallback;
+  const buttonColor = colorOr(store?.buttonColor, defaultStoreColors.buttonColor);
+  const rootStyle = document.documentElement.style;
+  rootStyle.setProperty('--page-background', colorOr(store?.backgroundColor, defaultStoreColors.backgroundColor));
+  rootStyle.setProperty('--page-text', colorOr(store?.textColor, defaultStoreColors.textColor));
+  rootStyle.setProperty('--card-background', colorOr(store?.cardBackgroundColor, defaultStoreColors.cardBackgroundColor));
+  rootStyle.setProperty('--card-text', colorOr(store?.cardTextColor, defaultStoreColors.cardTextColor));
+  rootStyle.setProperty('--button-background', buttonColor);
+  rootStyle.setProperty('--button-text', colorOr(store?.buttonTextColor, contrastingTextColor(buttonColor)));
+}
+
 function storeCategories() {
   return state.data.categories.filter((category) => category.storeId === state.storeId);
 }
@@ -149,6 +162,7 @@ function render() {
     .join('');
   $('#storeSelect').value = String(state.storeId);
   const store = stores.find((item) => item.id === state.storeId);
+  applyStoreTheme(store);
   $('#storeColors').querySelectorAll('input[data-color-field]').forEach((input) => {
     const field = input.dataset.colorField;
     const color = store?.[field];
