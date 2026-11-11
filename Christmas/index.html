@@ -34,8 +34,8 @@
           <button id="saveButton" type="button">Save draft</button>
           <button id="downloadButton" type="button">Download JSON</button>
         </div>
-        <section class="panel" aria-labelledby="storeColorsHeading">
-          <h2 id="storeColorsHeading">Screen colors</h2>
+        <details class="panel category-panel">
+          <summary>Screen colors</summary>
           <div id="storeColors" class="store-colors">
             <label>Page background<input type="color" data-color-field="backgroundColor" /></label>
             <label>Page text<input type="color" data-color-field="textColor" /></label>
@@ -44,9 +44,9 @@
             <label>Button background<input type="color" data-color-field="buttonColor" /></label>
             <label>Button text<input type="color" data-color-field="buttonTextColor" /></label>
           </div>
-        </section>
+        </details>
         <details class="panel category-panel">
-          <summary>Family</summary>
+          <summary>Family (expand to add)</summary>
           <div id="categoryList" class="item-list"></div>
         </details>
         <section class="panel" hidden>
