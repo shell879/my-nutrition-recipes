@@ -3,6 +3,7 @@ const state = {
   selectedFlavors: new Set(),
   query: '',
   data: null,
+  dataSource: 'api',
 };
 
 const defaultFlavorProfiles = [
@@ -34,6 +35,16 @@ const flavorFilters = document.getElementById('flavorFilters');
 const recipeGrid = document.getElementById('recipeGrid');
 const searchInput = document.getElementById('searchInput');
 const storeName = document.getElementById('storeName');
+const dataSourceOptions = document.querySelectorAll('input[name="dataSource"]');
+const drinkPicker = document.getElementById('drinkPicker');
+const openPickerButton = document.getElementById('openPickerButton');
+const closePickerButton = document.getElementById('closePickerButton');
+const pickButton = document.getElementById('pickButton');
+const drinkName = document.getElementById('drinkName');
+const drinkCount = document.getElementById('drinkCount');
+const drinkResult = document.getElementById('drinkResult');
+let pickerDrinks = [];
+let lastPickedIndex = -1;
 
 function normalizeData(raw) {
   if (!raw) {
@@ -84,11 +95,11 @@ function getCategoryName(categoryId) {
 }
 
 async function loadData() {
-  const response = await fetch('/api/data');
+  const response = await fetch(state.dataSource === 'local' ? '/data.json' : '/api/data');
   if (!response.ok) {
     const details = (await response.text()).trim().slice(0, 300);
     throw new Error(
-      `Could not load recipe data (HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}).`
+      `Could not load ${state.dataSource} recipe data (HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}).`
       + (details ? ` Server response: ${details}` : ''),
     );
   }
@@ -100,8 +111,103 @@ async function loadData() {
   applyStoreTheme(state.data.store);
   renderFilters();
   renderFlavorFilters();
+  renderDrinkPicker();
   renderRecipes();
 }
+
+document.querySelector(`input[name="dataSource"][value="${state.dataSource}"]`).checked = true;
+dataSourceOptions.forEach((sourceOption) => sourceOption.addEventListener('change', () => {
+  state.dataSource = sourceOption.value;
+  loadData().catch(handleDataLoadError);
+}));
+
+function renderDrinkPicker() {
+  pickerDrinks = state.data.drinks
+    .map((drink) => drink?.name)
+    .filter((name) => typeof name === 'string' && name.trim())
+    .map((name) => name.trim());
+  lastPickedIndex = -1;
+  drinkName.disabled = true;
+
+  if (pickerDrinks.length === 0) {
+    drinkName.textContent = 'The drink list could not be loaded.';
+    drinkCount.textContent = 'No drink recipes are available for this store.';
+    openPickerButton.disabled = true;
+    pickButton.disabled = true;
+    return;
+  }
+
+  drinkName.textContent = 'Tap the button to get started.';
+  drinkCount.textContent = `Choose from ${pickerDrinks.length} drink recipes.`;
+  openPickerButton.disabled = false;
+  pickButton.disabled = false;
+}
+
+openPickerButton.addEventListener('click', () => drinkPicker.showModal());
+closePickerButton.addEventListener('click', () => drinkPicker.close());
+
+drinkName.addEventListener('click', () => {
+  if (lastPickedIndex < 0) return;
+
+  state.query = pickerDrinks[lastPickedIndex];
+  searchInput.value = state.query;
+  state.activeCategory = 'All';
+  state.selectedFlavors.clear();
+  renderFilters();
+  renderFlavorFilters();
+  renderRecipes();
+  drinkPicker.close();
+  searchInput.focus();
+});
+
+pickButton.addEventListener('click', () => {
+  let nextIndex = Math.floor(Math.random() * pickerDrinks.length);
+  if (pickerDrinks.length > 1 && nextIndex === lastPickedIndex) {
+    nextIndex = (nextIndex + 1 + Math.floor(Math.random() * (pickerDrinks.length - 1))) % pickerDrinks.length;
+  }
+
+  pickButton.disabled = true;
+  drinkName.disabled = true;
+  pickButton.textContent = 'Picking...';
+  drinkResult.setAttribute('aria-busy', 'true');
+  drinkResult.classList.add('is-spinning');
+
+  const finishPick = () => {
+    lastPickedIndex = nextIndex;
+    drinkName.disabled = false;
+    pickButton.disabled = false;
+    pickButton.textContent = 'Pick a drink';
+    drinkResult.setAttribute('aria-busy', 'false');
+    drinkResult.classList.remove('is-spinning');
+  };
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    drinkName.textContent = 'Choosing a drink...';
+    window.setTimeout(() => {
+      drinkName.textContent = pickerDrinks[nextIndex];
+      finishPick();
+    }, 500);
+    return;
+  }
+
+  let spinIndex = lastPickedIndex < 0 ? nextIndex : lastPickedIndex;
+  let ticks = 0;
+  const totalTicks = 18;
+  const spin = () => {
+    ticks += 1;
+    if (ticks === totalTicks) {
+      drinkName.textContent = pickerDrinks[nextIndex];
+      finishPick();
+      return;
+    }
+
+    spinIndex = (spinIndex + 1) % pickerDrinks.length;
+    drinkName.textContent = pickerDrinks[spinIndex];
+    window.setTimeout(spin, 55 + ticks * 9);
+  };
+
+  window.setTimeout(spin, 55);
+});
 
 function colorOr(value, fallback) {
   return /^#[0-9a-f]{6}$/i.test(value || '') ? value : fallback;
@@ -257,7 +363,14 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;');
 }
 
-loadData().catch((error) => {
+function handleDataLoadError(error) {
   console.error('Failed to load recipe data:', error);
+  drinkName.textContent = 'The drink list could not be loaded.';
+  drinkCount.textContent = 'Unable to load drink recipes.';
+  openPickerButton.disabled = true;
+  pickButton.disabled = true;
+  drinkName.disabled = true;
   recipeGrid.innerHTML = `<div class="empty-state">${escapeHtml(error.message || 'Unable to load recipe data.')}</div>`;
-});
+}
+
+loadData().catch(handleDataLoadError);

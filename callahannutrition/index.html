@@ -10,10 +10,16 @@
   <body>
     <header class="site-header">
       <div class="brand-wrap">
-        <p class="eyebrow">Local favorites</p>
+        <a href="/">Callahan Nutrition</a>
         <h1 id="storeName">Callahan Nutrition Recipes</h1>
       </div>
       <div class="header-tools">
+        <button id="openPickerButton" class="drink-picker-trigger" type="button" disabled>Pick a drink</button>
+        <fieldset class="data-source-options">
+          <legend>Data source</legend>
+          <label><input type="radio" name="dataSource" value="local" /> Local</label>
+          <label><input type="radio" name="dataSource" value="api" checked /> API</label>
+        </fieldset>
         <label class="search-wrap">
           <span class="visually-hidden">Search recipes</span>
           <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
@@ -29,6 +35,21 @@
       </fieldset>
       <section id="recipeGrid" class="recipe-grid" aria-live="polite"></section>
     </main>
+
+    <dialog id="drinkPicker" class="drink-picker-dialog" aria-labelledby="drinkPickerTitle">
+      <section class="drink-picker">
+        <button id="closePickerButton" class="drink-picker-close" type="button">Close</button>
+        <p class="eyebrow">Your next sip</p>
+        <h2 id="drinkPickerTitle">Pick a drink</h2>
+        <p class="drink-picker-intro">Can't decide? Let the recipes choose for you.</p>
+        <div id="drinkResult" class="drink-result" aria-live="polite" aria-atomic="true" aria-busy="false">
+          <p class="drink-result-label">Today's pick</p>
+          <button id="drinkName" class="drink-name" type="button" disabled>Loading recipes...</button>
+        </div>
+        <button id="pickButton" class="drink-picker-button" type="button" disabled>Pick a drink</button>
+        <p id="drinkCount" class="drink-count">Loading recipes...</p>
+      </section>
+    </dialog>
 
     <script src="/app.js"></script>
   </body>

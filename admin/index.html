@@ -10,24 +10,19 @@
     <header>
       <a href="/">Callahan Nutrition</a>
       <h1> Admin</h1>
+      <div class="source-controls">
+        <fieldset class="source-mode">
+          <legend>Data source</legend>
+          <div class="source-mode-options">
+            <label><input type="radio" name="sourceMode" value="api" checked /> API</label>
+            <label><input type="radio" name="sourceMode" value="local" /> Local</label>
+          </div>
+        </fieldset>
+        <button id="resetDraftButton" type="button" class="hidden">Discard local draft</button>
+      </div>
     </header>
+    <p id="loadStatus" class="load-status" role="status" aria-live="polite"></p>
     <main>
-      <section class="panel source-panel" aria-labelledby="sourceHeading">
-        <h2 id="sourceHeading">Data Load</h2>
-        <div class="source-controls">
-          <fieldset class="source-mode">
-            <legend>Load data from</legend>
-            <div class="source-mode-options">
-              <label><input type="radio" name="sourceMode" value="api" /> API</label>
-              <label><input type="radio" name="sourceMode" value="local" /> Local</label>
-            </div>
-          </fieldset>
-          <button id="loadButton" type="button">Load data</button>
-          <button id="resetDraftButton" type="button" class="hidden">Discard local draft and reload data.json</button>
-        </div>
-        <p class="note">Dialog edits stay in this page until you click Save all to API; that button sends the complete dataset in one request. Local mode can save a browser draft.</p>
-      </section>
-
       <section id="editor" class="hidden">
         <div class="toolbar">
           <label>

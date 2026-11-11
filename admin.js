@@ -3,7 +3,7 @@ const state = {
   storeId: null,
   editingDrinkId: null,
   editingFlavorIndex: null,
-  sourceMode: 'local',
+  sourceMode: 'api',
 };
 
 const defaultFlavorProfiles = [
@@ -20,21 +20,22 @@ const defaultStoreColors = {
 };
 const $ = (selector) => document.querySelector(selector);
 const sourceModes = document.querySelectorAll('input[name="sourceMode"]');
+let loadRequestId = 0;
 
 localStorage.setItem('mnr-admin-source', state.sourceMode);
 $(`input[name="sourceMode"][value="${state.sourceMode}"]`).checked = true;
 $('#resetDraftButton').classList.toggle('hidden', state.sourceMode !== 'local');
-setStatus('Choose a source and load the data.');
+$('#saveButton').textContent = state.sourceMode === 'api' ? 'Save all to API' : 'Save draft';
+setStatus('Loading API data…');
 
 sourceModes.forEach((sourceMode) => sourceMode.addEventListener('change', () => {
   state.sourceMode = sourceMode.value;
   localStorage.setItem('mnr-admin-source', state.sourceMode);
   $('#resetDraftButton').classList.toggle('hidden', state.sourceMode !== 'local');
   $('#saveButton').textContent = state.sourceMode === 'api' ? 'Save all to API' : 'Save draft';
-  setStatus(`Selected ${sourceMode.value === 'api' ? 'API' : 'Local'}. Click Load data to load this source.`);
+  loadData();
 }));
 
-$('#loadButton').addEventListener('click', loadData);
 $('#resetDraftButton').addEventListener('click', () => {
   localStorage.removeItem('mnr-admin-local-draft');
   loadData();
@@ -63,14 +64,18 @@ $('#drinkForm').addEventListener('submit', saveDrink);
 $('#cancelFlavorButton').addEventListener('click', () => $('#flavorDialog').close());
 $('#flavorForm').addEventListener('submit', saveFlavor);
 
+loadData();
+
 async function loadData() {
-  state.sourceMode = $('input[name="sourceMode"]:checked').value;
+  const requestId = ++loadRequestId;
+  const sourceMode = $('input[name="sourceMode"]:checked').value;
+  state.sourceMode = sourceMode;
   localStorage.setItem('mnr-admin-source', state.sourceMode);
-  setStatus('Loading data…');
+  setStatus(`Loading ${sourceMode === 'local' ? 'Local' : 'API'} data…`);
 
   try {
     let response;
-    if (state.sourceMode === 'local') {
+    if (sourceMode === 'local') {
       const draft = localStorage.getItem('mnr-admin-local-draft');
       if (draft) {
         state.data = JSON.parse(draft);
@@ -81,35 +86,45 @@ async function loadData() {
         setStatus('Loaded saved browser draft. Discard it to reload data.json.');
         return;
       }
-      response = await fetch('/data.json');
+      response = await fetch(new URL('../data.json', window.location.href));
     } else {
       response = await fetch('/api/data');
     }
+    if (requestId !== loadRequestId) return;
 
     if (!response.ok) {
       const details = (await response.text()).trim().slice(0, 300);
       throw new Error(
-        `Could not load ${state.sourceMode} data (HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}).`
+        `Could not load ${sourceMode} data (HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}).`
         + (details ? ` Server response: ${details}` : ''),
       );
     }
     const data = await response.json();
+    if (requestId !== loadRequestId) return;
     validateData(data);
     state.data = data;
     state.storeId = data.stores.find((store) => store.active !== false)?.id ?? data.stores[0]?.id ?? null;
     $('#editor').classList.remove('hidden');
     render();
-    setStatus(`Loaded ${state.sourceMode === 'local' ? 'Local' : 'API'} data.`);
+    setStatus(`Loaded ${sourceMode === 'local' ? 'Local' : 'API'} data.`);
   } catch (error) {
-    console.error(`Failed to load ${state.sourceMode} data:`, error);
-    setStatus(state.sourceMode === 'api' && error instanceof TypeError
+    if (requestId !== loadRequestId) return;
+    console.error(`Failed to load ${sourceMode} data:`, error);
+    const message = sourceMode === 'api' && error instanceof TypeError
       ? `Could not reach /api/data. Check that the Worker route is deployed and allows requests from this site. (${error.message})`
-      : error.message || 'Unable to load data.');
+      : sourceMode === 'local' && error instanceof TypeError
+        ? `Could not reach ${new URL('../data.json', window.location.href).pathname}. Confirm data.json is served from the site root. (${error.message})`
+        : error.message || `Unable to load ${sourceMode} data.`;
+    setStatus(message, true);
     $('#editor').classList.add('hidden');
   }
 }
 
-function setStatus(message) {
+function setStatus(message, isError = false) {
+  const status = $('#loadStatus');
+  status.textContent = message;
+  status.classList.toggle('error', isError);
+  status.setAttribute('aria-live', isError ? 'assertive' : 'polite');
   sourceModes.forEach((sourceMode) => {
     sourceMode.title = sourceMode.checked ? message : '';
   });
