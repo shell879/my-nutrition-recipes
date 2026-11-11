@@ -1,0 +1,60 @@
+@import url("/admin.css");
+
+.christmas-admin .category-panel summary {
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.christmas-admin .category-panel[open] summary {
+  margin-bottom: 0.8rem;
+}
+
+.christmas-admin #drinkList {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1rem;
+}
+
+.christmas-admin #drinkList .item-row {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.2rem;
+  border: 1px solid #ddd7cc;
+  border-radius: 18px;
+  color: var(--card-text);
+  background: var(--card-background);
+  box-shadow: 0 10px 18px rgba(23, 33, 43, 0.12);
+}
+
+.christmas-admin .drink-details {
+  display: grid;
+  width: 100%;
+  gap: 0.9rem;
+}
+
+.christmas-admin .drink-heading {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.christmas-admin .ingredients {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.christmas-admin .ingredients ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.christmas-admin .ingredient-divider {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid #ddd7cc;
+}

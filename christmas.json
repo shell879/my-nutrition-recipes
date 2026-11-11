@@ -1,0 +1,119 @@
+{
+    "system":  {
+                   "initialized": false,
+                   "schemaVersion":  1
+               },
+    "superUsers": [],
+    "stores":  [
+                   {
+                       "id":  3,
+                       "name":  "Christmas Recipies",
+                       "active":  true,
+                       "textColor":  "#f2f2f2",
+                       "backgroundColor":  "#77577a",
+                       "cardBackgroundColor":  "#f8f2f6",
+                       "cardTextColor":  "#6507f2",
+                       "buttonColor":  "#bda4f9",
+                       "flavorProfiles":  []
+                   }
+               ],
+    "activationCodes":  [
+
+                        ],
+    "categories":  [
+                       {
+                           "id":  1,
+                           "storeId":  3,
+                           "name":  "Rachelle",
+                           "displayOrder":  1,
+                           "active":  true
+                       },
+                       {
+                           "id":  2,
+                           "storeId":  3,
+                           "name":  "Jac3kie",
+                           "displayOrder":  2,
+                           "active":  true
+                       },
+                       {
+                           "id":  3,
+                           "storeId":  3,
+                           "name":  "Taylor",
+                           "displayOrder":  3,
+                           "active":  true
+                       },
+                       {
+                           "id":  4,
+                           "storeId":  3,
+                           "name":  "Farren",
+                           "displayOrder":  4,
+                           "active":  true
+                       },
+                       {
+                           "id":  5,
+                           "storeId":  3,
+                           "name":  "Refreshers",
+                           "displayOrder":  5,
+                           "active":  true
+                       },
+                       {
+                           "id":  6,
+                           "storeId":  3,
+                           "name":  "Cherish",
+                           "displayOrder":  6,
+                           "active":  true
+                       }
+                   ],
+    "drinkRecipes":  [
+                         {
+                             "id":  1,
+                             "storeId":  3,
+                             "name":  "Christmas Cookies",
+                             "categoryId":  1,
+                             "ingredients":  [
+                                                 {
+                                                     "id":  1,
+                                                     "name":  "1/3 Flour",
+                                                     "cost":  0,
+                                                     "side":  "TOP",
+                                                     "displayOrder":  1
+                                                 },
+                                                 {
+                                                     "id":  2,
+                                                     "name":  "Chockolate Chips",
+                                                     "cost":  0,
+                                                     "side":  "TOP",
+                                                     "displayOrder":  2
+                                                 },
+                                                 {
+                                                     "id":  3,
+                                                     "name":  "¼ Cherry Lime",
+                                                     "cost":  0,
+                                                     "side":  "TOP",
+                                                     "displayOrder":  3
+                                                 },
+                                                 {
+                                                     "id":  4,
+                                                     "name":  "Combine all Ingredients",
+                                                     "cost":  0,
+                                                     "side":  "BOTTOM",
+                                                     "displayOrder":  4
+                                                 },
+                                                 {
+                                                     "id":  5,
+                                                     "name":  "Cook for 30 minutes.",
+                                                     "cost":  0,
+                                                     "side":  "BOTTOM",
+                                                     "displayOrder":  5
+                                                 },
+                                                 {
+                                                     "id":  6,
+                                                     "name":  "Cool to room temperature.",
+                                                     "cost":  0,
+                                                     "side":  "BOTTOM",
+                                                     "displayOrder":  6
+                                                 }
+                                             ]
+                            }
+                     ]
+}

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Christmas </title>
+    <link rel="stylesheet" href="./christmas.css" />
+  </head>
+  <body class="christmas-admin">
+    <header>
+      <a href="/">Home</a>
+      <h1>Christmas Coleman & Floyd Family</h1>
+      <div class="source-controls">
+        <fieldset class="source-mode">
+          <legend>Data source</legend>
+          <div class="source-mode-options">
+            <label><input type="radio" name="sourceMode" value="api" checked /> API</label>
+            <label><input type="radio" name="sourceMode" value="local" /> Local</label>
+          </div>
+        </fieldset>
+        <button id="resetDraftButton" type="button" class="hidden">Discard local draft</button>
+      </div>
+    </header>
+    <p id="loadStatus" class="load-status" role="status" aria-live="polite"></p>
+    <main>
+      <section id="editor" class="hidden">
+        <div class="toolbar">
+          <label>
+            Store
+            <select id="storeSelect"></select>
+          </label>
+          <button id="addCategoryButton" type="button">Add Family</button>
+          <button id="addDrinkButton" type="button" class="primary">Add Recipe</button>
+          <button id="saveButton" type="button">Save draft</button>
+          <button id="downloadButton" type="button">Download JSON</button>
+        </div>
+        <section class="panel" aria-labelledby="storeColorsHeading">
+          <h2 id="storeColorsHeading">Screen colors</h2>
+          <div id="storeColors" class="store-colors">
+            <label>Page background<input type="color" data-color-field="backgroundColor" /></label>
+            <label>Page text<input type="color" data-color-field="textColor" /></label>
+            <label>Card background<input type="color" data-color-field="cardBackgroundColor" /></label>
+            <label>Card text<input type="color" data-color-field="cardTextColor" /></label>
+            <label>Button background<input type="color" data-color-field="buttonColor" /></label>
+            <label>Button text<input type="color" data-color-field="buttonTextColor" /></label>
+          </div>
+        </section>
+        <details class="panel category-panel">
+          <summary>Family</summary>
+          <div id="categoryList" class="item-list"></div>
+        </details>
+        <section class="panel" hidden>
+          <div class="section-heading">
+            <h2>Flavor profiles</h2>
+            <button id="addFlavorButton" type="button">Add flavor</button>
+          </div>
+          <div id="flavorList" class="item-list"></div>
+        </section>
+        <section class="panel">
+          <h2>Recipes</h2>
+          <div id="drinkList" class="item-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="drinkDialog">
+      <form id="drinkForm">
+        <h2 id="drinkDialogTitle">Add Recipe</h2>
+        <label>
+          Recipe name
+          <input id="drinkName" required />
+        </label>
+        <label>
+          Family
+          <select id="drinkCategory" required></select>
+        </label>
+        <section class="ingredient-editor" aria-labelledby="ingredientHeading">
+          <div class="section-heading">
+            <h3 id="ingredientHeading">Ingredients</h3>
+            <button id="addIngredientButton" type="button">Add ingredient</button>
+          </div>
+          <div id="drinkIngredients" class="ingredient-rows"></div>
+        </section>
+        <p id="formError" class="error" role="alert"></p>
+        <div class="dialog-actions">
+          <button id="cancelDrinkButton" type="button">Cancel</button>
+          <button type="submit" class="primary">Save recipe</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="flavorDialog">
+      <form id="flavorForm">
+        <h2 id="flavorDialogTitle">Add flavor</h2>
+        <label>
+          Flavor profile name
+          <input id="flavorName" required />
+        </label>
+        <p id="flavorFormError" class="error" role="alert"></p>
+        <div class="dialog-actions">
+          <button id="cancelFlavorButton" type="button">Cancel</button>
+          <button type="submit" class="primary">Save flavor</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./christmas.js"></script>
+  </body>
+</html>

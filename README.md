@@ -7,6 +7,7 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 - A landing page at `/` with links to the public menu and recipe administration
 - An HTML/CSS/JS storefront at `/callahannutrition` that reads recipe data from the same-origin `/api/data` endpoint
 - A separate `/admin/` maintenance page for editing categories and drinks
+- A `/Christmas/` admin page for the separate Christmas catalog
 - Category filtering and text search
 - Mobile-friendly cards with ingredient grouping for TOP/BOTTOM items
 - Easy deployment to GitHub Pages, Cloudflare Pages, or Netlify
@@ -28,6 +29,10 @@ be saved to the API with a `POST` to `/api/data`, saved as a browser draft, or
 downloaded as `data.json`; publish the downloaded file to update the public
 menu when needed. The storefront and admin API mode both read from `/api/data`;
 the API endpoint must support `GET` and `POST` with a JSON request body.
+The Christmas admin loads `christmas.json` in local mode and uses
+`/api/christmas` in API mode, so it remains separate from the main catalog.
+Keep the site-root `christmas.json` and the API repository's `christmas.json`
+in sync when replacing the Christmas dataset.
 Edits in admin dialogs are staged in the page and do not call the API; use the
 top-level “Save all to API” button once to submit the complete dataset.
 Protect the admin URL and API with Cloudflare Access before sharing them; do
