@@ -261,8 +261,11 @@ function renderFilters() {
 
 function renderFlavorFilters() {
   const profiles = state.data.store?.flavorProfiles || [];
-  flavorFilters.innerHTML = profiles.length
-    ? profiles
+  const sortedProfiles = [...profiles].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' }),
+  );
+  flavorFilters.innerHTML = sortedProfiles.length
+    ? sortedProfiles
         .map(
           (flavor) => `
             <label>

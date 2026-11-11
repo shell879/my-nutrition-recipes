@@ -202,9 +202,11 @@ function render() {
         </div>`).join('')
     : '<p>No categories in this store.</p>';
 
-  const flavors = storeFlavorProfiles();
+  const flavors = storeFlavorProfiles()
+    .map((flavor, index) => ({ flavor, index }))
+    .sort((a, b) => a.flavor.localeCompare(b.flavor, undefined, { sensitivity: 'base' }));
   $('#flavorList').innerHTML = flavors.length
-    ? flavors.map((flavor, index) => `
+    ? flavors.map(({ flavor, index }) => `
         <div class="item-row">
           <span>${escapeHtml(flavor)}</span>
           <div class="item-actions">
