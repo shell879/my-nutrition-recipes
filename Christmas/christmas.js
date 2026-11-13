@@ -68,29 +68,25 @@ $('#selfie').addEventListener('change', async (event) => {
   setStatus('Scanning image…');
 
   try {
+    // Resize image to max 1280px wide before sending
+    const resized = await resizeImage(file, 1280);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', resized, 'scan.jpg');
 
- const res = await fetch('/api/scan', { method: 'POST', body: formData });
- const data = await res.json();
- console.log('Scan response:', res.status, data);
+    const res = await fetch('/api/scan', { method: 'POST', body: formData });
+    const data = await res.json();
+    console.log('Scan response:', res.status, data);
 
-if (!res.ok) {
-  let detail = data.error || 'Unknown error';
-  if (data.raw) detail += ' — Raw: ' + data.raw.slice(0, 200);
-  setStatus('Scan failed: ' + detail, true);
-  event.target.value = '';
-  return;
-}
+    if (!res.ok) {
+      let detail = data.error || 'Unknown error';
+      if (data.raw) detail += ' — Raw: ' + data.raw.slice(0, 200);
+      setStatus('Scan failed: ' + detail, true);
+      event.target.value = '';
+      return;
+    }
 
-
-    // Open the drink dialog (creates one empty ingredient row by default)
     openDrinkDialog();
-
-    // Fill in the name from the scan
     $('#drinkName').value = data.name || '';
-
-    // Replace the default empty row with scanned ingredients
     $('#drinkIngredients').replaceChildren();
     if (data.ingredients && data.ingredients.length) {
       data.ingredients.forEach((ing) => addIngredientRow(ing));
@@ -105,6 +101,26 @@ if (!res.ok) {
     event.target.value = '';
   }
 });
+
+// Resize image to max width using canvas
+async function resizeImage(file, maxWidth) {
+  const img = new Image();
+  img.src = URL.createObjectURL(file);
+  await img.decode();
+
+  if (img.width <= maxWidth) return file;
+
+  const scale = maxWidth / img.width;
+  const canvas = document.createElement('canvas');
+  canvas.width = maxWidth;
+  canvas.height = Math.round(img.height * scale);
+  canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.85);
+  });
+}
+
 $('#cancelDrinkButton').addEventListener('click', () => $('#drinkDialog').close());
 $('#drinkForm').addEventListener('submit', saveDrink);
 $('#cancelFlavorButton').addEventListener('click', () => $('#flavorDialog').close());
