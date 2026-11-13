@@ -68,8 +68,10 @@ $('#selfie').addEventListener('change', async (event) => {
   setStatus('Scanning image…');
 
   try {
-    // Resize image to max 1280px wide before sending
+    console.log('Original file:', file.type, file.size, 'bytes');
     const resized = await resizeImage(file, 1280);
+    console.log('Resized:', resized.type, resized.size, 'bytes');
+
     const formData = new FormData();
     formData.append('file', resized, 'scan.jpg');
 
@@ -79,6 +81,7 @@ $('#selfie').addEventListener('change', async (event) => {
 
     if (!res.ok) {
       let detail = data.error || 'Unknown error';
+      if (data.message) detail += ' — ' + data.message;
       if (data.raw) detail += ' — Raw: ' + data.raw.slice(0, 200);
       setStatus('Scan failed: ' + detail, true);
       event.target.value = '';
@@ -96,6 +99,7 @@ $('#selfie').addEventListener('change', async (event) => {
 
     setStatus('Scan complete — review and save the recipe.');
   } catch (err) {
+    console.error('Scan error:', err);
     setStatus('Scan failed: ' + err.message, true);
   } finally {
     event.target.value = '';
