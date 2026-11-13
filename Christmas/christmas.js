@@ -71,18 +71,16 @@ $('#selfie').addEventListener('change', async (event) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const res = await fetch('/api/scan', { method: 'POST', body: formData });
-    const data = await res.json();
+ const res = await fetch('/api/scan', { method: 'POST', body: formData });
+ const data = await res.json();
+ console.log('Scan response:', res.status, data);
 
-    if (!res.ok) {
-      let detail = data.error || 'Unknown error';
-      if (data.raw) detail += ' — Raw: ' + data.raw.slice(0, 200);
-      setStatus('Scan failed: ' + detail, true);
-      event.target.value = '';
-      const res = await fetch('/api/scan', { method: 'POST', body: formData });
-      const data = await res.json();
-      console.log('Scan response:', res.status, data);
-      return;
+if (!res.ok) {
+  let detail = data.error || 'Unknown error';
+  if (data.raw) detail += ' — Raw: ' + data.raw.slice(0, 200);
+  setStatus('Scan failed: ' + detail, true);
+  event.target.value = '';
+  return;
 }
 
 
