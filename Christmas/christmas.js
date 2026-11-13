@@ -60,6 +60,50 @@ $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
 $('#addIngredientButton').addEventListener('click', () => addIngredientRow());
+// ── Image Scan ──
+$('#selfie').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  setStatus('Scanning image…');
+
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch('/api/scan', { method: 'POST', body: formData });
+    const data = await res.json();
+
+    if (!res.ok) {
+      const detail = data.error || 'Unknown error';
+      if (data.raw) detail += ' — Raw: ' + data.raw.slice(0, 200);
+      setStatus('Scan failed: ' + detail, true);
+      event.target.value = '';
+      return;
+}
+
+
+    // Open the drink dialog (creates one empty ingredient row by default)
+    openDrinkDialog();
+
+    // Fill in the name from the scan
+    $('#drinkName').value = data.name || '';
+
+    // Replace the default empty row with scanned ingredients
+    $('#drinkIngredients').replaceChildren();
+    if (data.ingredients && data.ingredients.length) {
+      data.ingredients.forEach((ing) => addIngredientRow(ing));
+    } else {
+      addIngredientRow();
+    }
+
+    setStatus('Scan complete — review and save the recipe.');
+  } catch (err) {
+    setStatus('Scan failed: ' + err.message, true);
+  } finally {
+    event.target.value = '';
+  }
+});
 $('#cancelDrinkButton').addEventListener('click', () => $('#drinkDialog').close());
 $('#drinkForm').addEventListener('submit', saveDrink);
 $('#cancelFlavorButton').addEventListener('click', () => $('#flavorDialog').close());

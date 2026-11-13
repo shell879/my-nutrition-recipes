@@ -34,6 +34,15 @@
           <button id="saveButton" type="button">Save draft</button>
           <button id="downloadButton" type="button">Download JSON</button>
         </div>
+        <div wrapper class="panel">
+           <label for="selfie" class="capture-button">Take a Picture of your recipe</label>
+          <input id="selfie" type="file" accept="image/*" capture="environment">
+        </div>
+          <h2>Store</h2>
+          <div id="storeInfo" class="store-info">
+            <label>Store name<input type="text" data-field="name" /></label>
+            <label>Store description<textarea data-field="description"></textarea></label>
+          </div>
         <details class="panel category-panel">
           <summary>Screen colors</summary>
           <div id="storeColors" class="store-colors">
