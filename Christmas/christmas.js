@@ -195,6 +195,49 @@ async function loadData() {
   }
 }
 
+// ── Food Identification ──
+$('#foodPic').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  setStatus('Identifying food…');
+  try {
+    const resized = await resizeImage(file, 1280);
+    const formData = new FormData();
+    formData.append('file', resized, 'food.jpg');
+
+    const res = await fetch(`${apiBase}/api/identify`, { method: 'POST', body: formData });
+    const data = await res.json();
+
+    if (!res.ok) {
+      let detail = data.error || 'Unknown error';
+      if (data.message) detail += ' — ' + data.message;
+      if (data.raw) detail += ' — Raw: ' + data.raw.slice(0, 200);
+      setStatus('Identify failed: ' + detail, true);
+      $('#identifyResult').style.display = 'none';
+      return;
+    }
+
+    setStatus('Identified: ' + (data.identified || data.name) + ' — review and save.');
+    $('#identifyResult').textContent = 'Vision saw: ' + (data.identified || data.name || 'Unknown food');
+    $('#identifyResult').style.display = 'block';
+    openDrinkDialog();
+    $('#drinkName').value = data.name || '';
+    $('#drinkIngredients').replaceChildren();
+    if (data.ingredients && data.ingredients.length) {
+      data.ingredients.forEach((ing) => addIngredientRow(ing));
+    } else {
+      addIngredientRow();
+    }
+  } catch (err) {
+    console.error('Identify error:', err);
+    setStatus('Identify failed: ' + err.message, true);
+    $('#identifyResult').style.display = 'none';
+  } finally {
+    event.target.value = '';
+  }
+});
+
 function setStatus(message, isError = false) {
   const status = $('#loadStatus');
   status.textContent = message;
@@ -275,7 +318,7 @@ function render() {
             <button type="button" data-action="edit-category" data-id="${escapeHtml(category.id)}">Edit</button>
           </div>
         </div>`).join('')
-    : '<p>No categories in this store.</p>';
+    : '<p>No Authors in this Album.</p>';
 
   const flavors = storeFlavorProfiles()
     .map((flavor, index) => ({ flavor, index }))
@@ -321,7 +364,7 @@ function render() {
           </div>
         </div>`;
       }).join('')
-    : '<p>No drinks in this store.</p>';
+    : '<p>No recipes in this album.</p>';
 }
 
 document.addEventListener('click', (event) => {
@@ -337,7 +380,7 @@ document.addEventListener('click', (event) => {
 });
 
 function addCategory() {
-  const name = prompt('Family name:');
+  const name = prompt('Author name:');
   if (!name?.trim()) return;
   const categories = storeCategories();
   state.data.categories.push({
@@ -354,7 +397,7 @@ function addCategory() {
 function editCategory(id) {
   const category = state.data.categories.find((item) => item.id === id);
   if (!category) return;
-  const name = prompt('Family name:', category.name);
+  const name = prompt('Author name:', category.name);
   if (!name?.trim()) return;
   category.name = name.trim();
   render();
@@ -413,7 +456,7 @@ function deleteFlavor(index) {
 function openDrinkDialog(id = null) {
   const drink = id == null ? null : state.data.drinkRecipes.find((item) => item.id === id);
   state.editingDrinkId = drink?.id ?? null;
-  $('#drinkDialogTitle').textContent = drink ? 'Edit drink' : 'Add drink';
+  $('#drinkDialogTitle').textContent = drink ? 'Edit recipe' : 'Add recipe';
   $('#drinkName').value = drink?.name || '';
   $('#drinkCategory').innerHTML = storeCategories()
     .filter((category) => category.active !== false)
