@@ -1,3 +1,9 @@
+const apiBase = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+  ? 'http://127.0.0.1:8787'
+  : '';
+
+const apiEndpoint = `${apiBase}/api/christmas`;
+
 const state = {
   data: null,
   storeId: null,
@@ -16,7 +22,7 @@ const defaultStoreColors = {
 };
 const $ = (selector) => document.querySelector(selector);
 const sourceModes = document.querySelectorAll('input[name="sourceMode"]');
-const apiEndpoint = '/api/christmas';
+//const apiEndpoint = '/api/christmas';
 const localDataName = 'christmas.json';
 const localDataUrl = new URL('../christmas.json', window.location.href);
 const draftStorageKey = 'mnr-christmas-admin-local-draft';
@@ -62,6 +68,7 @@ $('#downloadButton').addEventListener('click', downloadData);
 $('#addIngredientButton').addEventListener('click', () => addIngredientRow());
 // ── Image Scan ──
 $('#selfie').addEventListener('change', async (event) => {
+
   const file = event.target.files[0];
   if (!file) return;
 
@@ -74,9 +81,11 @@ $('#selfie').addEventListener('change', async (event) => {
 
     const formData = new FormData();
     formData.append('file', resized, 'scan.jpg');
-
-    const res = await fetch('/api/scan', { method: 'POST', body: formData });
-    const data = await res.json();
+// const res = await fetch('http://localhost:8787/api/scan', { method: 'POST', body: formData });
+// const res = await fetch('/api/scan', { method: 'POST', body: formData });
+  
+   const res = await fetch(`${apiBase}/api/scan`, { method: 'POST', body: formData });
+   const data = await res.json();
     console.log('Scan response:', res.status, data);
 
     if (!res.ok) {
