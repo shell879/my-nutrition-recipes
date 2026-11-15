@@ -54,10 +54,6 @@ $('#resetDraftButton').addEventListener('click', () => {
   localStorage.removeItem(draftStorageKey);
   loadData();
 });
-$('#storeSelect').addEventListener('change', () => {
-  state.storeId = Number($('#storeSelect').value);
-  render();
-});
 $('#storeInfo').addEventListener('input', (event) => {
   const input = event.target.closest('[data-field]');
   const field = input?.dataset.field;
@@ -67,7 +63,8 @@ $('#storeInfo').addEventListener('input', (event) => {
   if (!store) return;
   store[field] = input.value;
   if (field === 'name') {
-    $('#storeSelect').selectedOptions[0].textContent = input.value;
+    const activeStoreOption = $('#storeSwitcher').selectedOptions[0];
+    if (activeStoreOption) activeStoreOption.textContent = input.value;
     const albumName = input.value.trim() || 'Album';
     $('#albumSummary').textContent = albumName;
     document.title = `${albumName} | My Recipes`;
@@ -383,10 +380,6 @@ function storeFlavorProfiles() {
 
 function render() {
   const stores = state.data.stores;
-  $('#storeSelect').innerHTML = stores
-    .map((store) => `<option value="${escapeHtml(store.id)}">${escapeHtml(store.name)}</option>`)
-    .join('');
-  $('#storeSelect').value = String(state.storeId);
   const store = stores.find((item) => item.id === state.storeId);
   $('#storeInfo [data-field="name"]').value = store?.name || '';
   const albumName = store?.name || 'Album';
@@ -552,6 +545,19 @@ function deleteFlavor(index) {
 
 function openDrinkDialog(id = null) {
   const drink = id == null ? null : state.data.drinkRecipes.find((item) => item.id === id);
+  const activeCategories = storeCategories().filter((category) => category.active !== false);
+  if (!activeCategories.length) {
+    state.data.categories.push({
+      id: nextId(state.data.categories),
+      storeId: state.storeId,
+      name: ' ',
+      displayOrder: storeCategories().length + 1,
+      active: true,
+    });
+    render();
+    markChanged();
+  }
+
   state.editingDrinkId = drink?.id ?? null;
   $('#drinkDialogTitle').textContent = drink ? 'Edit recipe' : 'Add recipe';
   $('#drinkName').value = drink?.name || '';
