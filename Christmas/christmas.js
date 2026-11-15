@@ -198,6 +198,18 @@ async function loadData() {
 
     if (!response.ok) {
       const details = (await response.text()).trim().slice(0, 300);
+      if (response.status === 404 && details.includes('"No data found"')) {
+        state.data = {
+          stores: [{ id: 1, name: 'My Recipes', active: true }],
+          categories: [],
+          drinkRecipes: [],
+        };
+        state.storeId = 1;
+        $('#editor').classList.remove('hidden');
+        render();
+        setStatus('New album — add your first author or recipe.');
+        return;
+      }
       throw new Error(
         `Could not load ${sourceMode} data (HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}).`
         + (details ? ` Server response: ${details}` : ''),

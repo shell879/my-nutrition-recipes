@@ -1,5 +1,5 @@
 // ShellDesignz PWA Service Worker
-const CACHE_NAME = "shelldesignz-v4";
+const CACHE_NAME = "shelldesignz-v5";
 
 const ASSETS = [
   "/",
