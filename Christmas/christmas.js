@@ -32,14 +32,14 @@ let loadRequestId = 0;
 localStorage.setItem('mnr-christmas-admin-source', state.sourceMode);
 $(`input[name="sourceMode"][value="${state.sourceMode}"]`).checked = true;
 $('#resetDraftButton').classList.toggle('hidden', state.sourceMode !== 'local');
-$('#saveButton').textContent = state.sourceMode === 'api' ? 'Save all to API' : 'Save draft';
+$('#saveButton').textContent = state.sourceMode === 'api' ? 'Save' : 'Save draft';
 setStatus('Loading API data…');
 
 sourceModes.forEach((sourceMode) => sourceMode.addEventListener('change', () => {
   state.sourceMode = sourceMode.value;
   localStorage.setItem('mnr-christmas-admin-source', state.sourceMode);
   $('#resetDraftButton').classList.toggle('hidden', state.sourceMode !== 'local');
-  $('#saveButton').textContent = state.sourceMode === 'api' ? 'Save all to API' : 'Save draft';
+  $('#saveButton').textContent = state.sourceMode === 'api' ? 'Save' : 'Save draft';
   loadData();
 }));
 
@@ -50,6 +50,19 @@ $('#resetDraftButton').addEventListener('click', () => {
 $('#storeSelect').addEventListener('change', () => {
   state.storeId = Number($('#storeSelect').value);
   render();
+});
+$('#storeInfo').addEventListener('input', (event) => {
+  const input = event.target.closest('[data-field]');
+  const field = input?.dataset.field;
+  if (!input || (field !== 'name' && field !== 'description')) return;
+
+  const store = state.data.stores.find((item) => item.id === state.storeId);
+  if (!store) return;
+  store[field] = input.value;
+  if (field === 'name') {
+    $('#storeSelect').selectedOptions[0].textContent = input.value;
+  }
+  markChanged();
 });
 $('#storeColors').addEventListener('input', (event) => {
   const input = event.target.closest('input[data-color-field]');
@@ -295,6 +308,8 @@ function render() {
     .join('');
   $('#storeSelect').value = String(state.storeId);
   const store = stores.find((item) => item.id === state.storeId);
+  $('#storeInfo [data-field="name"]').value = store?.name || '';
+  $('#storeInfo [data-field="description"]').value = store?.description || '';
   applyStoreTheme(store);
   $('#storeColors').querySelectorAll('input[data-color-field]').forEach((input) => {
     const field = input.dataset.colorField;

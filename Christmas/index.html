@@ -14,7 +14,6 @@
       <h1>Recipe Identification</h1>
       <div class="source-controls">
         <fieldset class="source-mode">
-          <legend>Data source</legend>
           <div class="source-mode-options">
             <label><input type="radio" name="sourceMode" value="api" checked /> API</label>
             <label><input type="radio" name="sourceMode" value="local" /> Local</label>
@@ -27,27 +26,27 @@
     <main>
       <section id="editor" class="hidden">
         <div class="toolbar">
-          <label>
-            Store
-            <select id="storeSelect"></select>
-          </label>
           <button id="addCategoryButton" type="button">Add Author</button>
           <button id="addDrinkButton" type="button" class="primary">Add Recipe</button>
           <button id="saveButton" type="button">Save draft</button>
           <button id="downloadButton" type="button">Download JSON</button>
         </div>
-        <div wrapper class="panel">
-           <label for="selfie" class="capture-button">Take or Select a Picture of your recipe</label>
+        <div class="panel image-upload image-upload--recipe">
+           <label for="selfie" class="capture-button">Use me if you have a Picture of your recipe.</label>
           <input id="selfie" type="file" accept="image/*" >
         </div>
-       <div wrapper class="panel">
-        <label for="foodPic" class="capture-button">Take a Picture of a Food Item</label>
+       <div class="panel image-upload image-upload--food">
+        <label for="foodPic" class="capture-button">Use me if you have a Picture of a Food Item.</label>
         <input id="foodPic" type="file" accept="image/*">
         <div id="identifyResult" style="margin-top:1rem;padding:1rem;background:#f5f5f5;border-radius:8px;display:none;"></div>
       </div>
         <details class="panel category-panel">
           <summary>Album</summary>
           <div id="storeInfo" class="store-info">
+            <label>
+              Select album
+              <select id="storeSelect"></select>
+            </label>
             <label>Album name<input type="text" data-field="name" /></label>
             <label>Album description<textarea data-field="description"></textarea></label>
           </div>
@@ -102,7 +101,7 @@
         <p id="formError" class="error" role="alert"></p>
         <div class="dialog-actions">
           <button id="cancelDrinkButton" type="button">Cancel</button>
-          <button type="submit" class="primary">Save recipe</button>
+          <button type="submit" class="primary">Ok</button>
         </div>
       </form>
     </dialog>
