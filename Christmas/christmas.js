@@ -23,6 +23,7 @@ const defaultStoreColors = {
 };
 const $ = (selector) => document.querySelector(selector);
 const sourceModes = document.querySelectorAll('input[name="sourceMode"]');
+$('.source-controls').classList.toggle('hidden', !isLocalDevelopment);
 $('#localSourceOption').classList.toggle('hidden', !isLocalDevelopment);
 //const apiEndpoint = '/api/christmas';
 const localDataName = 'christmas.json';
@@ -67,7 +68,9 @@ $('#storeInfo').addEventListener('input', (event) => {
   store[field] = input.value;
   if (field === 'name') {
     $('#storeSelect').selectedOptions[0].textContent = input.value;
-    $('#albumSummary').textContent = input.value.trim() || 'Album';
+    const albumName = input.value.trim() || 'Album';
+    $('#albumSummary').textContent = albumName;
+    document.title = `${albumName} | My Recipes`;
   }
   markChanged();
 });
@@ -322,7 +325,9 @@ function render() {
   $('#storeSelect').value = String(state.storeId);
   const store = stores.find((item) => item.id === state.storeId);
   $('#storeInfo [data-field="name"]').value = store?.name || '';
-  $('#albumSummary').textContent = store?.name || 'Album';
+  const albumName = store?.name || 'Album';
+  $('#albumSummary').textContent = albumName;
+  document.title = `${albumName} | My Recipes`;
   applyStoreTheme(store);
   $('#storeColors').querySelectorAll('input[data-color-field]').forEach((input) => {
     const field = input.dataset.colorField;
