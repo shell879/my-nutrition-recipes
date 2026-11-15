@@ -235,6 +235,24 @@ async function loadData() {
     $('#editor').classList.add('hidden');
   }
 }
+$('#joinStoreButton').addEventListener('click', async () => {
+  const storeId = prompt('Enter the store ID to join:');
+  if (!storeId) return;
+
+  const res = await fetch(`${apiBase}/api/join-store`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ storeId: Number(storeId) }),
+  });
+  const data = await res.json();
+
+  if (res.ok) {
+    setStatus('Joined store ' + storeId + ' — reloading…');
+    loadData();
+  } else {
+    setStatus('Join failed: ' + (data.error || 'Unknown'), true);
+  }
+});
 
 // ── Food Identification ──
 $('#foodPic').addEventListener('change', async (event) => {
