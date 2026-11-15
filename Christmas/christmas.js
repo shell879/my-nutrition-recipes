@@ -208,6 +208,7 @@ async function loadData() {
         $('#editor').classList.remove('hidden');
         render();
         setStatus('New album — add your first author or recipe.');
+        loadStoreSwitcher();
         return;
       }
       throw new Error(
@@ -223,6 +224,7 @@ async function loadData() {
     $('#editor').classList.remove('hidden');
     render();
     setStatus(`Loaded ${sourceMode === 'local' ? 'Local' : 'API'} data.`);
+    loadStoreSwitcher();
   } catch (error) {
     if (requestId !== loadRequestId) return;
     console.error(`Failed to load ${sourceMode} data:`, error);
@@ -253,6 +255,38 @@ $('#joinStoreButton').addEventListener('click', async () => {
     setStatus('Join failed: ' + (data.error || 'Unknown'), true);
   }
 });
+
+// ── Store switcher dropdown ──
+async function loadStoreSwitcher() {
+  const res = await fetch(`${apiBase}/api/my-stores`);
+  const data = await res.json();
+
+  if (!res.ok || !data.stores?.length) return;
+
+  const select = $('#storeSwitcher');
+  select.innerHTML = data.stores.map(s =>
+    `<option value="${escapeHtml(s.storeId)}" ${s.active ? 'selected' : ''}>${escapeHtml(s.name)}</option>`
+  ).join('');
+}
+
+$('#storeSwitcher').addEventListener('change', async (event) => {
+  const storeId = Number(event.target.value);
+  const res = await fetch(`${apiBase}/api/switch-store`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ storeId }),
+  });
+  const data = await res.json();
+
+  if (res.ok) {
+    setStatus('Switched — reloading…');
+    loadData();
+  } else {
+    setStatus('Switch failed: ' + (data.error || 'Unknown'), true);
+  }
+});
+
+
 
 // ── Food Identification ──
 $('#foodPic').addEventListener('change', async (event) => {
