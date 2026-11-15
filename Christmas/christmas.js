@@ -1,4 +1,5 @@
-const apiBase = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+const isLocalDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+const apiBase = isLocalDevelopment
   ? 'http://127.0.0.1:8787'
   : '';
 
@@ -22,6 +23,7 @@ const defaultStoreColors = {
 };
 const $ = (selector) => document.querySelector(selector);
 const sourceModes = document.querySelectorAll('input[name="sourceMode"]');
+$('#localSourceOption').classList.toggle('hidden', !isLocalDevelopment);
 //const apiEndpoint = '/api/christmas';
 const localDataName = 'christmas.json';
 const localDataUrl = new URL('../christmas.json', window.location.href);
@@ -36,6 +38,10 @@ $('#saveButton').textContent = state.sourceMode === 'api' ? 'Save' : 'Save draft
 setStatus('Loading API data…');
 
 sourceModes.forEach((sourceMode) => sourceMode.addEventListener('change', () => {
+  if (!isLocalDevelopment && sourceMode.value === 'local') {
+    $('input[name="sourceMode"][value="api"]').checked = true;
+    return;
+  }
   state.sourceMode = sourceMode.value;
   localStorage.setItem('mnr-christmas-admin-source', state.sourceMode);
   $('#resetDraftButton').classList.toggle('hidden', state.sourceMode !== 'local');
@@ -61,6 +67,7 @@ $('#storeInfo').addEventListener('input', (event) => {
   store[field] = input.value;
   if (field === 'name') {
     $('#storeSelect').selectedOptions[0].textContent = input.value;
+    $('#albumSummary').textContent = input.value.trim() || 'Album';
   }
   markChanged();
 });
@@ -156,7 +163,13 @@ loadData();
 
 async function loadData() {
   const requestId = ++loadRequestId;
-  const sourceMode = $('input[name="sourceMode"]:checked').value;
+  const sourceMode = isLocalDevelopment
+    ? $('input[name="sourceMode"]:checked').value
+    : 'api';
+  $('input[name="sourceMode"][value="api"]').checked = sourceMode === 'api';
+  if (isLocalDevelopment) {
+    $('input[name="sourceMode"][value="local"]').checked = sourceMode === 'local';
+  }
   state.sourceMode = sourceMode;
   localStorage.setItem('mnr-christmas-admin-source', state.sourceMode);
   setStatus(`Loading ${sourceMode === 'local' ? 'Local' : 'API'} data…`);
@@ -309,6 +322,7 @@ function render() {
   $('#storeSelect').value = String(state.storeId);
   const store = stores.find((item) => item.id === state.storeId);
   $('#storeInfo [data-field="name"]').value = store?.name || '';
+  $('#albumSummary').textContent = store?.name || 'Album';
   applyStoreTheme(store);
   $('#storeColors').querySelectorAll('input[data-color-field]').forEach((input) => {
     const field = input.dataset.colorField;
