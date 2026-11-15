@@ -54,7 +54,7 @@ $('#storeSelect').addEventListener('change', () => {
 $('#storeInfo').addEventListener('input', (event) => {
   const input = event.target.closest('[data-field]');
   const field = input?.dataset.field;
-  if (!input || (field !== 'name' && field !== 'description')) return;
+  if (!input || field !== 'name') return;
 
   const store = state.data.stores.find((item) => item.id === state.storeId);
   if (!store) return;
@@ -309,7 +309,6 @@ function render() {
   $('#storeSelect').value = String(state.storeId);
   const store = stores.find((item) => item.id === state.storeId);
   $('#storeInfo [data-field="name"]').value = store?.name || '';
-  $('#storeInfo [data-field="description"]').value = store?.description || '';
   applyStoreTheme(store);
   $('#storeColors').querySelectorAll('input[data-color-field]').forEach((input) => {
     const field = input.dataset.colorField;
@@ -587,7 +586,7 @@ function deleteDrink(id) {
 function markChanged() {
   setStatus(state.sourceMode === 'local'
     ? 'Unsaved changes. Save a browser draft or download the JSON.'
-    : 'Changes staged in this page. Save all to API when ready, or download the JSON.');
+    : 'Changes staged in this page. Save all when ready, or download the JSON.');
 }
 
 async function saveData() {

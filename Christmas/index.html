@@ -25,11 +25,36 @@
     <p id="loadStatus" class="load-status" role="status" aria-live="polite"></p>
     <main>
       <section id="editor" class="hidden">
+        <details class="panel category-panel" open>
+          <summary>Album</summary>
+          <div id="storeInfo" class="store-info">
+            <label>
+              Select album
+              <select id="storeSelect"></select>
+            </label>
+            <label>Album name<input type="text" data-field="name" /></label>
+          </div>
+          <details class="panel category-panel">
+            <summary>Screen colors</summary>
+            <div id="storeColors" class="store-colors">
+              <label>Page background<input type="color" data-color-field="backgroundColor" /></label>
+              <label>Page text<input type="color" data-color-field="textColor" /></label>
+              <label>Card background<input type="color" data-color-field="cardBackgroundColor" /></label>
+              <label>Card text<input type="color" data-color-field="cardTextColor" /></label>
+              <label>Button background<input type="color" data-color-field="buttonColor" /></label>
+              <label>Button text<input type="color" data-color-field="buttonTextColor" /></label>
+            </div>
+          </details>
+          <details class="panel category-panel">
+            <summary>Author</summary>
+            <button id="addCategoryButton" type="button">Add Author</button>
+            <div id="categoryList" class="item-list"></div>
+          </details>
+        </details>
         <div class="toolbar">
-          <button id="addCategoryButton" type="button">Add Author</button>
           <button id="addDrinkButton" type="button" class="primary">Add Recipe</button>
           <button id="saveButton" type="button">Save draft</button>
-          <button id="downloadButton" type="button">Download JSON</button>
+          <button id="downloadButton" type="button">Download Recipies</button>
         </div>
         <div class="panel image-upload image-upload--recipe">
            <label for="selfie" class="capture-button">Use me if you have a Picture of your recipe.</label>
@@ -40,32 +65,6 @@
         <input id="foodPic" type="file" accept="image/*">
         <div id="identifyResult" style="margin-top:1rem;padding:1rem;background:#f5f5f5;border-radius:8px;display:none;"></div>
       </div>
-        <details class="panel category-panel">
-          <summary>Album</summary>
-          <div id="storeInfo" class="store-info">
-            <label>
-              Select album
-              <select id="storeSelect"></select>
-            </label>
-            <label>Album name<input type="text" data-field="name" /></label>
-            <label>Album description<textarea data-field="description"></textarea></label>
-          </div>
-        </details>
-        <details class="panel category-panel">
-          <summary>Screen colors</summary>
-          <div id="storeColors" class="store-colors">
-            <label>Page background<input type="color" data-color-field="backgroundColor" /></label>
-            <label>Page text<input type="color" data-color-field="textColor" /></label>
-            <label>Card background<input type="color" data-color-field="cardBackgroundColor" /></label>
-            <label>Card text<input type="color" data-color-field="cardTextColor" /></label>
-            <label>Button background<input type="color" data-color-field="buttonColor" /></label>
-            <label>Button text<input type="color" data-color-field="buttonTextColor" /></label>
-          </div>
-        </details>
-        <details class="panel category-panel">
-          <summary>Author</summary>
-          <div id="categoryList" class="item-list"></div>
-        </details>
         <section class="panel" hidden>
           <div class="section-heading">
             <h2>Flavor profiles</h2>
