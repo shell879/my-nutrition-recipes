@@ -28,7 +28,7 @@
   margin-top: 0.5rem;
 }
 
-.christmas-admin .album-actions .quiet-button {
+.christmas-admin .header-copy .quiet-button {
   padding: 0.4rem 0.55rem;
   border-color: transparent;
   color: #667582;
@@ -36,7 +36,7 @@
   font-size: 0.9rem;
 }
 
-.christmas-admin .album-actions .quiet-button:hover {
+.christmas-admin .header-copy .quiet-button:hover {
   color: #17212b;
   background: #f4f1ea;
 }
