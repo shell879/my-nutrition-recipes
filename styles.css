@@ -24,6 +24,10 @@ body {
   color: var(--ink);
 }
 
+h1, h2, h3 {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -55,7 +59,8 @@ body {
 
 h1 {
   margin: 0;
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  letter-spacing: -0.035em;
 }
 
 .header-tools {
@@ -104,6 +109,7 @@ h1 {
 }
 
 .search-wrap {
+  position: relative;
   display: flex;
   align-items: center;
 }
@@ -112,10 +118,46 @@ h1 {
   width: min(28rem, 52vw);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 2.8rem 0.8rem 1rem;
   font: inherit;
   background: var(--card);
   color: var(--card-ink);
+}
+
+.search-wrap input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.search-clear {
+  position: absolute;
+  right: 0.55rem;
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.search-clear[hidden] {
+  display: none;
+}
+
+.search-clear:hover {
+  background: var(--line);
+  color: var(--ink);
+}
+
+.search-clear:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
 }
 
 main {
@@ -383,7 +425,8 @@ main {
 
 .recipe-card h2 {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
 }
 
 .ingredients {

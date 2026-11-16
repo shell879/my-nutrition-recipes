@@ -34,6 +34,7 @@ const categoryFilters = document.getElementById('categoryFilters');
 const flavorFilters = document.getElementById('flavorFilters');
 const recipeGrid = document.getElementById('recipeGrid');
 const searchInput = document.getElementById('searchInput');
+const clearSearchButton = document.getElementById('clearSearchButton');
 const storeName = document.getElementById('storeName');
 const dataSourceOptions = document.querySelectorAll('input[name="dataSource"]');
 const drinkPicker = document.getElementById('drinkPicker');
@@ -151,6 +152,7 @@ drinkName.addEventListener('click', () => {
 
   state.query = pickerDrinks[lastPickedIndex];
   searchInput.value = state.query;
+  updateSearchClearButton();
   state.activeCategory = 'All';
   state.selectedFlavors.clear();
   renderFilters();
@@ -354,8 +356,21 @@ function renderRecipes() {
 
 searchInput.addEventListener('input', (event) => {
   state.query = event.target.value.trim();
+  updateSearchClearButton();
   renderRecipes();
 });
+
+clearSearchButton.addEventListener('click', () => {
+  searchInput.value = '';
+  state.query = '';
+  updateSearchClearButton();
+  renderRecipes();
+  searchInput.focus();
+});
+
+function updateSearchClearButton() {
+  clearSearchButton.hidden = !searchInput.value;
+}
 
 function escapeHtml(value) {
   return String(value)

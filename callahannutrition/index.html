@@ -23,10 +23,11 @@
           <label><input type="radio" name="dataSource" value="local" /> Local</label>
           <label><input type="radio" name="dataSource" value="api" checked /> API</label>
         </fieldset>
-        <label class="search-wrap">
-          <span class="visually-hidden">Search recipes</span>
+        <div class="search-wrap">
+          <label class="visually-hidden" for="searchInput">Search recipes</label>
           <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
-        </label>
+          <button id="clearSearchButton" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
+        </div>
       </div>
     </header>
 
