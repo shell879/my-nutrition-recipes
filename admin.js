@@ -6,6 +6,11 @@ const state = {
   sourceMode: 'api',
 };
 
+const API_BASE =
+  location.hostname === '127.0.0.1' || location.hostname === 'localhost'
+    ? "http://127.0.0.1:8787"
+    : "";
+
 const defaultFlavorProfiles = [
   'Apple', 'Banana', 'Blackberry', 'Blueberry', 'Blue Raspberry', 'Cherry', 'Coconut',
   'Cranberry', 'Grape', 'Lemonade', 'Lime', 'Limeade', 'Mango', 'Orange', 'Passion Fruit',
@@ -88,7 +93,7 @@ async function loadData() {
       }
       response = await fetch(new URL('../data.json', window.location.href));
     } else {
-      response = await fetch('/api/data');
+     response = await fetch(`${API_BASE}/api/data`);
     }
     if (requestId !== loadRequestId) return;
 
@@ -449,7 +454,7 @@ async function saveData() {
   saveButton.disabled = true;
   setStatus('Saving all changes to API…');
   try {
-    const response = await fetch('/api/data', {
+    const response = await fetch(`${API_BASE}/api/data`, {
       method: 'POST',
       body: JSON.stringify(state.data),
       headers: { 'Content-Type': 'application/json' },

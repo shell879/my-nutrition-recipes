@@ -5,6 +5,10 @@ const state = {
   data: null,
   dataSource: 'api',
 };
+const API_BASE =
+  location.hostname === '127.0.0.1' || location.hostname === 'localhost'
+    ? 'http://127.0.0.1:8787'
+    : '';
 
 const defaultFlavorProfiles = [
   'Apple',
@@ -96,7 +100,7 @@ function getCategoryName(categoryId) {
 }
 
 async function loadData() {
-  const response = await fetch(state.dataSource === 'local' ? '/data.json' : '/api/data');
+  const response = await fetch(state.dataSource === 'local' ? '/data.json' : `${API_BASE}/api/data`);
   if (!response.ok) {
     const details = (await response.text()).trim().slice(0, 300);
     throw new Error(
