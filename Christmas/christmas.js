@@ -11,6 +11,7 @@ const state = {
   editingDrinkId: null,
   editingFlavorIndex: null,
   sourceMode: 'api',
+  query: '',
 };
 
 const defaultFlavorProfiles = [];
@@ -86,6 +87,18 @@ $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
 $('#addIngredientButton').addEventListener('click', () => addIngredientRow());
+$('#searchInput').addEventListener('input', (event) => {
+  state.query = event.target.value.trim().toLocaleLowerCase();
+  updateSearchClearButton();
+  render();
+});
+$('#clearSearchButton').addEventListener('click', () => {
+  $('#searchInput').value = '';
+  state.query = '';
+  updateSearchClearButton();
+  render();
+  $('#searchInput').focus();
+});
 // ── Image Scan ──
 $('#selfie').addEventListener('change', async (event) => {
 
@@ -425,8 +438,13 @@ function render() {
     : '<p>No flavor profiles in this store.</p>';
 
   const drinks = storeDrinks();
-  $('#drinkList').innerHTML = drinks.length
-    ? drinks.map((drink) => {
+  const matchingDrinks = drinks.filter((drink) => {
+    const ingredients = Array.isArray(drink.ingredients) ? drink.ingredients : [];
+    const haystack = `${drink.name || ''} ${ingredients.map((item) => item.name || '').join(' ')}`;
+    return haystack.toLocaleLowerCase().includes(state.query);
+  });
+  $('#drinkList').innerHTML = matchingDrinks.length
+    ? matchingDrinks.map((drink) => {
         const category = categories.find((item) => item.id === drink.categoryId);
         const ingredients = Array.isArray(drink.ingredients) ? drink.ingredients : [];
         const topIngredients = ingredients.filter((item) => String(item.side || '').toUpperCase() === 'TOP');
@@ -454,7 +472,11 @@ function render() {
           </div>
         </div>`;
       }).join('')
-    : '<p>No recipes in this album.</p>';
+    : drinks.length ? '<p>No recipes match your search.</p>' : '<p>No recipes in this album.</p>';
+}
+
+function updateSearchClearButton() {
+  $('#clearSearchButton').hidden = !$('#searchInput').value;
 }
 
 document.addEventListener('click', (event) => {

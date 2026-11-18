@@ -4,6 +4,7 @@ const state = {
   editingDrinkId: null,
   editingFlavorIndex: null,
   sourceMode: 'api',
+  query: '',
 };
 
 const API_BASE =
@@ -64,6 +65,18 @@ $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
 $('#addIngredientButton').addEventListener('click', () => addIngredientRow());
+$('#searchInput').addEventListener('input', (event) => {
+  state.query = event.target.value.trim().toLocaleLowerCase();
+  updateSearchClearButton();
+  render();
+});
+$('#clearSearchButton').addEventListener('click', () => {
+  $('#searchInput').value = '';
+  state.query = '';
+  updateSearchClearButton();
+  render();
+  $('#searchInput').focus();
+});
 $('#cancelDrinkButton').addEventListener('click', () => $('#drinkDialog').close());
 $('#drinkForm').addEventListener('submit', saveDrink);
 $('#cancelFlavorButton').addEventListener('click', () => $('#flavorDialog').close());
@@ -222,8 +235,13 @@ function render() {
     : '<p>No flavor profiles in this store.</p>';
 
   const drinks = storeDrinks();
-  $('#drinkList').innerHTML = drinks.length
-    ? drinks.map((drink) => {
+  const matchingDrinks = drinks.filter((drink) => {
+    const ingredients = Array.isArray(drink.ingredients) ? drink.ingredients : [];
+    const haystack = `${drink.name || ''} ${ingredients.map((item) => item.name || '').join(' ')}`;
+    return haystack.toLocaleLowerCase().includes(state.query);
+  });
+  $('#drinkList').innerHTML = matchingDrinks.length
+    ? matchingDrinks.map((drink) => {
         const category = categories.find((item) => item.id === drink.categoryId);
         return `<div class="item-row">
           <span><strong>${escapeHtml(drink.name)}</strong><br><small>${escapeHtml(category?.name || 'Uncategorized')}</small></span>
@@ -233,7 +251,11 @@ function render() {
           </div>
         </div>`;
       }).join('')
-    : '<p>No drinks in this store.</p>';
+    : drinks.length ? '<p>No drinks match your search.</p>' : '<p>No drinks in this store.</p>';
+}
+
+function updateSearchClearButton() {
+  $('#clearSearchButton').hidden = !$('#searchInput').value;
 }
 
 document.addEventListener('click', (event) => {

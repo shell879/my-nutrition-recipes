@@ -32,7 +32,6 @@
             Store
             <select id="storeSelect"></select>
           </label>
-          <button id="addCategoryButton" type="button">Add category</button>
           <button id="addDrinkButton" type="button" class="primary">Add drink</button>
           <button id="saveButton" type="button">Save draft</button>
           <button id="downloadButton" type="button">Download JSON</button>
@@ -50,6 +49,7 @@
         </details>
         <details class="panel">
           <summary>Categories</summary>
+          <button id="addCategoryButton" type="button">Add category</button>
           <div id="categoryList" class="item-list"></div>
         </details>
         <details class="panel">
@@ -60,7 +60,14 @@
           <div id="flavorList" class="item-list"></div>
         </details>
         <section class="panel">
-          <h2>Drinks</h2>
+          <div class="section-heading drinks-heading">
+            <h2>Drinks</h2>
+            <div class="search-wrap">
+              <label class="visually-hidden" for="searchInput">Search recipes or ingredients</label>
+              <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
+              <button id="clearSearchButton" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
+            </div>
+          </div>
           <div id="drinkList" class="item-list"></div>
         </section>
       </section>

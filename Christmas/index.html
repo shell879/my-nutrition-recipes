@@ -16,6 +16,10 @@
         <p>Store, organize, and identify your favorite recipes in seconds.</p>
         <button id="downloadButton" type="button" class="quiet-button">Download Recipes</button>
       </div>
+      <label class="store-switcher">
+        <span class="visually-hidden">Select store</span>
+        <select id="storeSwitcher"></select>
+      </label>
       <div class="source-controls">
         <fieldset class="source-mode">
           <div class="source-mode-options">
@@ -32,7 +36,6 @@
         <details class="panel category-panel album-panel">
           <summary id="albumSummary">Album</summary>
           <div class="album-actions">
-            <select id="storeSwitcher"></select>
             <button id="joinStoreButton" type="button">Join Store</button>
           </div>
           <div id="storeInfo" class="store-info">
@@ -50,8 +53,8 @@
             </div>
           </details>
           <details class="panel category-panel">
-            <summary>Author</summary>
-            <button id="addCategoryButton" type="button">Add Author</button>
+            <summary>Categories</summary>
+            <button id="addCategoryButton" type="button">Add Category</button>
             <div id="categoryList" class="item-list"></div>
           </details>
         </details>
@@ -76,7 +79,14 @@
           <div id="flavorList" class="item-list"></div>
         </section>
         <section class="panel">
-          <h2>Recipes</h2>
+          <div class="section-heading recipes-heading">
+            <h2>Recipes</h2>
+            <div class="search-wrap">
+              <label class="visually-hidden" for="searchInput">Search recipes or ingredients</label>
+              <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
+              <button id="clearSearchButton" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
+            </div>
+          </div>
           <div id="drinkList" class="item-list"></div>
         </section>
       </section>

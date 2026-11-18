@@ -18,6 +18,34 @@
   font-size: 0.9rem;
 }
 
+.christmas-admin header .store-switcher {
+  flex: 0 1 16rem;
+  min-width: 12rem;
+}
+
+.christmas-admin header .store-switcher select {
+  width: 100%;
+  min-width: 0;
+  color: var(--card-text);
+  background: var(--card-background);
+}
+
+.christmas-admin .recipes-heading {
+  margin-bottom: 0.8rem;
+}
+
+.christmas-admin .recipes-heading h2 {
+  margin: 0;
+}
+
+.christmas-admin .recipes-heading .search-wrap {
+  flex: 0 1 24rem;
+}
+
+.christmas-admin .recipes-heading .search-wrap input {
+  width: 100%;
+}
+
 .christmas-admin .image-upload {
   min-height: 7rem;
   background-position: center;
@@ -39,6 +67,23 @@
 .christmas-admin .header-copy .quiet-button:hover {
   color: #17212b;
   background: #f4f1ea;
+}
+
+@media (max-width: 600px) {
+  .christmas-admin header .store-switcher {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .christmas-admin .recipes-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .christmas-admin .recipes-heading .search-wrap {
+    width: 100%;
+    flex-basis: auto;
+  }
 }
 
 .christmas-admin .image-upload--recipe {
@@ -208,10 +253,15 @@
 
 @media (max-width: 600px) {
   .christmas-admin .ingredient-row {
-    grid-template-columns: minmax(0, 1fr) 4rem 3.25rem auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .christmas-admin .ingredient-row label:first-child {
-    grid-column: auto;
+    grid-column: 1 / -1;
+  }
+
+  .christmas-admin .ingredient-row .remove-ingredient {
+    grid-column: 1 / -1;
+    width: 100%;
   }
 }
