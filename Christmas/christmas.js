@@ -1,3 +1,6 @@
+// Legacy Christmas editor. In API mode it reads and writes the same active
+// store data as MyNutrition through /api/christmas; it is not a separate KV
+// catalog. Local mode instead reads the site's christmas.json file.
 const isLocalDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 const apiBase = isLocalDevelopment
   ? 'http://127.0.0.1:8787'
