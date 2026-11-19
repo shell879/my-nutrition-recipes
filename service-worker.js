@@ -25,7 +25,7 @@
 // When the browser sees a new version, it installs the new SW,
 // activates it, and deletes all caches from the old version.
 // Without this, users would be stuck on the old cached files.
-const CACHE_NAME = "shelldesignz-v10";
+const CACHE_NAME = "shelldesignz-v11";
 
 // ──────────────────────────────────────────────────────────────
 // Pre-cache list
@@ -34,8 +34,8 @@ const CACHE_NAME = "shelldesignz-v10";
 // so the app works offline on first load.
 //
 // IMPORTANT: Do NOT include Access-protected pages here.
-// Pages behind Cloudflare Access (/admin, /Christmas,
-// /callahannutrition, /mynutrition) redirect to the Access login page, which
+// Pages behind Cloudflare Access (/admin, /Christmas, /callahannutrition,
+// /mynutrition/, /mynutritionadmin/) redirect to the Access login page, which
 // is on a different domain (cloudflareaccess.com). If the service
 // worker tries to cache that redirect, it gets a CORS error and
 // the entire install fails — breaking ALL pages, not just the
@@ -120,7 +120,9 @@ self.addEventListener("fetch", (event) => {
     url.pathname.startsWith("/admin") ||
     url.pathname.startsWith("/Christmas") ||
     url.pathname.startsWith("/callahannutrition") ||
-    url.pathname.startsWith("/mynutrition")
+    url.pathname === "/mynutrition" ||
+    url.pathname.startsWith("/mynutrition/") ||
+    url.pathname.startsWith("/mynutritionadmin")
   ) {
     return;
   }

@@ -31,7 +31,7 @@ $('.source-controls').classList.toggle('hidden', !isLocalDevelopment);
 $('#localSourceOption').classList.toggle('hidden', !isLocalDevelopment);
 //const apiEndpoint = '/api/christmas';
 const localDataName = 'data.json';
-const localDataUrl = new URL('../../data.json', window.location.href);
+const localDataUrl = new URL('../data.json', window.location.href);
 const draftStorageKey = 'mnr-nutrition-admin-local-draft';
 const downloadName = 'mynutrition.json';
 let loadRequestId = 0;

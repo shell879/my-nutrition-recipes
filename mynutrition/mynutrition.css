@@ -30,16 +30,6 @@
   opacity: 0.65;
 }
 
-.site-header .admin-link {
-  padding: 0.6rem 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  border-radius: 0.6rem;
-  color: var(--button-ink);
-  background: var(--button);
-  font-weight: 700;
-  text-decoration: none;
-}
-
 .load-status {
   max-width: 1200px;
   min-height: 1.5em;

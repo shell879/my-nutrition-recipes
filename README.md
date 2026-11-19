@@ -4,11 +4,11 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 
 ## What this repo includes
 
-- A landing page at `/` with links to the public menu and recipe administration
+- A landing page at `/` with links to the menu and recipe administration
 - An HTML/CSS/JS storefront at `/callahannutrition` that reads recipe data from the same-origin `/api/data` endpoint
 - A separate `/admin/` maintenance page for editing categories and drinks
 - A `/Christmas/` admin page for the separate Christmas catalog
-- A `/mynutrition/` inquiry page and `/mynutrition/admin/` editor with store switching
+- A `/mynutrition/` menu and `/mynutritionadmin/` editor with store switching
 - Category filtering and text search
 - Mobile-friendly cards with ingredient grouping for TOP/BOTTOM items
 - Easy deployment to GitHub Pages, Cloudflare Pages, or Netlify
@@ -37,9 +37,11 @@ data is separate only from the Callahan catalog served by `/api/data`.
 MyNutrition also uses `/api/my-stores`, `/api/join-store`, and
 `/api/switch-store` for store listing, joining, and switching.
 Its recipe editor does not include image scanning or AI identification.
-Configure Cloudflare Access for `/mynutrition/` and `/mynutrition/admin/`
-before publishing those paths. The static pages do not receive Access identity
-data; the Worker remains responsible for server-side identity context.
+The home page links to the MyNutrition menu and its separate admin page.
+Configure distinct Cloudflare Access policies for `/mynutrition/` and
+`/mynutritionadmin/` before publishing. The static pages do not receive Access
+identity data; the Worker uses the authenticated identity to load an existing
+store or initialize an empty store for a first-time user.
 Keep the site-root `christmas.json` and the API repository's `christmas.json`
 as import/local-data files only; editing either file does not update the live
 KV store. For live API data, use either editor because both write the same
