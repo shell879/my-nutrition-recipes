@@ -27,6 +27,12 @@ const defaultStoreColors = {
 };
 const $ = (selector) => document.querySelector(selector);
 const sourceModes = document.querySelectorAll('input[name="sourceMode"]');
+const drinkPicker = $('#drinkPicker');
+const drinkResult = $('#drinkResult');
+const pickedDrinkName = $('#pickedDrinkName');
+const pickButton = $('#pickButton');
+let pickerDrinks = [];
+let lastPickedIndex = -1;
 $('.source-controls').classList.toggle('hidden', !isLocalDevelopment);
 $('#localSourceOption').classList.toggle('hidden', !isLocalDevelopment);
 //const apiEndpoint = '/api/christmas';
@@ -89,6 +95,10 @@ $('#addDrinkButton').addEventListener('click', () => openDrinkDialog());
 $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
+$('#pickOneButton').addEventListener('click', openDrinkPicker);
+$('#closePickerButton').addEventListener('click', () => drinkPicker.close());
+pickButton.addEventListener('click', pickOneRecipe);
+pickedDrinkName.addEventListener('click', showPickedRecipe);
 $('#addIngredientButton').addEventListener('click', () => addIngredientRow());
 $('#searchInput').addEventListener('input', (event) => {
   state.query = event.target.value.trim().toLocaleLowerCase();
@@ -476,6 +486,79 @@ function render() {
         </div>`;
       }).join('')
     : drinks.length ? '<p>No recipes match your search.</p>' : '<p>No recipes in this album.</p>';
+}
+
+function openDrinkPicker() {
+  pickerDrinks = storeDrinks().filter((drink) => typeof drink?.name === 'string' && drink.name.trim());
+  lastPickedIndex = -1;
+  pickedDrinkName.disabled = true;
+  pickedDrinkName.textContent = 'Tap the button to get started.';
+
+  if (!pickerDrinks.length) {
+    setStatus('There are no recipes in this store to pick from.', true);
+    return;
+  }
+
+  $('#drinkCount').textContent = `Choose from ${pickerDrinks.length} recipes.`;
+  drinkPicker.showModal();
+}
+
+function pickOneRecipe() {
+  let nextIndex = Math.floor(Math.random() * pickerDrinks.length);
+  if (pickerDrinks.length > 1 && nextIndex === lastPickedIndex) {
+    nextIndex = (nextIndex + 1 + Math.floor(Math.random() * (pickerDrinks.length - 1))) % pickerDrinks.length;
+  }
+
+  pickButton.disabled = true;
+  pickedDrinkName.disabled = true;
+  pickButton.textContent = 'Picking...';
+  drinkResult.setAttribute('aria-busy', 'true');
+  drinkResult.classList.add('is-spinning');
+
+  const finishPick = () => {
+    lastPickedIndex = nextIndex;
+    pickedDrinkName.textContent = pickerDrinks[nextIndex].name.trim();
+    pickedDrinkName.disabled = false;
+    pickButton.disabled = false;
+    pickButton.textContent = 'Pick One';
+    drinkResult.setAttribute('aria-busy', 'false');
+    drinkResult.classList.remove('is-spinning');
+  };
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    pickedDrinkName.textContent = 'Choosing a recipe...';
+    window.setTimeout(finishPick, 250);
+    return;
+  }
+
+  let spinIndex = lastPickedIndex < 0 ? nextIndex : lastPickedIndex;
+  let ticks = 0;
+  const totalTicks = 10;
+  const spin = () => {
+    ticks += 1;
+    if (ticks === totalTicks) {
+      finishPick();
+      return;
+    }
+
+    spinIndex = (spinIndex + 1) % pickerDrinks.length;
+    pickedDrinkName.textContent = pickerDrinks[spinIndex].name.trim();
+    window.setTimeout(spin, 40 + ticks * 5);
+  };
+
+  window.setTimeout(spin, 40);
+}
+
+function showPickedRecipe() {
+  if (lastPickedIndex < 0) return;
+
+  const drink = pickerDrinks[lastPickedIndex];
+  state.query = drink.name.trim().toLocaleLowerCase();
+  $('#searchInput').value = drink.name.trim();
+  updateSearchClearButton();
+  render();
+  drinkPicker.close();
+  setStatus(`Picked "${drink.name.trim()}".`);
 }
 
 function updateSearchClearButton() {

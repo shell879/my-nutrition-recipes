@@ -18,7 +18,7 @@
         <h1 id="storeName">MyNutrition</h1>
       </div>
       <div class="header-tools">
-        <button id="openPickerButton" class="drink-picker-trigger" type="button" disabled>Pick a drink</button>
+        <button id="openPickerButton" class="drink-picker-trigger" type="button" disabled>Pick One</button>
         <label class="store-switcher">
           <span class="visually-hidden">Select store</span>
           <select id="storeSwitcher" aria-label="Select store" disabled></select>
@@ -35,10 +35,10 @@
 
     <main>
       <nav id="categoryFilters" class="category-filters" aria-label="Recipe categories"></nav>
-      <fieldset class="flavor-filter">
-        <legend>Filter by flavor</legend>
+      <details id="flavorFilterPanel" class="flavor-filter" open>
+        <summary>Filter by flavor</summary>
         <div id="flavorFilters" class="flavor-options"></div>
-      </fieldset>
+      </details>
       <section id="recipeGrid" class="recipe-grid" aria-live="polite"></section>
     </main>
 
@@ -46,13 +46,13 @@
       <section class="drink-picker">
         <button id="closePickerButton" class="drink-picker-close" type="button">Close</button>
         <p class="eyebrow">Your next sip</p>
-        <h2 id="drinkPickerTitle">Pick a drink</h2>
+        <h2 id="drinkPickerTitle">Pick One</h2>
         <p class="drink-picker-intro">Can't decide? Let the recipes choose for you.</p>
         <div id="drinkResult" class="drink-result" aria-live="polite" aria-atomic="true" aria-busy="false">
           <p class="drink-result-label">Today's pick</p>
           <button id="drinkName" class="drink-name" type="button" disabled>Loading recipes...</button>
         </div>
-        <button id="pickButton" class="drink-picker-button" type="button" disabled>Pick a drink</button>
+        <button id="pickButton" class="drink-picker-button" type="button" disabled>Pick One</button>
         <p id="drinkCount" class="drink-count">Loading recipes...</p>
       </section>
     </dialog>

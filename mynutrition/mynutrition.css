@@ -30,6 +30,33 @@
   opacity: 0.65;
 }
 
+.flavor-filter > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 700;
+  list-style: none;
+}
+
+.flavor-filter > summary::-webkit-details-marker {
+  display: none;
+}
+
+.flavor-filter > summary::after {
+  content: "+";
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.flavor-filter[open] > summary::after {
+  content: "−";
+}
+
+.flavor-filter[open] > summary {
+  margin-bottom: 0.6rem;
+}
+
 .load-status {
   max-width: 1200px;
   min-height: 1.5em;
@@ -45,5 +72,9 @@
   .site-header .store-switcher,
   .site-header #joinStoreButton {
     width: 100%;
+  }
+
+  .flavor-filter:not([open]) {
+    padding-block: 0.65rem;
   }
 }

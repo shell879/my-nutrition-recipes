@@ -39,6 +39,8 @@ const defaultFlavorProfiles = [
 const previousDefaultFlavorProfiles = ['Mango', 'Lime', 'Peach'];
 const categoryFilters = document.getElementById('categoryFilters');
 const flavorFilters = document.getElementById('flavorFilters');
+const flavorFilterPanel = document.getElementById('flavorFilterPanel');
+const compactFlavorFilter = window.matchMedia('(max-width: 720px)');
 const recipeGrid = document.getElementById('recipeGrid');
 const searchInput = document.getElementById('searchInput');
 const clearSearchButton = document.getElementById('clearSearchButton');
@@ -55,6 +57,11 @@ const drinkCount = document.getElementById('drinkCount');
 const drinkResult = document.getElementById('drinkResult');
 let pickerDrinks = [];
 let lastPickedIndex = -1;
+
+flavorFilterPanel.open = !compactFlavorFilter.matches;
+compactFlavorFilter.addEventListener('change', (event) => {
+  flavorFilterPanel.open = !event.matches;
+});
 
 function normalizeData(raw) {
   if (!raw) {
@@ -269,7 +276,7 @@ pickButton.addEventListener('click', () => {
     lastPickedIndex = nextIndex;
     drinkName.disabled = false;
     pickButton.disabled = false;
-    pickButton.textContent = 'Pick a drink';
+    pickButton.textContent = 'Pick One';
     drinkResult.setAttribute('aria-busy', 'false');
     drinkResult.classList.remove('is-spinning');
   };

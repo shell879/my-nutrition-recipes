@@ -16,6 +16,7 @@
         <p>Store, organize, and identify your favorite recipes in seconds.</p>
         <button id="downloadButton" type="button" class="quiet-button">Download Recipes</button>
       </div>
+      <button id="pickOneButton" type="button" class="quiet-button">Pick One</button>
       <label class="store-switcher">
         <span class="visually-hidden">Select store</span>
         <select id="storeSwitcher"></select>
@@ -36,10 +37,10 @@
         <details class="panel category-panel album-panel">
           <summary id="albumSummary">Album</summary>
           <div class="album-actions">
-            <button id="joinStoreButton" type="button">Join Store</button>
+            <button id="joinStoreButton" type="button">Join</button>
           </div>
           <div id="storeInfo" class="store-info">
-            <label>Change Album name<input type="text" data-field="name" /></label>
+            <label>Change Name<input type="text" data-field="name" /></label>
           </div>
           <details class="panel category-panel">
             <summary>Screen colors</summary>
@@ -91,6 +92,21 @@
         </section>
       </section>
     </main>
+
+    <dialog id="drinkPicker" class="drink-picker-dialog" aria-labelledby="drinkPickerTitle">
+      <section class="drink-picker">
+        <button id="closePickerButton" class="drink-picker-close" type="button">Close</button>
+        <p class="eyebrow">Your next recipe</p>
+        <h2 id="drinkPickerTitle">Pick One</h2>
+        <p class="drink-picker-intro">Can't decide? Let your recipes choose for you.</p>
+        <div id="drinkResult" class="drink-result" aria-live="polite" aria-atomic="true" aria-busy="false">
+          <p class="drink-result-label">Today's pick</p>
+          <button id="pickedDrinkName" class="drink-name" type="button" disabled>Tap the button to get started.</button>
+        </div>
+        <button id="pickButton" class="drink-picker-button" type="button">Pick One</button>
+        <p id="drinkCount" class="drink-count"></p>
+      </section>
+    </dialog>
 
     <dialog id="drinkDialog">
       <form id="drinkForm">

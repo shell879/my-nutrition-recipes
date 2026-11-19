@@ -69,6 +69,148 @@
   background: #f4f1ea;
 }
 
+.christmas-admin header > #pickOneButton {
+  padding: 0.6rem 0.9rem;
+  border-color: #fff;
+  color: #17212b;
+  background: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.christmas-admin header > #pickOneButton:hover {
+  background: #f4f1ea;
+}
+
+.christmas-admin .drink-picker-dialog {
+  width: min(680px, calc(100vw - 2rem));
+  max-width: none;
+  max-height: calc(100vh - 2rem);
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+}
+
+.christmas-admin .drink-picker-dialog::backdrop {
+  background: rgba(23, 33, 43, 0.55);
+}
+
+.christmas-admin .drink-picker {
+  width: min(100%, 680px);
+  max-height: calc(100vh - 2rem);
+  margin: 0;
+  overflow: auto;
+  padding: clamp(1.5rem, 6vw, 3rem);
+  border: 1px solid #ddd7cc;
+  border-radius: 24px;
+  color: var(--card-text);
+  background: var(--card-background);
+  box-shadow: 0 16px 36px rgba(23, 33, 43, 0.2);
+  text-align: center;
+}
+
+.christmas-admin .drink-picker-close {
+  display: block;
+  margin: 0 0 0 auto;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #ddd7cc;
+  border-radius: 999px;
+  color: var(--card-text);
+  background: var(--page-background);
+}
+
+.christmas-admin .drink-picker > .eyebrow {
+  color: var(--button-background);
+}
+
+.christmas-admin .drink-picker h2 {
+  margin: 0.6rem 0 0.5rem;
+  font-size: clamp(2rem, 7vw, 3rem);
+}
+
+.christmas-admin .drink-picker-intro {
+  margin: 0;
+  color: #667582;
+  line-height: 1.6;
+}
+
+.christmas-admin .drink-result {
+  display: grid;
+  min-height: 150px;
+  margin: 1.75rem 0 1.25rem;
+  padding: 1.5rem 1rem;
+  align-content: center;
+  justify-items: center;
+  border-radius: 18px;
+  background: var(--page-background);
+}
+
+.christmas-admin .drink-result.is-spinning {
+  animation: christmas-picker-shuffle 180ms ease-in-out infinite alternate;
+}
+
+@keyframes christmas-picker-shuffle {
+  to {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(23, 33, 43, 0.2);
+  }
+}
+
+.christmas-admin .drink-result-label {
+  margin: 0;
+  color: #667582;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.christmas-admin .drink-name {
+  margin: 0.85rem 0 0;
+  padding: 0;
+  border: 0;
+  color: var(--card-text);
+  background: transparent;
+  font-size: clamp(1.5rem, 6vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.christmas-admin .drink-name:not(:disabled) {
+  cursor: pointer;
+}
+
+.christmas-admin .drink-name:not(:disabled):hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.christmas-admin .drink-picker-button {
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0.85rem 1.5rem;
+  border: 0;
+  border-radius: 999px;
+  color: var(--button-text);
+  background: var(--button-background);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.christmas-admin .drink-count {
+  margin: 1rem 0 0;
+  color: #667582;
+  font-size: 0.9rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .christmas-admin .drink-result.is-spinning {
+    animation: none;
+  }
+}
+
 @media (max-width: 600px) {
   .christmas-admin header .store-switcher {
     width: 100%;
