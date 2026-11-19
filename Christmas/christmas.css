@@ -146,14 +146,13 @@
   background: var(--page-background);
 }
 
-.christmas-admin .drink-result.is-spinning {
+.christmas-admin .drink-result.is-spinning .drink-name {
   animation: christmas-picker-shuffle 180ms ease-in-out infinite alternate;
 }
 
 @keyframes christmas-picker-shuffle {
   to {
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(23, 33, 43, 0.2);
   }
 }
 
@@ -206,7 +205,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .christmas-admin .drink-result.is-spinning {
+  .christmas-admin .drink-result.is-spinning .drink-name {
     animation: none;
   }
 }
