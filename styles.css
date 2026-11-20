@@ -533,6 +533,7 @@ main {
 }
 
 .landing-card {
+  --card-shadow: rgba(67, 93, 140, 0.22);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -541,15 +542,28 @@ main {
   background: #f8fafc;
   border: 1px solid #dce3eb;
   border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--card-shadow), 0 4px 14px var(--card-shadow);
   line-height: 1.5;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.landing-card--recipes { --card-shadow: rgba(115, 91, 150, 0.22); }
+.landing-card--nutrition { --card-shadow: rgba(54, 117, 153, 0.22); }
+.landing-card--nutrition-admin { --card-shadow: rgba(77, 120, 110, 0.22); }
+.landing-card--callahan { --card-shadow: rgba(173, 125, 68, 0.22); }
+.landing-card--callahan-admin { --card-shadow: rgba(158, 95, 106, 0.22); }
+
 a.landing-card:hover,
-a.landing-card:focus-visible {
+a.landing-card:focus-visible,
+.landing-card--recipes:hover,
+.landing-card--recipes:focus-within {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(22, 36, 58, 0.1);
+  box-shadow: 0 0 0 1px var(--card-shadow), 0 8px 20px var(--card-shadow);
+}
+
+.landing-card--recipes {
+  cursor: pointer;
 }
 
 .landing-card:focus-visible,
@@ -599,7 +613,9 @@ a.landing-card:focus-visible {
   }
 
   a.landing-card:hover,
-  a.landing-card:focus-visible {
+  a.landing-card:focus-visible,
+  .landing-card--recipes:hover,
+  .landing-card--recipes:focus-within {
     transform: none;
   }
 }
