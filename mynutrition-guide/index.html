@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MyNutrition | How to Use the Recipe Catalog | Shell Designz</title>
-    <meta name="description" content="Learn how to browse MyNutrition recipes, filter by category and flavor, switch stores, and use Pick One." />
+    <title>How to Use My Nutrition | Shell Designz</title>
+    <meta name="description" content="Learn how to get MyNutrition access, manage stores and recipes, and back up your data." />
     <link rel="canonical" href="https://shelldesignz.com/mynutrition-guide/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Shell Designz" />
-    <meta property="og:title" content="MyNutrition | How to Use the Recipe Catalog" />
-    <meta property="og:description" content="Learn how to browse MyNutrition recipes, filter by category and flavor, switch stores, and use Pick One." />
+    <meta property="og:title" content="How to Use My Nutrition" />
+    <meta property="og:description" content="Learn how to get MyNutrition access, manage stores and recipes, and back up your data." />
     <meta property="og:url" content="https://shelldesignz.com/mynutrition-guide/" />
     <meta name="twitter:card" content="summary" />
     <link rel="stylesheet" href="/recipe-builder/recipe-builder.css" />
@@ -23,39 +23,104 @@
     </header>
     <main>
       <section class="hero">
-        <p class="eyebrow">MyNutrition recipe catalog</p>
-        <h1>Find your next favorite drink</h1>
-        <p class="hero-copy">Browse the recipes available to you, explore their ingredients, and find a drink that sounds good.</p>
+        <p class="eyebrow">MyNutrition guide</p>
+        <h1>How to Use My Nutrition</h1>
+        <p class="hero-copy">Learn how to get access, use your stores, and manage your recipes and data.</p>
         <a class="primary-link" href="/mynutrition/">Open MyNutrition</a>
-        <p class="access-note">Access is required to browse the recipe catalog.</p>
+        <p class="access-note">Access is required to use MyNutrition.</p>
       </section>
 
       <section class="steps" aria-labelledby="how-it-works">
-        <h2 id="how-it-works">How to use MyNutrition</h2>
-        <ol>
+        <h2 id="how-it-works">Getting started</h2>
+        <ol class="store-info-cards getting-started-cards">
+          <li>
+            <h3>Get access</h3>
+            <p>Give your administrator the email address you will use to sign in. You can log in after they grant that email address access.</p>
+          </li>
+          <li>
+            <h3>Get your store code</h3>
+            <p>You need a store code to join a shared store, and only your administrator can provide it. In the recipe catalog, choose <strong>Join Store</strong>; in MyNutrition Admin, choose <strong>Join</strong>. Enter the code to join.</p>
+          </li>
+          <li>
+            <h3>Start with your personal store</h3>
+            <p>You will also have your own empty store, named with your name and “MyNutrition” (for example, “Marie MyNutrition”). Its data is separate from other stores, so you can use it as your personal drink library.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="features" aria-labelledby="stores-and-data">
+        <h2 id="stores-and-data">Stores, access, and your data</h2>
+        <div class="store-info-cards">
+          <article class="store-info-card">
+            <h3>Admin access and shared changes</h3>
+            <p>With admin access, you can edit any store you have access to. Changes are shared with everyone who uses that store. For example, if Clint changes a store’s colors, everyone will see the new colors in the recipe catalog and MyNutrition Admin.</p>
+            <p>Adding, editing, or deleting recipes affects everyone who uses the store. For example, if Marie deletes a drink, it will no longer be available to anyone using that store.</p>
+          </article>
+          <article class="store-info-card">
+            <h3>Back up your store</h3>
+            <p>In MyNutrition Admin, choose <strong>Download Recipes</strong> to download the data currently loaded in the editor as a JSON file. Keep the file somewhere safe as a backup. I keep copies of shared store data, but I do not have a copy of your personal store, so be sure to download a backup of it.</p>
+          </article>
+          <article class="store-info-card">
+            <h3>Make categories your own</h3>
+            <p>Starter stores include drink categories; “Loaded Specialty” is one example. You can organize categories however you like—for example, by drink type or holiday, such as Christmas, Thanksgiving, or the Fourth of July.</p>
+            <p>You cannot delete a category while recipes are assigned to it. Move those recipes to another category first.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="features" aria-labelledby="admin-guide">
+        <h2 id="admin-guide">Using MyNutrition Admin</h2>
+        <p>Choose the store you want to work on before making changes. Store settings, recipes, categories, and flavor profiles belong to the selected store.</p>
+        <div class="store-info-cards admin-guide-cards">
+          <article class="store-info-card">
+            <h3>Choose or share a store</h3>
+            <p>Use the store menu at the top of MyNutrition Admin to switch between stores you can access. To join a store, select <strong>Join</strong> and enter the code from your administrator.</p>
+            <p>If you own the selected store, <strong>Share Number</strong> displays its join number. Share it only with people you trust: anyone with access to MyNutrition and that number can join and edit the store.</p>
+          </article>
+          <article class="store-info-card">
+            <h3>Change the store name and colors</h3>
+            <p>Open the store panel at the top of the editor. Use <strong>Change Name</strong> to rename the store. Open <strong>Screen colors</strong> to adjust the page, card, and button colors. These appearance changes affect both the recipe catalog and the admin screen for everyone using the store.</p>
+          </article>
+          <article class="store-info-card">
+            <h3>Manage categories and flavor profiles</h3>
+            <p>Open <strong>Categories</strong> and choose <strong>Add Category</strong> to create one. Use <strong>Edit</strong> or <strong>Delete</strong> beside a category to change or remove it. A category can only be deleted after all its recipes have been moved to another category.</p>
+            <p>In <strong>Flavor profiles</strong>, add, edit, or remove the labels used by the catalog’s flavor filter. These can be flavors or another useful word or phrase, such as a customer’s name. The filter finds that text in drink names and ingredient names.</p>
+          </article>
+          <article class="store-info-card">
+            <h3>Add and edit recipes</h3>
+            <p>Choose <strong>Add Recipe</strong>, enter a drink name, and choose a category. Add each ingredient by name, set its position to <strong>Top</strong> or <strong>Bottom</strong>, and enter its cost. Use <strong>Add ingredient</strong> for more rows. Choose <strong>Ok</strong> to close the form, then choose <strong>Save</strong> to save your changes to MyNutrition.</p>
+            <p>Use the recipe search to find a drink, then choose <strong>Edit</strong> or <strong>Delete</strong>. Deleting a recipe affects everyone who uses that store.</p>
+          </article>
+        </div>
+        <p class="admin-save-note"><strong>Save your changes:</strong> Changes are staged while you work. Choose <strong>Save</strong> to save them to MyNutrition, and wait for the save confirmation. <strong>Download Recipes</strong> creates a separate JSON backup; downloading alone does not save changes to MyNutrition.</p>
+      </section>
+
+      <section class="steps" aria-labelledby="browse-recipes">
+        <h2 id="browse-recipes">Browse the recipe catalog</h2>
+        <ol class="store-info-cards getting-started-cards">
           <li>
             <h3>Choose a store</h3>
-            <p>If you have access to more than one store, select one from the store menu. To join another store, choose <strong>Join Store</strong> and enter the store ID shared by its owner.</p>
+            <p>If you have access to more than one store, select one from the store menu. To join another store, choose <strong>Join Store</strong> in the recipe catalog or <strong>Join</strong> in MyNutrition Admin, then enter the code from your administrator.</p>
           </li>
           <li>
             <h3>Find a recipe</h3>
-            <p>Search by recipe name or ingredient. Narrow the list with a category, or open <strong>Filter by flavor</strong> and select one or more flavors.</p>
+            <p>Search by drink name or ingredient name. Narrow the results by category, or open <strong>Filter by flavor</strong> and select one or more profiles.</p>
+            <h3>Use flavor filters your way</h3>
+            <p>You do not assign a flavor to each ingredient. Instead, add a flavor profile in MyNutrition Admin and select it to find drinks whose name or ingredient names contain that word or phrase. Profiles do not have to be flavors: for example, you could use a frequent customer’s name to find drinks with that name in the drink or ingredient text.</p>
           </li>
           <li>
             <h3>Explore ingredients</h3>
-            <p>Each recipe card shows its name and ingredients, arranged in top and bottom sections.</p>
-          </li>
-          <li>
+            <p>Each recipe card lists the drink’s name and ingredients, organized into top and bottom sections.</p>
             <h3>Let MyNutrition pick one</h3>
-            <p>Choose <strong>Pick One</strong> for a drink suggestion from the current store. Select the suggested drink name to find it in the recipe list.</p>
+            <p>Choose <strong>Pick One</strong> to get a drink suggestion from the selected store. Select the suggested drink’s name to find it in the recipe list.</p>
           </li>
         </ol>
       </section>
 
       <section class="features" aria-labelledby="helpful-tips">
         <h2 id="helpful-tips">Helpful tips</h2>
-        <p>Search, category, and flavor filters work together, so clear or change a filter if a recipe you expect is not showing.</p>
-        <p>Your available stores and recipes depend on the access provided to you. Ask the store owner for a store ID if you need to join another store.</p>
+        <p>Search, category, and flavor filters work together. If a recipe you expect is missing, check your search and each selected filter.</p>
+        <p>You will only see stores you have access to. Ask your administrator to grant access or provide a store code if you want to join another store.</p>
         <a class="primary-link" href="/mynutrition/">Open MyNutrition</a>
       </section>
     </main>
