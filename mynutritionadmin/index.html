@@ -63,13 +63,13 @@
           <button id="addDrinkButton" type="button" class="primary">Add Recipe</button>
           <button id="saveButton" type="button">Save draft</button>
         </div>
-        <section class="panel" hidden>
+        <details class="panel">
+          <summary>Flavor profiles</summary>
           <div class="section-heading">
-            <h2>Flavor profiles</h2>
             <button id="addFlavorButton" type="button">Add flavor</button>
           </div>
           <div id="flavorList" class="item-list"></div>
-        </section>
+        </details>
         <section class="panel">
           <div class="section-heading recipes-heading">
             <h2>Recipes</h2>
@@ -102,7 +102,7 @@
           <input id="drinkName" required />
         </label>
         <label>
-          Family
+          Category
           <select id="drinkCategory" required></select>
         </label>
         <section class="ingredient-editor" aria-labelledby="ingredientHeading">

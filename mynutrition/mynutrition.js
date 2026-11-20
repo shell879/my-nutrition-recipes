@@ -1,6 +1,4 @@
-// Public MyNutrition menu. The Worker chooses the signed-in user's active
-// store for /api/christmas; this menu and the older Christmas editor therefore
-// show the same store data. Store listing and switching use the companion APIs.
+// MyNutrition menu and admin share the active MyNutrition store.
 const state = {
   activeCategory: 'All',
   selectedFlavors: new Set(),
@@ -11,7 +9,7 @@ const API_BASE =
   location.hostname === '127.0.0.1' || location.hostname === 'localhost'
     ? 'http://127.0.0.1:8787'
     : '';
-const apiEndpoint = `${API_BASE}/api/christmas`;
+const apiEndpoint = `${API_BASE}/api/christmas?app=myNutrition`;
 
 const defaultFlavorProfiles = [
   'Apple',
@@ -137,7 +135,7 @@ async function loadData() {
 
 async function loadStoreSwitcher() {
   try {
-    const response = await fetch(`${API_BASE}/api/my-stores`, { cache: 'no-store' });
+    const response = await fetch(`${API_BASE}/api/my-stores?app=myNutrition`, { cache: 'no-store' });
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.error || `Store list request failed (HTTP ${response.status}).`);
@@ -171,7 +169,7 @@ joinStoreButton.addEventListener('click', async () => {
 
   joinStoreButton.disabled = true;
   try {
-    const response = await fetch(`${API_BASE}/api/join-store`, {
+    const response = await fetch(`${API_BASE}/api/join-store?app=myNutrition`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),
@@ -195,7 +193,7 @@ storeSwitcher.addEventListener('change', async () => {
 
   storeSwitcher.disabled = true;
   try {
-    const response = await fetch(`${API_BASE}/api/switch-store`, {
+    const response = await fetch(`${API_BASE}/api/switch-store?app=myNutrition`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),

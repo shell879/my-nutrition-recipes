@@ -1,4 +1,4 @@
-function initStoreSharing({ apiBase, getSourceMode, setStatus }) {
+function initStoreSharing({ apiBase, app, getSourceMode, setStatus }) {
   const button = document.getElementById('shareStoreButton');
   const dialog = document.getElementById('shareStoreDialog');
   const number = document.getElementById('shareStoreNumber');
@@ -34,7 +34,7 @@ function initStoreSharing({ apiBase, getSourceMode, setStatus }) {
     const requestGeneration = generation;
     button.disabled = true;
     try {
-      const response = await fetch(`${apiBase}/api/my-stores`, { cache: 'no-store' });
+      const response = await fetch(`${apiBase}/api/my-stores?app=${encodeURIComponent(app)}`, { cache: 'no-store' });
       if (!response.ok) {
         throw new Error(`Store list request failed (HTTP ${response.status}).`);
       }

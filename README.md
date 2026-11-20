@@ -13,6 +13,10 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 - Recipe Builder can scan recipes, suggest a recipe from a food photo or a
   typed dish name, and lets users review the result before saving.
 - A `/mynutrition/` menu and `/mynutritionadmin/` editor with store switching
+- Recipe Builder and MyNutrition Admin can delete empty categories; move their recipes first and
+  use Save to persist the deletion.
+- MyNutrition Admin's Flavor profiles panel supports adding, editing, and
+  removing the selected store's flavor filters; use Save to persist changes.
 - Category filtering and text search
 - Mobile-friendly cards with ingredient grouping for TOP/BOTTOM items
 - Easy deployment to GitHub Pages, Cloudflare Pages, or Netlify
@@ -34,10 +38,11 @@ be saved to the API with a `POST` to `/api/data`, saved as a browser draft, or
 downloaded as `data.json`; publish the downloaded file to update the public
 menu when needed. The storefront and admin API mode both read from `/api/data`;
 the API endpoint must support `GET` and `POST` with a JSON request body.
-The older Christmas admin loads `christmas.json` in local mode. In API mode,
-both that editor and MyNutrition use `/api/christmas`, so they show and edit
-the same active-store data in KV; the endpoint name is historical. This store
-data is separate only from the Callahan catalog served by `/api/data`.
+The Recipe Builder editor loads `christmas.json` in local mode. In API mode,
+Recipe Builder and MyNutrition use `/api/christmas` with separate app-specific
+store lists and active selections. MyNutrition's menu and admin share its
+stores. Existing stores are assigned to Recipe Builder; the first MyNutrition
+visit creates a separate empty store. Store numbers cannot be joined across apps.
 MyNutrition also uses `/api/my-stores`, `/api/join-store`, and
 `/api/switch-store` for store listing, joining, and switching.
 The Christmas and MyNutrition editors offer **Share Number** in the album/store
@@ -53,8 +58,7 @@ identity data; the Worker uses the authenticated identity to load an existing
 store or initialize an empty store for a first-time user.
 Keep the site-root `christmas.json` and the API repository's `christmas.json`
 as import/local-data files only; editing either file does not update the live
-KV store. For live API data, use either editor because both write the same
-active store.
+KV store. For live API data, use the editor for the relevant app.
 Edits in admin dialogs are staged in the page and do not call the API; use the
 top-level “Save all to API” button once to submit the complete dataset.
 Protect the admin URL and API with Cloudflare Access before sharing them; do

@@ -1,12 +1,10 @@
-// Legacy Christmas editor. In API mode it reads and writes the same active
-// store data as MyNutrition through /api/christmas; it is not a separate KV
-// catalog. Local mode instead reads the site's christmas.json file.
+// Recipe Builder uses its own app-specific store list and active store.
 const isLocalDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 const apiBase = isLocalDevelopment
   ? 'http://127.0.0.1:8787'
   : '';
 
-const apiEndpoint = `${apiBase}/api/christmas`;
+const apiEndpoint = `${apiBase}/api/christmas?app=recipeBuilder`;
 
 const state = {
   data: null,
@@ -95,7 +93,7 @@ $('#addDrinkButton').addEventListener('click', () => openDrinkDialog());
 $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
-const storeSharing = initStoreSharing({ apiBase, getSourceMode: () => state.sourceMode, setStatus });
+const storeSharing = initStoreSharing({ apiBase, app: 'recipeBuilder', getSourceMode: () => state.sourceMode, setStatus });
 $('#pickOneButton').addEventListener('click', openDrinkPicker);
 $('#closePickerButton').addEventListener('click', () => drinkPicker.close());
 pickButton.addEventListener('click', pickOneRecipe);
@@ -306,7 +304,7 @@ $('#joinStoreButton').addEventListener('click', async () => {
 
   storeSharing.hide();
   try {
-    const res = await fetch(`${apiBase}/api/join-store`, {
+    const res = await fetch(`${apiBase}/api/join-store?app=recipeBuilder`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId: Number(storeId) }),
@@ -326,7 +324,7 @@ $('#joinStoreButton').addEventListener('click', async () => {
 async function loadStoreSwitcher() {
   const generation = storeSharing.beginUpdate();
   try {
-    const res = await fetch(`${apiBase}/api/my-stores`, { cache: 'no-store' });
+    const res = await fetch(`${apiBase}/api/my-stores?app=recipeBuilder`, { cache: 'no-store' });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || `Store list request failed (HTTP ${res.status}).`);
     if (!Array.isArray(data.stores)) throw new Error('The store list response has an invalid format.');
@@ -345,7 +343,7 @@ $('#storeSwitcher').addEventListener('change', async (event) => {
   const storeId = Number(event.target.value);
   storeSharing.hide();
   try {
-    const res = await fetch(`${apiBase}/api/switch-store`, {
+    const res = await fetch(`${apiBase}/api/switch-store?app=recipeBuilder`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),
@@ -477,6 +475,7 @@ function render() {
           <span>${escapeHtml(category.name)}${category.active === false ? ' (inactive)' : ''}</span>
           <div class="item-actions">
             <button type="button" data-action="edit-category" data-id="${escapeHtml(category.id)}">Edit</button>
+            <button type="button" data-action="delete-category" data-id="${escapeHtml(category.id)}">Delete</button>
           </div>
         </div>`).join('')
     : '<p>No Authors in this Album.</p>';
@@ -616,6 +615,7 @@ document.addEventListener('click', (event) => {
   const id = Number(button.dataset.id);
   const index = Number(button.dataset.index);
   if (button.dataset.action === 'edit-category') editCategory(id);
+  if (button.dataset.action === 'delete-category') deleteCategory(id);
   if (button.dataset.action === 'edit-drink') openDrinkDialog(id);
   if (button.dataset.action === 'delete-drink') deleteDrink(id);
   if (button.dataset.action === 'edit-flavor') editFlavor(index);
@@ -643,6 +643,23 @@ function editCategory(id) {
   const name = prompt('Author name:', category.name);
   if (!name?.trim()) return;
   category.name = name.trim();
+  render();
+  markChanged();
+}
+
+function deleteCategory(id) {
+  const category = storeCategories().find((item) => item.id === id);
+  if (!category) {
+    setStatus('Category not found in this album.', true);
+    return;
+  }
+  const count = state.data.drinkRecipes.filter((drink) => Number(drink.categoryId) === id).length;
+  if (count) {
+    setStatus(`Cannot delete "${category.name}": move its ${count} ${count === 1 ? 'recipe' : 'recipes'} to another category first.`, true);
+    return;
+  }
+  if (!confirm(`Delete category "${category.name}"?`)) return;
+  state.data.categories = state.data.categories.filter((item) => item !== category);
   render();
   markChanged();
 }

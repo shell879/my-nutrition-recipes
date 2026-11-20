@@ -1,12 +1,11 @@
-// MyNutrition editor. In production, GET/POST /api/christmas reads or saves
-// the active store's data in KV; the Christmas editor uses that same dataset.
+// MyNutrition editor. The API selects the active MyNutrition store in KV.
 // Local development can instead load the site-root data.json or a browser draft.
 const isLocalDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 const apiBase = isLocalDevelopment
   ? 'http://127.0.0.1:8787'
   : '';
 
-const apiEndpoint = `${apiBase}/api/christmas`;
+const apiEndpoint = `${apiBase}/api/christmas?app=myNutrition`;
 
 const state = {
   data: null,
@@ -89,7 +88,7 @@ $('#addDrinkButton').addEventListener('click', () => openDrinkDialog());
 $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
-const storeSharing = initStoreSharing({ apiBase, getSourceMode: () => state.sourceMode, setStatus });
+const storeSharing = initStoreSharing({ apiBase, app: 'myNutrition', getSourceMode: () => state.sourceMode, setStatus });
 $('#addIngredientButton').addEventListener('click', () => addIngredientRow());
 $('#searchInput').addEventListener('input', (event) => {
   state.query = event.target.value.trim().toLocaleLowerCase();
@@ -198,7 +197,7 @@ $('#joinStoreButton').addEventListener('click', async (event) => {
   storeSharing.hide();
   button.disabled = true;
   try {
-    const response = await fetch(`${apiBase}/api/join-store`, {
+    const response = await fetch(`${apiBase}/api/join-store?app=myNutrition`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),
@@ -223,7 +222,7 @@ async function loadStoreSwitcher() {
   const select = $('#storeSwitcher');
   const generation = storeSharing.beginUpdate();
   try {
-    const response = await fetch(`${apiBase}/api/my-stores`, { cache: 'no-store' });
+    const response = await fetch(`${apiBase}/api/my-stores?app=myNutrition`, { cache: 'no-store' });
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.error || `Store list request failed (HTTP ${response.status}).`);
@@ -252,7 +251,7 @@ $('#storeSwitcher').addEventListener('change', async (event) => {
   storeSharing.hide();
   select.disabled = true;
   try {
-    const response = await fetch(`${apiBase}/api/switch-store`, {
+    const response = await fetch(`${apiBase}/api/switch-store?app=myNutrition`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),
@@ -350,6 +349,7 @@ function render() {
           <span>${escapeHtml(category.name)}${category.active === false ? ' (inactive)' : ''}</span>
           <div class="item-actions">
             <button type="button" data-action="edit-category" data-id="${escapeHtml(category.id)}">Edit</button>
+            <button type="button" data-action="delete-category" data-id="${escapeHtml(category.id)}">Delete</button>
           </div>
         </div>`).join('')
     : '<p>No categories in this store.</p>';
@@ -416,6 +416,7 @@ document.addEventListener('click', (event) => {
   const id = Number(button.dataset.id);
   const index = Number(button.dataset.index);
   if (button.dataset.action === 'edit-category') editCategory(id);
+  if (button.dataset.action === 'delete-category') deleteCategory(id);
   if (button.dataset.action === 'edit-drink') openDrinkDialog(id);
   if (button.dataset.action === 'delete-drink') deleteDrink(id);
   if (button.dataset.action === 'edit-flavor') editFlavor(index);
@@ -443,6 +444,23 @@ function editCategory(id) {
   const name = prompt('Category name:', category.name);
   if (!name?.trim()) return;
   category.name = name.trim();
+  render();
+  markChanged();
+}
+
+function deleteCategory(id) {
+  const category = storeCategories().find((item) => item.id === id);
+  if (!category) {
+    setStatus('Category not found in this store.', true);
+    return;
+  }
+  const count = state.data.drinkRecipes.filter((drink) => Number(drink.categoryId) === id).length;
+  if (count) {
+    setStatus(`Cannot delete "${category.name}": move its ${count} ${count === 1 ? 'recipe' : 'recipes'} to another category first.`, true);
+    return;
+  }
+  if (!confirm(`Delete category "${category.name}"?`)) return;
+  state.data.categories = state.data.categories.filter((item) => item !== category);
   render();
   markChanged();
 }
