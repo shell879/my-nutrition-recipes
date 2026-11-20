@@ -89,7 +89,16 @@
             <p>Example: a photo of a finished dish</p>
           </div>
         </div>
-        <p class="image-upload-note">For either option, review and save the recipe in the dialog, then select Save on this page to keep your changes.</p>
+        <section class="panel recipe-from-name">
+          <h2>Create a recipe from a name</h2>
+          <p>Enter a dish, such as cherry cake or Olive Garden lasagna, and AI will suggest a recipe. Restaurant-inspired recipes may not match the original.</p>
+          <form id="recipeNameForm">
+            <label for="recipeNameInput">Recipe or dish name</label>
+            <input id="recipeNameInput" type="text" maxlength="200" required placeholder="e.g. cherry cake">
+            <button id="generateRecipeButton" type="submit">Generate Recipe</button>
+          </form>
+        </section>
+        <p class="image-upload-note">For any option, review and save the recipe in the dialog, then select Save on this page to keep your changes.</p>
         <section class="panel" hidden>
           <div class="section-heading">
             <h2>Flavor profiles</h2>

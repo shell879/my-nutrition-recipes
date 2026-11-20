@@ -10,6 +10,8 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 - An HTML/CSS/JS storefront at `/callahannutrition` that reads recipe data from the same-origin `/api/data` endpoint
 - A separate `/admin/` maintenance page for editing categories and drinks
 - A `/Christmas/` admin page for the separate Christmas catalog
+- Recipe Builder can scan recipes, suggest a recipe from a food photo or a
+  typed dish name, and lets users review the result before saving.
 - A `/mynutrition/` menu and `/mynutritionadmin/` editor with store switching
 - Category filtering and text search
 - Mobile-friendly cards with ingredient grouping for TOP/BOTTOM items

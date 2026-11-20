@@ -77,7 +77,8 @@
 }
 
 .christmas-admin .image-upload-example {
-  flex: 0 1 12rem;
+  flex: 1 1 100%;
+  text-align: center;
 }
 
 .christmas-admin .image-upload-example p {
@@ -86,15 +87,37 @@
 }
 
 .christmas-admin .image-upload-sample {
-  height: 7rem;
+  width: 8rem;
+  height: 5rem;
+  margin: 0 auto;
   border-radius: 8px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  opacity: 0.4;
 }
 
 .christmas-admin .image-upload-note {
   margin: 1rem 0;
+}
+
+.christmas-admin .recipe-from-name {
+  margin-top: 1rem;
+}
+
+.christmas-admin .recipe-from-name p {
+  margin: 0 0 0.9rem;
+}
+
+.christmas-admin .recipe-from-name form {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+}
+
+.christmas-admin .recipe-from-name input {
+  width: min(100%, 28rem);
+  min-width: 0;
 }
 
 .christmas-admin .toolbar {

@@ -144,14 +144,7 @@ $('#selfie').addEventListener('change', async (event) => {
       return;
     }
 
-    openDrinkDialog();
-    $('#drinkName').value = data.name || '';
-    $('#drinkIngredients').replaceChildren();
-    if (data.ingredients && data.ingredients.length) {
-      data.ingredients.forEach((ing) => addIngredientRow(ing));
-    } else {
-      addIngredientRow();
-    }
+    openGeneratedRecipe(data);
 
     setStatus('Scan complete — review and save the recipe.');
   } catch (err) {
@@ -159,6 +152,51 @@ $('#selfie').addEventListener('change', async (event) => {
     setStatus('Scan failed: ' + err.message, true);
   } finally {
     event.target.value = '';
+  }
+});
+
+function openGeneratedRecipe(data) {
+  openDrinkDialog();
+  $('#drinkName').value = data.name || '';
+  $('#drinkIngredients').replaceChildren();
+  if (data.ingredients && data.ingredients.length) {
+    data.ingredients.forEach((ing) => addIngredientRow(ing));
+  } else {
+    addIngredientRow();
+  }
+}
+
+$('#recipeNameForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const name = $('#recipeNameInput').value.trim();
+  if (!name || name.length > 200) {
+    setStatus('Enter a recipe name of 1 to 200 characters.', true);
+    return;
+  }
+
+  const button = $('#generateRecipeButton');
+  button.disabled = true;
+  setStatus('Generating recipe…');
+  try {
+    const response = await fetch(`${apiBase}/api/identify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error([data.error, data.message].filter(Boolean).join(' — ') || `Request failed (HTTP ${response.status}).`);
+    }
+    if (typeof data.name !== 'string' || !data.name.trim() || !Array.isArray(data.ingredients)) {
+      throw new Error('The recipe response has an invalid format.');
+    }
+    openGeneratedRecipe(data);
+    setStatus('Recipe generated — review and save.');
+  } catch (error) {
+    console.error('Recipe generation failed:', error);
+    setStatus(`Recipe generation failed: ${error.message}`, true);
+  } finally {
+    button.disabled = false;
   }
 });
 
@@ -351,14 +389,7 @@ $('#foodPic').addEventListener('change', async (event) => {
     setStatus('Identified: ' + (data.identified || data.name) + ' — review and save.');
     $('#identifyResult').textContent = 'Vision saw: ' + (data.identified || data.name || 'Unknown food');
     $('#identifyResult').style.display = 'block';
-    openDrinkDialog();
-    $('#drinkName').value = data.name || '';
-    $('#drinkIngredients').replaceChildren();
-    if (data.ingredients && data.ingredients.length) {
-      data.ingredients.forEach((ing) => addIngredientRow(ing));
-    } else {
-      addIngredientRow();
-    }
+    openGeneratedRecipe(data);
   } catch (err) {
     console.error('Identify error:', err);
     setStatus('Identify failed: ' + err.message, true);
