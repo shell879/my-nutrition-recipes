@@ -25,7 +25,7 @@
 // When the browser sees a new version, it installs the new SW,
 // activates it, and deletes all caches from the old version.
 // Without this, users would be stuck on the old cached files.
-const CACHE_NAME = "shelldesignz-v13";
+const CACHE_NAME = "shelldesignz-v14";
 
 // ──────────────────────────────────────────────────────────────
 // Pre-cache list

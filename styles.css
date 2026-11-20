@@ -547,26 +547,9 @@ main {
 }
 
 a.landing-card:hover,
-a.landing-card:focus-visible,
-.landing-card--recipe:hover,
-.landing-card--recipe:focus-within {
+a.landing-card:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(22, 36, 58, 0.1);
-}
-
-.landing-card--recipe {
-  position: relative;
-}
-
-.landing-card-main-link::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-}
-
-.landing-card-intro-link {
-  position: relative;
-  z-index: 1;
 }
 
 .landing-card:focus-visible,
@@ -583,8 +566,9 @@ a.landing-card:focus-visible,
 
 .landing-card-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
   margin-top: auto;
 }
 
@@ -615,9 +599,7 @@ a.landing-card:focus-visible,
   }
 
   a.landing-card:hover,
-  a.landing-card:focus-visible,
-  .landing-card--recipe:hover,
-  .landing-card--recipe:focus-within {
+  a.landing-card:focus-visible {
     transform: none;
   }
 }
