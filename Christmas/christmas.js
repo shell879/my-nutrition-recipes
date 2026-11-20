@@ -95,6 +95,7 @@ $('#addDrinkButton').addEventListener('click', () => openDrinkDialog());
 $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
+const storeSharing = initStoreSharing({ apiBase, getSourceMode: () => state.sourceMode, setStatus });
 $('#pickOneButton').addEventListener('click', openDrinkPicker);
 $('#closePickerButton').addEventListener('click', () => drinkPicker.close());
 pickButton.addEventListener('click', pickOneRecipe);
@@ -188,6 +189,7 @@ $('#flavorForm').addEventListener('submit', saveFlavor);
 loadData();
 
 async function loadData() {
+  storeSharing.hide();
   const requestId = ++loadRequestId;
   const sourceMode = isLocalDevelopment
     ? $('input[name="sourceMode"]:checked').value
@@ -264,48 +266,60 @@ $('#joinStoreButton').addEventListener('click', async () => {
   const storeId = prompt('Enter the store ID to join:');
   if (!storeId) return;
 
-  const res = await fetch(`${apiBase}/api/join-store`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ storeId: Number(storeId) }),
-  });
-  const data = await res.json();
-
-  if (res.ok) {
+  storeSharing.hide();
+  try {
+    const res = await fetch(`${apiBase}/api/join-store`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ storeId: Number(storeId) }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
     setStatus('Joined store ' + storeId + ' — reloading…');
-    loadData();
-  } else {
-    setStatus('Join failed: ' + (data.error || 'Unknown'), true);
+    await loadData();
+  } catch (error) {
+    console.error('Failed to join store:', error);
+    setStatus('Join failed: ' + error.message, true);
+    await loadStoreSwitcher();
   }
 });
 
 // ── Store switcher dropdown ──
 async function loadStoreSwitcher() {
-  const res = await fetch(`${apiBase}/api/my-stores`);
-  const data = await res.json();
-
-  if (!res.ok || !data.stores?.length) return;
-
-  const select = $('#storeSwitcher');
-  select.innerHTML = data.stores.map(s =>
-    `<option value="${escapeHtml(s.storeId)}" ${s.active ? 'selected' : ''}>${escapeHtml(s.name)}</option>`
-  ).join('');
+  const generation = storeSharing.beginUpdate();
+  try {
+    const res = await fetch(`${apiBase}/api/my-stores`, { cache: 'no-store' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `Store list request failed (HTTP ${res.status}).`);
+    if (!Array.isArray(data.stores)) throw new Error('The store list response has an invalid format.');
+    const select = $('#storeSwitcher');
+    select.innerHTML = data.stores.map(s =>
+      `<option value="${escapeHtml(s.storeId)}" ${s.active ? 'selected' : ''}>${escapeHtml(s.name)}</option>`
+    ).join('');
+    storeSharing.update(data.stores, generation);
+  } catch (error) {
+    console.error('Failed to load store list:', error);
+    setStatus(`Data loaded, but stores could not be listed: ${error.message}`, true);
+  }
 }
 
 $('#storeSwitcher').addEventListener('change', async (event) => {
   const storeId = Number(event.target.value);
-  const res = await fetch(`${apiBase}/api/switch-store`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ storeId }),
-  });
-  const data = await res.json();
-
-  if (res.ok) {
+  storeSharing.hide();
+  try {
+    const res = await fetch(`${apiBase}/api/switch-store`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ storeId }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
     setStatus('Switched — reloading…');
-    loadData();
-  } else {
-    setStatus('Switch failed: ' + (data.error || 'Unknown'), true);
+    await loadData();
+  } catch (error) {
+    console.error('Failed to switch stores:', error);
+    setStatus('Switch failed: ' + error.message, true);
+    await loadStoreSwitcher();
   }
 });
 

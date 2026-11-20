@@ -47,9 +47,54 @@
 }
 
 .christmas-admin .image-upload {
-  min-height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.christmas-admin .image-upload + .image-upload {
+  margin-top: 1rem;
+}
+
+.christmas-admin .image-upload-content {
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+.christmas-admin .image-upload-content h2 {
+  margin-bottom: 0.4rem;
+}
+
+.christmas-admin .image-upload-content p {
+  margin: 0 0 0.9rem;
+}
+
+.christmas-admin .image-upload-content input[type="file"] {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.christmas-admin .image-upload-example {
+  flex: 0 1 12rem;
+}
+
+.christmas-admin .image-upload-example p {
+  margin: 0.4rem 0 0;
+  font-size: 0.8rem;
+}
+
+.christmas-admin .image-upload-sample {
+  height: 7rem;
+  border-radius: 8px;
   background-position: center;
   background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.christmas-admin .image-upload-note {
+  margin: 1rem 0;
 }
 
 .christmas-admin .toolbar {
@@ -227,20 +272,12 @@
   }
 }
 
-.christmas-admin .image-upload--recipe {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)),
-    url("../pbrecipie.jpg");
-  background-size: auto, 180px;
+.christmas-admin .image-upload-sample--recipe {
+  background-image: url("../pbrecipie.jpg");
 }
 
-.christmas-admin .image-upload--food {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)),
-    url("../orangecake.jpg");
-  background-size: auto, 180px;
+.christmas-admin .image-upload-sample--food {
+  background-image: url("../orangecake.jpg");
 }
 
 .christmas-admin .category-panel summary {

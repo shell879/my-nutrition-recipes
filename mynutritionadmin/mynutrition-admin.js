@@ -89,6 +89,7 @@ $('#addDrinkButton').addEventListener('click', () => openDrinkDialog());
 $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
+const storeSharing = initStoreSharing({ apiBase, getSourceMode: () => state.sourceMode, setStatus });
 $('#addIngredientButton').addEventListener('click', () => addIngredientRow());
 $('#searchInput').addEventListener('input', (event) => {
   state.query = event.target.value.trim().toLocaleLowerCase();
@@ -110,6 +111,7 @@ $('#flavorForm').addEventListener('submit', saveFlavor);
 loadData();
 
 async function loadData() {
+  storeSharing.hide();
   const requestId = ++loadRequestId;
   const sourceMode = isLocalDevelopment
     ? $('input[name="sourceMode"]:checked').value
@@ -193,6 +195,7 @@ $('#joinStoreButton').addEventListener('click', async (event) => {
   }
 
   const button = event.currentTarget;
+  storeSharing.hide();
   button.disabled = true;
   try {
     const response = await fetch(`${apiBase}/api/join-store`, {
@@ -209,6 +212,7 @@ $('#joinStoreButton').addEventListener('click', async (event) => {
   } catch (error) {
     console.error('Failed to join store:', error);
     setStatus(`Join failed: ${error.message}`, true);
+    await loadStoreSwitcher();
   } finally {
     button.disabled = false;
   }
@@ -217,6 +221,7 @@ $('#joinStoreButton').addEventListener('click', async (event) => {
 // ── Store switcher dropdown ──
 async function loadStoreSwitcher() {
   const select = $('#storeSwitcher');
+  const generation = storeSharing.beginUpdate();
   try {
     const response = await fetch(`${apiBase}/api/my-stores`, { cache: 'no-store' });
     const data = await response.json();
@@ -231,6 +236,7 @@ async function loadStoreSwitcher() {
       `<option value="${escapeHtml(store.storeId)}" ${store.active ? 'selected' : ''}>${escapeHtml(store.name)}</option>`
     ).join('');
     select.disabled = data.stores.length < 2;
+    storeSharing.update(data.stores, generation);
   } catch (error) {
     console.error('Failed to load store list:', error);
     select.disabled = false;
@@ -243,6 +249,7 @@ $('#storeSwitcher').addEventListener('change', async (event) => {
   if (!Number.isSafeInteger(storeId) || storeId <= 0) return;
 
   const select = event.currentTarget;
+  storeSharing.hide();
   select.disabled = true;
   try {
     const response = await fetch(`${apiBase}/api/switch-store`, {

@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Shell Designz - Your one-stop shop for all things design." />
+    <meta name="description" content="Preserve family recipes with Recipe Builder, or browse and manage recipes with MyNutrition." />
+    <link rel="canonical" href="https://shelldesignz.com/" />
     <link rel="manifest" href="/manifest.json">
     <meta name='impact-site-verification' value='300d4261-94e2-4478-b73e-c83915b27c42'>
 <script>navigator.serviceWorker.register('/service-worker.js')</script>
@@ -15,16 +16,22 @@
       <h1>Welcome to Shell Designz</h1>
       <p class="landing-intro">Where would you like to go?</p>
       <nav class="landing-links" aria-label="Site navigation">
-        <a class="landing-card" href="/Christmas/">
+        <div class="landing-card landing-card--recipe">
           <span class="landing-card-title">Recipe Builder</span>
-          <span>Preserve family favorites: snap a photo of Grandma's recipe cards, then organize them all in one place.</span>
-        </a>
+          <span>Snap a photo of Grandma's recipe cards and let AI help capture the ingredients. Review and organize your family favorites in one place.</span>
+          <div class="landing-card-actions">
+            <a class="landing-card-intro-link" href="/recipe-builder/">See How It Works</a>
+            <a class="landing-card-main-link" href="/Christmas/">Open Recipe Builder</a>
+          </div>
+        </div>
         <a class="landing-card" href="/mynutrition/">
+          <strong class="landing-card-access-top" aria-hidden="true">Access required</strong>
           <span class="landing-card-title">MyNutrition</span>
           <span>Browse recipes and switch between stores.</span>
           <strong>Access required</strong>
         </a>
         <a class="landing-card" href="/mynutritionadmin/">
+          <strong class="landing-card-access-top" aria-hidden="true">Access required</strong>
           <span class="landing-card-title">MyNutrition Admin</span>
           <span>Manage recipes and stores.</span>
           <strong>Access required</strong>

@@ -546,13 +546,31 @@ main {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.landing-card:hover,
-.landing-card:focus-visible {
+a.landing-card:hover,
+a.landing-card:focus-visible,
+.landing-card--recipe:hover,
+.landing-card--recipe:focus-within {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(22, 36, 58, 0.1);
 }
 
-.landing-card:focus-visible {
+.landing-card--recipe {
+  position: relative;
+}
+
+.landing-card-main-link::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.landing-card-intro-link {
+  position: relative;
+  z-index: 1;
+}
+
+.landing-card:focus-visible,
+.landing-card-actions a:focus-visible {
   outline: 3px solid #526c91;
   outline-offset: 3px;
 }
@@ -561,6 +579,19 @@ main {
   color: #1f2937;
   font-size: 1.1rem;
   font-weight: 700;
+}
+
+.landing-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  margin-top: auto;
+}
+
+.landing-card-actions a {
+  color: #213854;
+  font-weight: 600;
+  text-underline-offset: 0.2em;
 }
 
 .landing-card strong {
@@ -574,13 +605,19 @@ main {
   font-weight: 600;
 }
 
+.landing-card strong.landing-card-access-top {
+  margin-top: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .landing-card {
     transition: none;
   }
 
-  .landing-card:hover,
-  .landing-card:focus-visible {
+  a.landing-card:hover,
+  a.landing-card:focus-visible,
+  .landing-card--recipe:hover,
+  .landing-card--recipe:focus-within {
     transform: none;
   }
 }

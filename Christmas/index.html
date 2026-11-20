@@ -38,6 +38,7 @@
           <summary id="albumSummary">Album</summary>
           <div class="album-actions">
             <button id="joinStoreButton" type="button">Join</button>
+            <button id="shareStoreButton" type="button" hidden>Share Number</button>
           </div>
           <div id="storeInfo" class="store-info">
             <label>Change Name<input type="text" data-field="name" /></label>
@@ -63,15 +64,32 @@
           <button id="addDrinkButton" type="button" class="primary">Add Recipe</button>
           <button id="saveButton" type="button">Save draft</button>
         </div>
-        <div class="panel image-upload image-upload--recipe">
-           <label for="selfie" class="capture-button">Use me if you have a Picture of your recipe.</label>
-          <input id="selfie" type="file" accept="image/*" >
+        <div class="panel image-upload">
+          <div class="image-upload-content">
+            <h2>Scan a written recipe</h2>
+            <p>AI reads the text from a photo of a recipe card or printed recipe.</p>
+            <label for="selfie">Choose a photo of a written recipe</label>
+            <input id="selfie" type="file" accept="image/*">
+          </div>
+          <div class="image-upload-example">
+            <div class="image-upload-sample image-upload-sample--recipe" aria-hidden="true"></div>
+            <p>Example: a written or printed recipe</p>
+          </div>
         </div>
-       <div class="panel image-upload image-upload--food">
-        <label for="foodPic" class="capture-button">Use me if you have a Picture of a Food Item.</label>
-        <input id="foodPic" type="file" accept="image/*">
-        <div id="identifyResult" style="margin-top:1rem;padding:1rem;background:#f5f5f5;border-radius:8px;display:none;"></div>
-      </div>
+        <div class="panel image-upload">
+          <div class="image-upload-content">
+            <h2>Create a recipe from a food photo</h2>
+            <p>AI identifies the dish and suggests a recipe. It cannot know the exact ingredients from the photo.</p>
+            <label for="foodPic">Choose a photo of food</label>
+            <input id="foodPic" type="file" accept="image/*">
+            <div id="identifyResult" style="margin-top:1rem;padding:1rem;background:#f5f5f5;border-radius:8px;display:none;"></div>
+          </div>
+          <div class="image-upload-example">
+            <div class="image-upload-sample image-upload-sample--food" aria-hidden="true"></div>
+            <p>Example: a photo of a finished dish</p>
+          </div>
+        </div>
+        <p class="image-upload-note">For either option, review and save the recipe in the dialog, then select Save on this page to keep your changes.</p>
         <section class="panel" hidden>
           <div class="section-heading">
             <h2>Flavor profiles</h2>
@@ -92,6 +110,16 @@
         </section>
       </section>
     </main>
+
+    <dialog id="shareStoreDialog" aria-labelledby="shareStoreTitle">
+      <form method="dialog">
+        <h2 id="shareStoreTitle">Share your album</h2>
+        <p>Share this number only with people you trust. Anyone with access to the app who knows the number can join and update your shared recipes.</p>
+        <label>Album number<input id="shareStoreNumber" type="text" readonly /></label>
+        <p>Ask them to sign in, select Join, and enter this number.</p>
+        <div class="dialog-actions"><button type="submit">Close</button></div>
+      </form>
+    </dialog>
 
     <dialog id="drinkPicker" class="drink-picker-dialog" aria-labelledby="drinkPickerTitle">
       <section class="drink-picker">
@@ -149,6 +177,7 @@
       </form>
     </dialog>
 
+    <script src="/store-sharing.js"></script>
     <script src="./christmas.js"></script>
   </body>
 </html>

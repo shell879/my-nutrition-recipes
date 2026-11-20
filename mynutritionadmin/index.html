@@ -37,6 +37,7 @@
           <summary id="albumSummary">Store</summary>
           <div class="album-actions">
             <button id="joinStoreButton" type="button">Join</button>
+            <button id="shareStoreButton" type="button" hidden>Share Number</button>
           </div>
           <div id="storeInfo" class="store-info">
             <label>Change Name<input type="text" data-field="name" /></label>
@@ -83,6 +84,16 @@
       </section>
     </main>
 
+    <dialog id="shareStoreDialog" aria-labelledby="shareStoreTitle">
+      <form method="dialog">
+        <h2 id="shareStoreTitle">Share your store</h2>
+        <p>Share this number only with people you trust. Anyone with access to the app who knows the number can join and update your shared recipes.</p>
+        <label>Store number<input id="shareStoreNumber" type="text" readonly /></label>
+        <p>Ask them to sign in, select Join, and enter this number.</p>
+        <div class="dialog-actions"><button type="submit">Close</button></div>
+      </form>
+    </dialog>
+
     <dialog id="drinkDialog">
       <form id="drinkForm">
         <h2 id="drinkDialogTitle">Add Recipe</h2>
@@ -124,6 +135,7 @@
       </form>
     </dialog>
 
+    <script src="/store-sharing.js"></script>
     <script src="./mynutrition-admin.js"></script>
   </body>
 </html>

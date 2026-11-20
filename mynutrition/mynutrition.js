@@ -286,13 +286,13 @@ pickButton.addEventListener('click', () => {
     window.setTimeout(() => {
       drinkName.textContent = pickerDrinks[nextIndex];
       finishPick();
-    }, 500);
+    }, 250);
     return;
   }
 
   let spinIndex = lastPickedIndex < 0 ? nextIndex : lastPickedIndex;
   let ticks = 0;
-  const totalTicks = 18;
+  const totalTicks = 10;
   const spin = () => {
     ticks += 1;
     if (ticks === totalTicks) {
@@ -303,10 +303,10 @@ pickButton.addEventListener('click', () => {
 
     spinIndex = (spinIndex + 1) % pickerDrinks.length;
     drinkName.textContent = pickerDrinks[spinIndex];
-    window.setTimeout(spin, 55 + ticks * 9);
+    window.setTimeout(spin, 40 + ticks * 5);
   };
 
-  window.setTimeout(spin, 55);
+  window.setTimeout(spin, 40);
 });
 
 function colorOr(value, fallback) {

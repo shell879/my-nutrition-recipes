@@ -1,0 +1,121 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #1f2937;
+  background: #f2f4f7;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  line-height: 1.6;
+}
+
+a { color: #213854; }
+
+a:focus-visible {
+  outline: 3px solid #526c91;
+  outline-offset: 4px;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem clamp(1.25rem, 5vw, 3rem);
+  border-bottom: 1px solid #dce3eb;
+  background: #ffffff;
+}
+
+.home-link, .header-link {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.header-link { text-decoration: underline; text-underline-offset: 0.2em; }
+
+main {
+  width: min(100% - 2rem, 980px);
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 4rem) 0;
+}
+
+section {
+  margin-bottom: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid #e1e6ed;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.hero { text-align: center; }
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #536174;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1, h2, h3 { line-height: 1.2; }
+
+h1 {
+  max-width: 20ch;
+  margin: 0 auto;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  letter-spacing: -0.035em;
+}
+
+h2 { margin: 0 0 1.25rem; font-size: clamp(1.5rem, 4vw, 2rem); }
+h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
+p { color: #4b5563; }
+
+.hero-copy {
+  max-width: 60ch;
+  margin: 1.25rem auto 1.5rem;
+  font-size: 1.1rem;
+}
+
+.primary-link {
+  display: inline-block;
+  padding: 0.7rem 1.15rem;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #213854;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.primary-link:hover { background: #344e6e; }
+.access-note { margin: 0.75rem 0 0; font-size: 0.9rem; }
+
+.steps ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.steps li { padding: 0 0.5rem; }
+.steps li::marker { color: #536174; font-weight: 700; }
+.steps p { margin: 0; }
+.features > p { max-width: 70ch; }
+
+.coming-soon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 1.5rem;
+}
+
+.coming-soon-grid p { margin: 0; }
+
+footer {
+  padding: 0 1rem 2rem;
+  text-align: center;
+}
