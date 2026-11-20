@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recipe Builder | AI Recipe Card Scanner | Shell Designz</title>
-    <meta name="description" content="Scan handwritten recipe cards with AI, review the recipe name and ingredients, and organize your family favorites with Recipe Builder." />
+    <meta name="description" content="Follow step-by-step instructions to add recipes from a card, food photo, dish name, or by hand, then review and save your collection." />
     <link rel="canonical" href="https://shelldesignz.com/recipe-builder/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Shell Designz" />
     <meta property="og:title" content="Recipe Builder | AI Recipe Card Scanner" />
-    <meta property="og:description" content="Use AI to scan handwritten recipe cards, review the details, and organize your family favorites." />
+    <meta property="og:description" content="Add recipes from a card, food photo, dish name, or by hand. Review the details, organize your collection, and save your changes." />
     <meta property="og:url" content="https://shelldesignz.com/recipe-builder/" />
     <meta name="twitter:card" content="summary" />
     <link rel="stylesheet" href="./recipe-builder.css" />
@@ -30,31 +30,58 @@
         <p class="access-note">Open to everyone. Sign in to enjoy your own personal recipe collection.</p>
       </section>
 
-      <section class="steps" aria-labelledby="how-it-works">
-        <h2 id="how-it-works">How Recipe Builder works</h2>
-        <ol>
-          <li>
-            <h3>Choose how to start</h3>
-            <p>Use <strong>Scan a written recipe</strong> for a handwritten or printed recipe, or <strong>Create a recipe from a food photo</strong> for a picture of a dish. You can also type a dish name to get a suggested recipe, or add one manually. Restaurant-inspired recipes may not match the original.</p>
-          </li>
-          <li>
-            <h3>Review the details</h3>
-            <p>Check the suggested recipe name and ingredients, make any corrections, and confirm the recipe.</p>
-          </li>
-          <li>
-            <h3>Organize and save</h3>
-            <p>Arrange your recipes into categories and use the Save button to save your changes. Search your collection when you need a favorite again.</p>
-          </li>
-        </ol>
+      <section class="features" aria-labelledby="more-options">
+        <h2 id="more-options">Recipe Builder features</h2>
+        <div class="store-info-cards">
+          <article class="store-info-card">
+            <h3>Find and manage recipes</h3>
+            <p>Use the search box to find a recipe by name or ingredient. Choose <strong>Edit</strong> to update a recipe, then choose <strong>Ok</strong> and <strong>Save</strong>. Choose <strong>Delete</strong> and confirm to remove one. Changes to a shared album affect everyone who uses it.</p>
+          </article>
+          <article class="store-info-card">
+            <h3>Pick One</h3>
+            <p>Choose <strong>Pick One</strong> for a random suggestion from the selected album. Select the suggested recipe’s name to show it in the recipe list.</p>
+          </article>
+          <article class="store-info-card">
+            <h3>Download a backup</h3>
+            <p>Choose <strong>Download Recipes</strong> to download a JSON backup of your current collection. Downloading is not the same as saving; save changes in the editor too.</p>
+          </article>
+          <article class="store-info-card">
+            <h3>Share an album</h3>
+            <p>Open an album you own and choose <strong>Share Number</strong>. Give the number only to people you trust. They must sign in, choose <strong>Join</strong>, and enter the number. Anyone who joins can change recipes in that shared album. You cannot share albums you joined.</p>
+          </article>
+          <article class="store-info-card">
+            <h3>AI recipe tools</h3>
+            <p>Recipe Builder uses AI to read recipe cards and suggest recipes from food photos or dish names. Review and correct AI results before saving. AI features have a daily usage limit per person.</p>
+          </article>
+        </div>
+        <p class="access-note">Your recipe collection and the editor require sign-in.</p>
       </section>
 
-      <section class="features" aria-labelledby="more-options">
-        <h2 id="more-options">More ways to use your collection</h2>
-        <p>Download your recipes or use <strong>Pick One</strong> when you need an idea.</p>
-        <p>To share your own album, choose <strong>Share Number</strong> in the album panel and give the number to someone you trust. The button is not shown for albums you join. They can sign in, choose <strong>Join</strong>, and enter it. People who join can update the shared recipes.</p>
-        <p>Recipe Builder uses AI to help interpret images and suggest recipes. Review the results before saving. AI features have a daily usage limit per person.</p>
+      <section class="steps" aria-labelledby="how-it-works">
+        <h2 id="how-it-works">Add your first recipe: step by step</h2>
+        <ol class="store-info-cards getting-started-cards">
+          <li>
+            <h3>Open your collection and set up a category</h3>
+            <p>Select <strong>Open Recipe Builder</strong> and sign in if prompted. In the editor, open your album panel. Under <strong>Categories</strong>, choose <strong>Add Category</strong> and enter any label that helps you organize recipes. It could be an author, such as “Grandma,” or a holiday, meal, or recipe type. Categories are yours to customize. You cannot delete a category while recipes are assigned to it; edit those recipes and move them to another category first.</p>
+          </li>
+          <li>
+            <h3>Choose how to add the recipe</h3>
+            <p>Use <strong>Scan a written recipe</strong> and choose a photo of a handwritten or printed recipe card to have AI read it. Use <strong>Create a recipe from a food photo</strong> and choose a picture of a prepared dish to get an AI-generated suggestion. Or enter a dish name under <strong>Create a recipe from a name</strong> and choose <strong>Generate Recipe</strong>. To enter everything yourself, choose <strong>Add Recipe</strong>.</p>
+          </li>
+          <li>
+            <h3>Review and organize</h3>
+            <p>Check the recipe name and choose a category from the <strong>Category</strong> menu. Review the ingredients, add or remove rows as needed, and set each row’s position. Cost is optional. Entering a recipe by hand? Fill in these same details.</p>
+          </li>
+          <li>
+            <h3>Finish the recipe, then save the collection</h3>
+            <p>Choose <strong>Ok</strong> to close the recipe form and add the recipe to the page. This does not save the collection yet. Choose <strong>Save</strong> on the page and wait for the save confirmation. Your recipe is saved to the selected album.</p>
+          </li>
+        </ol>
+        <aside class="ai-review-note" aria-labelledby="ai-review-heading">
+          <h3 id="ai-review-heading">Review AI suggestions</h3>
+          <p>AI tries to put ingredients under <strong>Top</strong> and instructions under <strong>Bottom</strong>, but it can make mistakes. A food photo cannot show the exact ingredients. Check the recipe against your source, correct the placement, and add or remove details before saving.</p>
+        </aside>
         <a class="primary-link" href="/Christmas/">Open Recipe Builder</a>
-        <p class="access-note">Your recipe collection and the editor remain behind sign-in.</p>
       </section>
 
       <section class="coming-soon" aria-labelledby="coming-soon">

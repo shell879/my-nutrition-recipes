@@ -557,7 +557,9 @@ main {
 a.landing-card:hover,
 a.landing-card:focus-visible,
 .landing-card--recipes:hover,
-.landing-card--recipes:focus-within {
+.landing-card--recipes:focus-within,
+.landing-card--nutrition:hover,
+.landing-card--nutrition:focus-within {
   transform: translateY(-2px);
   box-shadow: 0 0 0 1px var(--card-shadow), 0 8px 20px var(--card-shadow);
 }
@@ -615,7 +617,9 @@ a.landing-card:focus-visible,
   a.landing-card:hover,
   a.landing-card:focus-visible,
   .landing-card--recipes:hover,
-  .landing-card--recipes:focus-within {
+  .landing-card--recipes:focus-within,
+  .landing-card--nutrition:hover,
+  .landing-card--nutrition:focus-within {
     transform: none;
   }
 }

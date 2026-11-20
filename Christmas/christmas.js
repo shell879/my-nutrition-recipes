@@ -478,7 +478,7 @@ function render() {
             <button type="button" data-action="delete-category" data-id="${escapeHtml(category.id)}">Delete</button>
           </div>
         </div>`).join('')
-    : '<p>No Authors in this Album.</p>';
+    : '<p>No categories in this album.</p>';
 
   const flavors = storeFlavorProfiles()
     .map((flavor, index) => ({ flavor, index }))
@@ -623,7 +623,7 @@ document.addEventListener('click', (event) => {
 });
 
 function addCategory() {
-  const name = prompt('Author name:');
+  const name = prompt('Category name:');
   if (!name?.trim()) return;
   const categories = storeCategories();
   state.data.categories.push({
@@ -640,7 +640,7 @@ function addCategory() {
 function editCategory(id) {
   const category = state.data.categories.find((item) => item.id === id);
   if (!category) return;
-  const name = prompt('Author name:', category.name);
+  const name = prompt('Category name:', category.name);
   if (!name?.trim()) return;
   category.name = name.trim();
   render();
