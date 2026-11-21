@@ -595,32 +595,6 @@ a.landing-card:focus-visible,
   font-weight: 700;
 }
 
-.landing-card-preview {
-  display: block;
-  width: 100%;
-  height: 120px;
-  border: 1px solid #dce3eb;
-  border-radius: 8px;
-  object-fit: cover;
-  object-position: top;
-}
-
-.landing-card-gallery {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.35rem;
-}
-
-.landing-card-gallery img {
-  display: block;
-  width: 100%;
-  height: 76px;
-  border: 1px solid #dce3eb;
-  border-radius: 6px;
-  object-fit: cover;
-  object-position: top;
-}
-
 .landing-card-actions {
   display: flex;
   flex-direction: column;

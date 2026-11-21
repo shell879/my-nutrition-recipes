@@ -134,6 +134,16 @@ p { color: #4b5563; }
   border-radius: 12px;
 }
 
+.guide-screenshot--contained {
+  margin: 1rem 0 0;
+}
+
+.guide-screenshot--contained img {
+  max-height: 220px;
+  object-fit: contain;
+  object-position: left top;
+}
+
 .guide-screenshot-pair img {
   height: 220px;
   background: #ffffff;
