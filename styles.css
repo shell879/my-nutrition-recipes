@@ -502,7 +502,7 @@ main {
 }
 
 .landing-main {
-  width: min(100%, 760px);
+  width: min(100%, 980px);
   padding: clamp(2rem, 7vw, 4rem);
   background: #ffffff;
   border: 1px solid #e1e6ed;
@@ -527,7 +527,7 @@ main {
 
 .landing-links {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   gap: 0.85rem;
   text-align: left;
 }
@@ -539,7 +539,7 @@ main {
   gap: 0.6rem;
   padding: 1.3rem;
   color: #4b5563;
-  background: #f8fafc;
+  background: var(--card-background, #f8fafc);
   border: 1px solid #dce3eb;
   border-radius: 12px;
   box-shadow: 0 0 0 1px var(--card-shadow), 0 4px 14px var(--card-shadow);
@@ -548,11 +548,26 @@ main {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.landing-card--recipes { --card-shadow: rgba(115, 91, 150, 0.22); }
-.landing-card--nutrition { --card-shadow: rgba(54, 117, 153, 0.22); }
-.landing-card--nutrition-admin { --card-shadow: rgba(77, 120, 110, 0.22); }
-.landing-card--callahan { --card-shadow: rgba(173, 125, 68, 0.22); }
-.landing-card--callahan-admin { --card-shadow: rgba(158, 95, 106, 0.22); }
+.landing-card--recipes {
+  --card-shadow: rgba(115, 91, 150, 0.22);
+  --card-background: #f7f4fb;
+}
+.landing-card--nutrition {
+  --card-shadow: rgba(54, 117, 153, 0.22);
+  --card-background: #f1f8fb;
+}
+.landing-card--nutrition-admin {
+  --card-shadow: rgba(77, 120, 110, 0.22);
+  --card-background: #f2f7f5;
+}
+.landing-card--callahan {
+  --card-shadow: rgba(173, 125, 68, 0.22);
+  --card-background: #fbf7f0;
+}
+.landing-card--callahan-admin {
+  --card-shadow: rgba(158, 95, 106, 0.22);
+  --card-background: #faf4f5;
+}
 
 a.landing-card:hover,
 a.landing-card:focus-visible,
@@ -578,6 +593,32 @@ a.landing-card:focus-visible,
   color: #1f2937;
   font-size: 1.1rem;
   font-weight: 700;
+}
+
+.landing-card-preview {
+  display: block;
+  width: 100%;
+  height: 120px;
+  border: 1px solid #dce3eb;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.landing-card-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.landing-card-gallery img {
+  display: block;
+  width: 100%;
+  height: 76px;
+  border: 1px solid #dce3eb;
+  border-radius: 6px;
+  object-fit: cover;
+  object-position: top;
 }
 
 .landing-card-actions {
