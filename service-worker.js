@@ -5,14 +5,13 @@
 // This service worker makes the app usable offline by caching the
 // "app shell" (HTML, CSS, JS, images). It uses two strategies:
 //
-//   1. Cache-first  → static assets (CSS, JS, images, HTML)
-//      Serves from cache instantly; only hits the network if the
-//      file isn't cached at all. Fast, but means the user sees the
-//      last-cached version until the cache version is bumped.
+//   1. Network-first → page navigations and JSON data files
+//      Tries the network first so users see updates promptly.
+//      Falls back to cache when offline.
 //
-//   2. Network-first → JSON data files (.json)
-//      Tries the network first so users always see fresh data.
-//      Falls back to cache only if the network fails (offline).
+//   2. Cache-first → static assets (CSS, JS, images)
+//      Serves cached assets instantly and fetches them when they
+//      aren't cached.
 //
 //   3. Bypass        → /api/* routes and Access-protected pages
 //      The service worker does NOT intercept these. The browser
@@ -25,7 +24,7 @@
 // When the browser sees a new version, it installs the new SW,
 // activates it, and deletes all caches from the old version.
 // Without this, users would be stuck on the old cached files.
-const CACHE_NAME = "shelldesignz-v19";
+const CACHE_NAME = "shelldesignz-v20";
 
 // ──────────────────────────────────────────────────────────────
 // Pre-cache list
@@ -157,15 +156,36 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // ── 4. Static assets: cache-first ─────────────────────────
-  // For HTML, CSS, JS, and images, serve from cache instantly
-  // (fast load). Only hit the network if the file isn't cached
-  // at all. When we do fetch from network, we cache the response
-  // for next time.
-  //
-  // This is the right strategy for the "app shell" — the files
-  // that make up the app's UI don't change often, so serving
-  // from cache makes the app feel instant.
+  // ── 4. Page navigations: network-first ────────────────────
+  // Check for an updated page on every navigation. Keep the
+  // latest successful response for offline use.
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            event.waitUntil(
+              caches.open(CACHE_NAME).then((cache) =>
+                cache.put(event.request, clone)
+              )
+            );
+          }
+          return response;
+        })
+        .catch((error) =>
+          caches.match(event.request).then((cached) => {
+            if (cached) return cached;
+            throw error;
+          })
+        )
+    );
+    return;
+  }
+
+  // ── 5. Static assets: cache-first ─────────────────────────
+  // Serve cached CSS, JS, and images instantly. Fetch and cache
+  // assets that aren't in the cache yet.
   event.respondWith(
     caches.match(event.request).then((cached) => {
       return (
