@@ -498,7 +498,7 @@ openSlideshowButton.addEventListener('click', () => {
   try {
     sessionStorage.setItem(key, JSON.stringify({ storeName: state.data.store?.name || 'MyNutrition', slides }));
     saved = true;
-    const tab = window.open('/mynutrition/slideshow/', '_blank');
+    const tab = window.open('/slideshow/', '_blank');
     if (!tab) throw new Error('The slideshow tab was blocked. Allow pop-ups for this site and try again.');
     tab.opener = null;
   } catch (error) {
