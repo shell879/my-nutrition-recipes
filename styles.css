@@ -579,7 +579,8 @@ a.landing-card:focus-visible,
   box-shadow: 0 0 0 1px var(--card-shadow), 0 8px 20px var(--card-shadow);
 }
 
-.landing-card--recipes {
+.landing-card--recipes,
+.landing-card--nutrition {
   cursor: pointer;
 }
 

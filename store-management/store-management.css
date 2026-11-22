@@ -1,0 +1,15 @@
+:root { font-family: "Segoe UI", Arial, sans-serif; color: #17212b; background: #f2f4f7; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 1.5rem; }
+main { max-width: 760px; margin: auto; }
+section { margin: 1rem 0; padding: 1.5rem; border: 1px solid #dce3eb; border-radius: 14px; background: white; }
+h2 { margin-top: 0; }
+label { display: grid; gap: .35rem; margin: 1rem 0; font-weight: 600; }
+input, button { padding: .7rem; border: 1px solid #8493a3; border-radius: 6px; font: inherit; }
+button { color: white; background: #126e68; cursor: pointer; }
+button:disabled { opacity: .6; cursor: wait; }
+li { margin: 1rem 0; overflow-wrap: anywhere; }
+li button { margin-left: .5rem; background: #922f2f; }
+li button.visibility-button { background: #126e68; }
+#status { white-space: pre-wrap; overflow-wrap: anywhere; }
+#status.error { color: #a32121; }

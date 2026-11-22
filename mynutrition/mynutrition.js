@@ -53,8 +53,10 @@ const pickButton = document.getElementById('pickButton');
 const drinkName = document.getElementById('drinkName');
 const drinkCount = document.getElementById('drinkCount');
 const drinkResult = document.getElementById('drinkResult');
+const openSlideshowButton = document.getElementById('openSlideshowButton');
 let pickerDrinks = [];
 let lastPickedIndex = -1;
+const namesPerSlide = 6;
 
 flavorFilterPanel.open = !compactFlavorFilter.matches;
 compactFlavorFilter.addEventListener('change', (event) => {
@@ -399,25 +401,32 @@ function containsFlavor(text, flavor) {
   );
 }
 
+function recipeMatchesFlavor(drink, flavor) {
+  const ingredients = Array.isArray(drink.ingredients) ? drink.ingredients : [];
+  return [drink.name, ...ingredients.map((item) => item.name)].some((name) =>
+    containsFlavor(name, flavor)
+  );
+}
+
 function recipeMatchesCategory(drink) {
   const categoryValue = drink.categoryId ?? drink.category ?? 'All';
   return state.activeCategory === 'All' || getCategoryName(categoryValue) === state.activeCategory;
 }
 
-function renderRecipes() {
-  const recipeList = (state.data?.drinks || []).filter((drink) => {
+function getFilteredRecipes() {
+  return (state.data?.drinks || []).filter((drink) => {
     const haystack = `${drink.name || ''} ${(drink.ingredients || []).map((item) => item.name || '').join(' ')}`.toLowerCase();
     const matchesQuery = haystack.includes(state.query.toLowerCase());
     const matchesFlavor =
       state.selectedFlavors.size === 0 ||
-      [...state.selectedFlavors].some((flavor) =>
-        [drink.name, ...(drink.ingredients || []).map((item) => item.name)].some((name) =>
-          containsFlavor(name, flavor)
-        )
-      );
+      [...state.selectedFlavors].some((flavor) => recipeMatchesFlavor(drink, flavor));
     return recipeMatchesCategory(drink) && matchesQuery && matchesFlavor;
   });
+}
 
+function renderRecipes() {
+  const recipeList = getFilteredRecipes();
+  openSlideshowButton.disabled = recipeList.length === 0;
   if (recipeList.length === 0) {
     recipeGrid.innerHTML = '<div class="empty-state">No recipes match the selected filters.</div>';
     return;
@@ -449,6 +458,59 @@ function renderRecipes() {
     })
     .join('');
 }
+
+function buildSlideshow(recipes) {
+  const profiles = [...(state.data.store?.flavorProfiles || [])]
+    .filter((flavor) => !state.selectedFlavors.size || state.selectedFlavors.has(flavor))
+    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  const groups = profiles.map((flavor) => ({
+    flavor,
+    recipes: recipes.filter((drink) => recipeMatchesFlavor(drink, flavor)),
+  }));
+  const other = recipes.filter((drink) =>
+    !(state.data.store?.flavorProfiles || []).some((flavor) => recipeMatchesFlavor(drink, flavor))
+  );
+  if (other.length) groups.push({ flavor: 'Other / no matching flavor', recipes: other });
+
+  const slides = [];
+  for (const group of groups) {
+    const categories = new Map();
+    for (const drink of group.recipes) {
+      const category = getCategoryName(drink.categoryId ?? drink.category);
+      if (!categories.has(category)) categories.set(category, []);
+      categories.get(category).push(drink);
+    }
+    const entries = [...categories.entries()]
+      .sort(([a], [b]) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
+      .flatMap(([category, drinks]) => drinks.map((drink) => ({ category, name: drink.name || 'Untitled recipe' })));
+    for (let index = 0; index < entries.length; index += namesPerSlide) {
+      slides.push({ flavor: group.flavor, entries: entries.slice(index, index + namesPerSlide) });
+    }
+  }
+  return slides;
+}
+
+openSlideshowButton.addEventListener('click', () => {
+  const slides = buildSlideshow(getFilteredRecipes());
+  if (!slides.length) return;
+  const key = 'mynutrition-slideshow';
+  let saved = false;
+  try {
+    sessionStorage.setItem(key, JSON.stringify({ storeName: state.data.store?.name || 'MyNutrition', slides }));
+    saved = true;
+    const tab = window.open('/mynutrition/slideshow/', '_blank');
+    if (!tab) throw new Error('The slideshow tab was blocked. Allow pop-ups for this site and try again.');
+    tab.opener = null;
+  } catch (error) {
+    console.error('Could not open slideshow:', error);
+    setStatus(`Could not open slideshow: ${error.message}`, true);
+  } finally {
+    if (saved) {
+      try { sessionStorage.removeItem(key); }
+      catch (error) { console.error('Could not clear slideshow data:', error); }
+    }
+  }
+});
 
 searchInput.addEventListener('input', (event) => {
   state.query = event.target.value.trim();

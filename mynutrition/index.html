@@ -6,7 +6,7 @@
     <title>MyNutrition</title>
     <meta name="description" content="Public menu and recipe catalog for My Nutrition Recipes." />
     <link rel="stylesheet" href="/styles.css" />
-    <link rel="stylesheet" href="/mynutrition/mynutrition.css" />
+    <link rel="stylesheet" href="/mynutrition/mynutrition.css?v=slideshow-3" />
     <link rel="manifest" href="/manifest.json">
     <script>navigator.serviceWorker.register('/service-worker.js')</script>
 
@@ -19,6 +19,7 @@
       </div>
       <div class="header-tools">
         <button id="openPickerButton" class="drink-picker-trigger" type="button" disabled>Pick One</button>
+        <button id="openSlideshowButton" class="drink-picker-trigger" type="button" disabled>Recipe slideshow</button>
         <label class="store-switcher">
           <span class="visually-hidden">Select store</span>
           <select id="storeSwitcher" aria-label="Select store" disabled></select>
@@ -57,6 +58,6 @@
       </section>
     </dialog>
 
-    <script src="/mynutrition/mynutrition.js?v=app-stores-1"></script>
+    <script src="/mynutrition/mynutrition.js?v=slideshow-3"></script>
   </body>
 </html>
