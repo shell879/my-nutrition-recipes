@@ -9,7 +9,7 @@
     <meta name='impact-site-verification' value='300d4261-94e2-4478-b73e-c83915b27c42'>
 <script>navigator.serviceWorker.register('/service-worker.js')</script>
     <title>Shell Designz</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=nutrition-card" />
   </head>
   <body class="landing-page">
     <main class="landing-main">
@@ -24,13 +24,13 @@
             <a id="openRecipeBuilderLink" href="/Christmas/">Open Recipe Builder</a>
           </div>
         </div>
-        <div class="landing-card landing-card--nutrition">
+        <div id="nutritionCard" class="landing-card landing-card--nutrition">
           <strong class="landing-card-access-top" aria-hidden="true">Access required</strong>
           <span class="landing-card-title">MyNutrition</span>
           <span>Browse recipes and switch between stores.</span>
           <div class="landing-card-actions">
             <a href="/mynutrition-guide/">How to Use It</a>
-            <a href="/mynutrition/">Open MyNutrition</a>
+            <a id="openNutritionLink" href="/mynutrition/">Open MyNutrition</a>
           </div>
           <strong>Access required</strong>
         </div>
@@ -40,27 +40,22 @@
           <span>Manage recipes and stores.</span>
           <strong>Access required</strong>
         </a>
-        <a class="landing-card landing-card--callahan" href="/callahannutrition">
-          <strong class="landing-card-access-top" aria-hidden="true">Access required</strong>
-          <span class="landing-card-title">Callahan Nutrition</span>
-          <span>Browse recipes and ingredients.</span>
-          <strong>Access required</strong>
-        </a>
-        <a class="landing-card landing-card--callahan-admin" href="/admin">
-          <strong class="landing-card-access-top" aria-hidden="true">Access required</strong>
-          <span class="landing-card-title">Callahan Nutrition Admin</span>
-          <span>Manage the Callahan Nutrition recipe catalog.</span>
-          <strong>Access required</strong>
+        <a class="landing-card landing-card--callahan" href="/mynutrition/slideshow/">
+          <span class="landing-card-title">MyNutrition Slideshow</span>
+          <span>Choose a store and explore its drinks by flavor.</span>
         </a>
       </nav>
     </main>
     <script>
-      const recipeCard = document.getElementById('recipeBuilderCard');
-      recipeCard.addEventListener('click', (event) => {
-        if (event.target.closest('a') || window.getSelection().toString()) return;
-        if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-        document.getElementById('openRecipeBuilderLink').click();
-      });
+      function makeCardClickable(cardId, linkId) {
+        document.getElementById(cardId).addEventListener('click', (event) => {
+          if (event.target.closest('a') || window.getSelection().toString()) return;
+          if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+          document.getElementById(linkId).click();
+        });
+      }
+      makeCardClickable('recipeBuilderCard', 'openRecipeBuilderLink');
+      makeCardClickable('nutritionCard', 'openNutritionLink');
     </script>
   </body>
 </html>

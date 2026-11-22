@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MyNutrition Recipe Slideshow</title>
+    <link rel="stylesheet" href="./slideshow.css?v=cards-11">
+  </head>
+  <body>
+    <main class="recipe-slideshow">
+      <header class="slideshow-header">
+        <h1 id="slideshowTitle">Recipe slideshow</h1>
+        <button id="stop" type="button">Stop</button>
+      </header>
+      <div id="storePicker" class="slideshow-store-picker" hidden>
+        <label for="storeSelect">Choose a store</label>
+        <select id="storeSelect" disabled>
+          <option value="">Loading stores...</option>
+        </select>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <h2 id="flavor" class="slideshow-flavor"></h2>
+      <div id="names" class="slideshow-names"></div>
+      <div id="controls" class="slideshow-controls" hidden>
+        <button id="previous" type="button">Previous</button>
+        <button id="pause" type="button">Pause</button>
+        <button id="next" type="button">Next</button>
+        <span id="position" aria-live="polite"></span>
+        <button id="slower" type="button">Slower</button>
+        <span id="speed" aria-live="polite">2 seconds per slide</span>
+        <button id="faster" type="button">Faster</button>
+      </div>
+      <a id="backLink" href="/">Back to Home</a>
+    </main>
+    <script src="./slideshow.js?v=cards-9"></script>
+  </body>
+</html>
