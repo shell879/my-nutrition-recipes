@@ -1,0 +1,477 @@
+// MyNutrition menu and admin share the active MyNutrition store.
+const isDemo = document.body.dataset.demo === 'true';
+const demoStorageKey = 'mynutrition-demo-data';
+const state = {
+  activeCategory: 'All',
+  selectedFlavors: new Set(),
+  query: '',
+  data: null,
+};
+const defaultFlavorProfiles = [
+  'Apple',
+  'Banana',
+  'Blackberry',
+  'Blueberry',
+  'Blue Raspberry',
+  'Cherry',
+  'Coconut',
+  'Cranberry',
+  'Grape',
+  'Lemonade',
+  'Lime',
+  'Limeade',
+  'Mango',
+  'Orange',
+  'Passion Fruit',
+  'Peach',
+  'Pineapple',
+  'Pomegranate',
+  'Raspberry',
+  'Strawberry',
+  'Watermelon',
+];
+const previousDefaultFlavorProfiles = ['Mango', 'Lime', 'Peach'];
+const categoryFilters = document.getElementById('categoryFilters');
+const flavorFilters = document.getElementById('flavorFilters');
+const flavorFilterPanel = document.getElementById('flavorFilterPanel');
+const compactFlavorFilter = window.matchMedia('(max-width: 720px)');
+const recipeGrid = document.getElementById('recipeGrid');
+const searchInput = document.getElementById('searchInput');
+const clearSearchButton = document.getElementById('clearSearchButton');
+const storeName = document.getElementById('storeName');
+const loadStatus = document.getElementById('loadStatus');
+const drinkPicker = document.getElementById('drinkPicker');
+const openPickerButton = document.getElementById('openPickerButton');
+const closePickerButton = document.getElementById('closePickerButton');
+const pickButton = document.getElementById('pickButton');
+const drinkName = document.getElementById('drinkName');
+const drinkCount = document.getElementById('drinkCount');
+const drinkResult = document.getElementById('drinkResult');
+const openSlideshowButton = document.getElementById('openSlideshowButton');
+let pickerDrinks = [];
+let lastPickedIndex = -1;
+const namesPerSlide = 6;
+
+flavorFilterPanel.open = !compactFlavorFilter.matches;
+compactFlavorFilter.addEventListener('change', (event) => {
+  flavorFilterPanel.open = !event.matches;
+});
+
+function normalizeData(raw) {
+  if (!raw) {
+    return { store: { name: 'My Nutrition Recipes' }, categories: [], drinks: [] };
+  }
+
+  const rawStores = Array.isArray(raw.stores) ? raw.stores : [];
+  const store = raw.store || rawStores.find((item) => item.active !== false) || rawStores[0] || { name: 'My Nutrition Recipes' };
+  const categories = Array.isArray(raw.categories) ? raw.categories : [];
+  if (!Array.isArray(store.flavorProfiles)) {
+    store.flavorProfiles = [...defaultFlavorProfiles];
+  } else if (
+    store.flavorProfiles.length === previousDefaultFlavorProfiles.length &&
+    previousDefaultFlavorProfiles.every((flavor) => store.flavorProfiles.includes(flavor))
+  ) {
+    store.flavorProfiles = [...defaultFlavorProfiles];
+  }
+
+  const drinks = Array.isArray(raw.drinkRecipes)
+    ? raw.drinkRecipes
+    : Array.isArray(raw.drinks)
+      ? raw.drinks
+      : [];
+
+  const filteredCategories = categories.filter((category) => {
+    if (!category || !store || category.storeId == null) return true;
+    return category.storeId === store.id;
+  });
+
+  const filteredDrinks = drinks.filter((drink) => {
+    if (!drink || !store || drink.storeId == null) return true;
+    return drink.storeId === store.id;
+  });
+
+  return {
+    store,
+    categories: filteredCategories,
+    drinks: filteredDrinks,
+  };
+}
+
+function getCategoryName(categoryId) {
+  const categories = state.data?.categories || [];
+  if (categoryId == null) return 'Uncategorized';
+
+  const match = categories.find((category) => category.id === categoryId || category.name === categoryId);
+  return match ? match.name : String(categoryId);
+}
+
+async function loadData() {
+  setStatus('Loading recipes…');
+  let raw;
+  const draft = localStorage.getItem(demoStorageKey);
+  if (draft) {
+    raw = JSON.parse(draft);
+  } else {
+    const response = await fetch('/demo/demo.json', { cache: 'no-store' });
+    if (!response.ok) {
+      const details = (await response.text()).trim().slice(0, 300);
+      throw new Error(
+        `Could not load recipe data (HTTP ${response.status}${response.statusText ? ` ${response.statusText}` : ''}).`
+        + (details ? ` Server response: ${details}` : ''),
+      );
+    }
+    raw = await response.json();
+  }
+
+  if (!raw || !Array.isArray(raw.stores) || !Array.isArray(raw.categories) || !Array.isArray(raw.drinkRecipes)) {
+    throw new Error('The demo data has an invalid format. Reset the demo in the editor.');
+  }
+  state.data = normalizeData(raw);
+
+  storeName.textContent = state.data.store?.name || 'My Nutrition Recipes';
+  applyStoreTheme(state.data.store);
+  renderFilters();
+  renderFlavorFilters();
+  renderDrinkPicker();
+  renderRecipes();
+  setStatus(isDemo ? 'Demo data is fictional and saved only in this browser.' : `Loaded recipes for ${state.data.store?.name || 'this store'}.`);
+  if (!isDemo) loadStoreSwitcher();
+}
+
+function setStatus(message, isError = false) {
+  loadStatus.textContent = message;
+  loadStatus.classList.toggle('error', isError);
+  loadStatus.setAttribute('aria-live', isError ? 'assertive' : 'polite');
+}
+
+function renderDrinkPicker() {
+  pickerDrinks = state.data.drinks
+    .map((drink) => drink?.name)
+    .filter((name) => typeof name === 'string' && name.trim())
+    .map((name) => name.trim());
+  lastPickedIndex = -1;
+  drinkName.disabled = true;
+
+  if (pickerDrinks.length === 0) {
+    drinkName.textContent = 'The drink list could not be loaded.';
+    drinkCount.textContent = 'No drink recipes are available for this store.';
+    openPickerButton.disabled = true;
+    pickButton.disabled = true;
+    return;
+  }
+
+  drinkName.textContent = 'Tap the button to get started.';
+  drinkCount.textContent = `Choose from ${pickerDrinks.length} drink recipes.`;
+  openPickerButton.disabled = false;
+  pickButton.disabled = false;
+}
+
+openPickerButton.addEventListener('click', () => drinkPicker.showModal());
+closePickerButton.addEventListener('click', () => drinkPicker.close());
+
+drinkName.addEventListener('click', () => {
+  if (lastPickedIndex < 0) return;
+
+  state.query = pickerDrinks[lastPickedIndex];
+  searchInput.value = state.query;
+  updateSearchClearButton();
+  state.activeCategory = 'All';
+  state.selectedFlavors.clear();
+  renderFilters();
+  renderFlavorFilters();
+  renderRecipes();
+  drinkPicker.close();
+  searchInput.focus();
+});
+
+pickButton.addEventListener('click', () => {
+  let nextIndex = Math.floor(Math.random() * pickerDrinks.length);
+  if (pickerDrinks.length > 1 && nextIndex === lastPickedIndex) {
+    nextIndex = (nextIndex + 1 + Math.floor(Math.random() * (pickerDrinks.length - 1))) % pickerDrinks.length;
+  }
+
+  pickButton.disabled = true;
+  drinkName.disabled = true;
+  pickButton.textContent = 'Picking...';
+  drinkResult.setAttribute('aria-busy', 'true');
+  drinkResult.classList.add('is-spinning');
+
+  const finishPick = () => {
+    lastPickedIndex = nextIndex;
+    drinkName.disabled = false;
+    pickButton.disabled = false;
+    pickButton.textContent = 'Pick One';
+    drinkResult.setAttribute('aria-busy', 'false');
+    drinkResult.classList.remove('is-spinning');
+  };
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    drinkName.textContent = 'Choosing a drink...';
+    window.setTimeout(() => {
+      drinkName.textContent = pickerDrinks[nextIndex];
+      finishPick();
+    }, 250);
+    return;
+  }
+
+  let spinIndex = lastPickedIndex < 0 ? nextIndex : lastPickedIndex;
+  let ticks = 0;
+  const totalTicks = 10;
+  const spin = () => {
+    ticks += 1;
+    if (ticks === totalTicks) {
+      drinkName.textContent = pickerDrinks[nextIndex];
+      finishPick();
+      return;
+    }
+
+    spinIndex = (spinIndex + 1) % pickerDrinks.length;
+    drinkName.textContent = pickerDrinks[spinIndex];
+    window.setTimeout(spin, 40 + ticks * 5);
+  };
+
+  window.setTimeout(spin, 40);
+});
+
+function colorOr(value, fallback) {
+  return /^#[0-9a-f]{6}$/i.test(value || '') ? value : fallback;
+}
+
+function contrastingTextColor(hex) {
+  const channels = hex.slice(1).match(/.{2}/g).map((value) => parseInt(value, 16) / 255);
+  const luminance =
+    channels
+      .map((channel) => (channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4))
+      .reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+  return luminance > 0.179 ? '#17212b' : '#ffffff';
+}
+
+function applyStoreTheme(store) {
+  const buttonColor = colorOr(store?.buttonColor, '#126e68');
+  const rootStyle = document.documentElement.style;
+  rootStyle.setProperty('--bg', colorOr(store?.backgroundColor, '#f4f1ea'));
+  rootStyle.setProperty('--ink', colorOr(store?.textColor, '#17212b'));
+  rootStyle.setProperty('--card', colorOr(store?.cardBackgroundColor, '#ffffff'));
+  rootStyle.setProperty('--card-ink', colorOr(store?.cardTextColor, '#17212b'));
+  rootStyle.setProperty('--button', buttonColor);
+  rootStyle.setProperty('--button-ink', colorOr(store?.buttonTextColor, contrastingTextColor(buttonColor)));
+}
+
+function renderFilters() {
+  const categories = ['All', ...(state.data?.categories || []).map((category) => category.name)];
+
+  categoryFilters.innerHTML = categories
+    .map(
+      (name) => `
+        <button
+          class="filter-btn ${state.activeCategory === name ? 'active' : ''}"
+          type="button"
+          data-filter="${escapeHtml(name)}"
+        >
+          ${escapeHtml(name)}
+        </button>
+      `
+    )
+    .join('');
+
+  categoryFilters.querySelectorAll('.filter-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      state.activeCategory = button.dataset.filter;
+      renderFilters();
+      renderRecipes();
+    });
+  });
+}
+
+function renderFlavorFilters() {
+  const profiles = state.data.store?.flavorProfiles || [];
+  const sortedProfiles = [...profiles].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' }),
+  );
+  flavorFilters.innerHTML = sortedProfiles.length
+    ? sortedProfiles
+        .map(
+          (flavor) => `
+            <label>
+              <input type="checkbox" value="${escapeHtml(flavor)}" ${state.selectedFlavors.has(flavor) ? 'checked' : ''} />
+              ${escapeHtml(flavor)}
+            </label>
+          `
+        )
+        .join('')
+    : '<span>No flavor profiles have been added for this store.</span>';
+
+  flavorFilters.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        state.selectedFlavors.add(checkbox.value);
+      } else {
+        state.selectedFlavors.delete(checkbox.value);
+      }
+      renderRecipes();
+    });
+  });
+}
+
+function containsFlavor(text, flavor) {
+  const words = (value) => String(value || '').toLocaleLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
+  const textWords = words(text);
+  const flavorWords = words(flavor);
+  return (
+    flavorWords.length > 0 &&
+    textWords.some((_, index) =>
+      flavorWords.every((word, offset) => textWords[index + offset] === word)
+    )
+  );
+}
+
+function recipeMatchesFlavor(drink, flavor) {
+  const ingredients = Array.isArray(drink.ingredients) ? drink.ingredients : [];
+  return [drink.name, ...ingredients.map((item) => item.name)].some((name) =>
+    containsFlavor(name, flavor)
+  );
+}
+
+function recipeMatchesCategory(drink) {
+  const categoryValue = drink.categoryId ?? drink.category ?? 'All';
+  return state.activeCategory === 'All' || getCategoryName(categoryValue) === state.activeCategory;
+}
+
+function getFilteredRecipes() {
+  return (state.data?.drinks || []).filter((drink) => {
+    const haystack = `${drink.name || ''} ${(drink.ingredients || []).map((item) => item.name || '').join(' ')}`.toLowerCase();
+    const matchesQuery = haystack.includes(state.query.toLowerCase());
+    const matchesFlavor =
+      state.selectedFlavors.size === 0 ||
+      [...state.selectedFlavors].some((flavor) => recipeMatchesFlavor(drink, flavor));
+    return recipeMatchesCategory(drink) && matchesQuery && matchesFlavor;
+  });
+}
+
+function renderRecipes() {
+  const recipeList = getFilteredRecipes();
+  openSlideshowButton.disabled = recipeList.length === 0;
+  if (recipeList.length === 0) {
+    recipeGrid.innerHTML = '<div class="empty-state">No recipes match the selected filters.</div>';
+    return;
+  }
+
+  recipeGrid.innerHTML = recipeList
+    .map((drink) => {
+      const ingredients = Array.isArray(drink.ingredients) ? drink.ingredients : [];
+      const topIngredients = ingredients.filter((item) => String(item.side || '').toUpperCase() === 'TOP');
+      const bottomIngredients = ingredients.filter((item) => String(item.side || '').toUpperCase() === 'BOTTOM');
+
+      const ingredientMarkup = (items) =>
+        items.length
+          ? `<ul>${items
+              .map((item) => `<li>${escapeHtml(item.name || 'Ingredient')}</li>`)
+              .join('')}</ul>`
+          : '<ul><li>—</li></ul>';
+
+      return `
+          <article class="recipe-card">
+            <h2>${escapeHtml(drink.name || 'Untitled recipe')}</h2>
+            <div class="ingredients">
+              ${ingredientMarkup(topIngredients)}
+              <hr class="ingredient-divider" />
+              ${ingredientMarkup(bottomIngredients)}
+            </div>
+          </article>
+      `;
+    })
+    .join('');
+}
+
+function buildSlideshow(recipes) {
+  const profiles = [...(state.data.store?.flavorProfiles || [])]
+    .filter((flavor) => !state.selectedFlavors.size || state.selectedFlavors.has(flavor))
+    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  const groups = profiles.map((flavor) => ({
+    flavor,
+    recipes: recipes.filter((drink) => recipeMatchesFlavor(drink, flavor)),
+  }));
+  const other = recipes.filter((drink) =>
+    !(state.data.store?.flavorProfiles || []).some((flavor) => recipeMatchesFlavor(drink, flavor))
+  );
+  if (other.length) groups.push({ flavor: 'Other / no matching flavor', recipes: other });
+
+  const slides = [];
+  for (const group of groups) {
+    const categories = new Map();
+    for (const drink of group.recipes) {
+      const category = getCategoryName(drink.categoryId ?? drink.category);
+      if (!categories.has(category)) categories.set(category, []);
+      categories.get(category).push(drink);
+    }
+    const entries = [...categories.entries()]
+      .sort(([a], [b]) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
+      .flatMap(([category, drinks]) => drinks.map((drink) => ({ category, name: drink.name || 'Untitled recipe' })));
+    for (let index = 0; index < entries.length; index += namesPerSlide) {
+      slides.push({ flavor: group.flavor, entries: entries.slice(index, index + namesPerSlide) });
+    }
+  }
+  return slides;
+}
+
+openSlideshowButton.addEventListener('click', () => {
+  const slides = buildSlideshow(getFilteredRecipes());
+  if (!slides.length) return;
+  const key = 'mynutrition-slideshow';
+  let saved = false;
+  try {
+    sessionStorage.setItem(key, JSON.stringify({ storeName: state.data.store?.name || 'MyNutrition', slides }));
+    saved = true;
+    const tab = window.open('/slideshow/?demo=1', '_blank');
+    if (!tab) throw new Error('The slideshow tab was blocked. Allow pop-ups for this site and try again.');
+    tab.opener = null;
+  } catch (error) {
+    console.error('Could not open slideshow:', error);
+    setStatus(`Could not open slideshow: ${error.message}`, true);
+  } finally {
+    if (saved) {
+      try { sessionStorage.removeItem(key); }
+      catch (error) { console.error('Could not clear slideshow data:', error); }
+    }
+  }
+});
+
+searchInput.addEventListener('input', (event) => {
+  state.query = event.target.value.trim();
+  updateSearchClearButton();
+  renderRecipes();
+});
+
+clearSearchButton.addEventListener('click', () => {
+  searchInput.value = '';
+  state.query = '';
+  updateSearchClearButton();
+  renderRecipes();
+  searchInput.focus();
+});
+
+function updateSearchClearButton() {
+  clearSearchButton.hidden = !searchInput.value;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function handleDataLoadError(error) {
+  console.error('Failed to load recipe data:', error);
+  setStatus(error.message || 'Unable to load recipe data.', true);
+  drinkName.textContent = 'The drink list could not be loaded.';
+  drinkCount.textContent = 'Unable to load drink recipes.';
+  openPickerButton.disabled = true;
+  pickButton.disabled = true;
+  drinkName.disabled = true;
+  recipeGrid.innerHTML = `<div class="empty-state">${escapeHtml(error.message || 'Unable to load recipe data.')}</div>`;
+}
+
+loadData().catch(handleDataLoadError);

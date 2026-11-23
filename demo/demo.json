@@ -1,0 +1,78 @@
+{
+  "stores": [
+    { "id": 1, "name": "MyNutrition Demo", "active": true, "flavorProfiles": ["Apple", "Berry", "Coconut", "Coffee", "Latte", "Lemon", "Mango", "Orange", "Peach", "Pineapple"] }
+  ],
+  "categories": [
+    { "id": 1, "storeId": 1, "name": "Fruit Coolers", "displayOrder": 1, "active": true },
+    { "id": 2, "storeId": 1, "name": "Creamy Blends", "displayOrder": 2, "active": true },
+    { "id": 3, "storeId": 1, "name": "Tropical Sips", "displayOrder": 3, "active": true },
+    { "id": 4, "storeId": 1, "name": "Iced Coffee", "displayOrder": 4, "active": true },
+    { "id": 5, "storeId": 1, "name": "Coffeehouse Lattes", "displayOrder": 5, "active": true }
+  ],
+  "drinkRecipes": [
+    { "id": 1, "storeId": 1, "categoryId": 1, "name": "Berry Breeze", "ingredients": [
+      { "id": 1, "name": "Berry juice", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Sparkling water", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 2, "storeId": 1, "categoryId": 1, "name": "Apple Lemon Fizz", "ingredients": [
+      { "id": 1, "name": "Apple juice", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Lemon sparkling water", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 3, "storeId": 1, "categoryId": 2, "name": "Peach Cloud", "ingredients": [
+      { "id": 1, "name": "Peach puree", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Vanilla yogurt", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 4, "storeId": 1, "categoryId": 1, "name": "Citrus Garden", "ingredients": [
+      { "id": 1, "name": "Orange juice", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Lemon sparkling water", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 5, "storeId": 1, "categoryId": 2, "name": "Apple Vanilla Swirl", "ingredients": [
+      { "id": 1, "name": "Apple puree", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Vanilla yogurt", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 6, "storeId": 1, "categoryId": 2, "name": "Berry Pillow", "ingredients": [
+      { "id": 1, "name": "Berry puree", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Oat milk", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 7, "storeId": 1, "categoryId": 3, "name": "Mango Island", "ingredients": [
+      { "id": 1, "name": "Mango juice", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Coconut water", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 8, "storeId": 1, "categoryId": 3, "name": "Pineapple Sunshine", "ingredients": [
+      { "id": 1, "name": "Pineapple juice", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Orange sparkling water", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 9, "storeId": 1, "categoryId": 4, "name": "Vanilla Coffee Chill", "ingredients": [
+      { "id": 1, "name": "Cold coffee", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Vanilla milk", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 10, "storeId": 1, "categoryId": 4, "name": "Cocoa Coffee Frost", "ingredients": [
+      { "id": 1, "name": "Cold coffee", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Cocoa milk", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 11, "storeId": 1, "categoryId": 4, "name": "Coconut Coffee Cooler", "ingredients": [
+      { "id": 1, "name": "Cold coffee", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Coconut milk", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 12, "storeId": 1, "categoryId": 4, "name": "Cinnamon Coffee Breeze", "ingredients": [
+      { "id": 1, "name": "Cold coffee", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Cinnamon milk", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 13, "storeId": 1, "categoryId": 5, "name": "Vanilla Latte", "ingredients": [
+      { "id": 1, "name": "Coffee", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Vanilla steamed milk", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 14, "storeId": 1, "categoryId": 5, "name": "Honey Latte", "ingredients": [
+      { "id": 1, "name": "Coffee", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Honey steamed milk", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 15, "storeId": 1, "categoryId": 5, "name": "Cocoa Latte", "ingredients": [
+      { "id": 1, "name": "Coffee", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Cocoa steamed milk", "side": "TOP", "cost": 0 }
+    ] },
+    { "id": 16, "storeId": 1, "categoryId": 5, "name": "Maple Latte", "ingredients": [
+      { "id": 1, "name": "Coffee", "side": "BOTTOM", "cost": 0 },
+      { "id": 2, "name": "Maple steamed milk", "side": "TOP", "cost": 0 }
+    ] }
+  ]
+}

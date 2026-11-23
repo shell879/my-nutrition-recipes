@@ -1,0 +1,79 @@
+.site-header .store-switcher {
+  display: flex;
+  min-width: 10rem;
+}
+.site-header .store-switcher select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 0.6rem;
+  color: var(--card-ink);
+  background: var(--card);
+  font: inherit;
+}
+
+.site-header #joinStoreButton {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 0.6rem;
+  color: var(--button-ink);
+  background: var(--button);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.site-header #joinStoreButton:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.flavor-filter > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 700;
+  list-style: none;
+}
+
+.flavor-filter > summary::-webkit-details-marker {
+  display: none;
+}
+
+.flavor-filter > summary::after {
+  content: "+";
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.flavor-filter[open] > summary::after {
+  content: "−";
+}
+
+.flavor-filter[open] > summary {
+  margin-bottom: 0.6rem;
+}
+
+.load-status {
+  max-width: 1200px;
+  min-height: 1.5em;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 0;
+}
+
+.load-status.error {
+  color: #a32121;
+}
+
+@media (max-width: 720px) {
+  .site-header .store-switcher,
+  .site-header #joinStoreButton {
+    width: 100%;
+  }
+
+  .flavor-filter:not([open]) {
+    padding-block: 0.65rem;
+  }
+}

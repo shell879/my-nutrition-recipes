@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyNutrition Demo Editor</title>
+    <link rel="stylesheet" href="/demo/editor.css?v=demo-1" />
+    <link rel="manifest" href="/manifest.json">
+    <script>navigator.serviceWorker.register('/service-worker.js')</script>
+  </head>
+  <body class="mynutrition-admin" data-demo="true">
+    <header>
+      <a href="/demo/">Demo catalog</a>
+      <div class="header-copy">
+        <h1>MyNutrition Demo Editor</h1>
+        <p>Fictional recipes only. Save keeps changes in this browser; real stores are not affected.</p>
+        <button id="downloadButton" type="button" class="quiet-button">Download Recipes</button>
+        <button id="demoResetButton" type="button">Reset demo</button>
+      </div>
+    </header>
+    <p id="loadStatus" class="load-status" role="status" aria-live="polite"></p>
+    <main>
+      <section id="editor" class="hidden">
+        <details class="panel category-panel album-panel">
+          <summary id="albumSummary">Store</summary>
+          <div id="storeInfo" class="store-info">
+            <label>Change Name<input type="text" data-field="name" /></label>
+          </div>
+          <details class="panel category-panel">
+            <summary>Screen colors</summary>
+            <div id="storeColors" class="store-colors">
+              <label>Page background<input type="color" data-color-field="backgroundColor" /></label>
+              <label>Page text<input type="color" data-color-field="textColor" /></label>
+              <label>Card background<input type="color" data-color-field="cardBackgroundColor" /></label>
+              <label>Card text<input type="color" data-color-field="cardTextColor" /></label>
+              <label>Button background<input type="color" data-color-field="buttonColor" /></label>
+              <label>Button text<input type="color" data-color-field="buttonTextColor" /></label>
+            </div>
+          </details>
+          <details class="panel category-panel">
+            <summary>Categories</summary>
+            <button id="addCategoryButton" type="button">Add Category</button>
+            <div id="categoryList" class="item-list"></div>
+          </details>
+        </details>
+        <div class="toolbar">
+          <button id="addDrinkButton" type="button" class="primary">Add Recipe</button>
+          <button id="saveButton" type="button">Save</button>
+        </div>
+        <details class="panel">
+          <summary>Flavor profiles</summary>
+          <div class="section-heading">
+            <button id="addFlavorButton" type="button">Add flavor</button>
+          </div>
+          <div id="flavorList" class="item-list"></div>
+        </details>
+        <section class="panel">
+          <div class="section-heading recipes-heading">
+            <h2>Recipes</h2>
+            <div class="search-wrap">
+              <label class="visually-hidden" for="searchInput">Search recipes or ingredients</label>
+              <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
+              <button id="clearSearchButton" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
+            </div>
+          </div>
+          <div id="drinkList" class="item-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="drinkDialog">
+      <form id="drinkForm">
+        <h2 id="drinkDialogTitle">Add Recipe</h2>
+        <label>
+          Recipe name
+          <input id="drinkName" required />
+        </label>
+        <label>
+          Category
+          <select id="drinkCategory" required></select>
+        </label>
+        <section class="ingredient-editor" aria-labelledby="ingredientHeading">
+          <div class="section-heading">
+            <h3 id="ingredientHeading">Ingredients</h3>
+            <button id="addIngredientButton" type="button">Add ingredient</button>
+          </div>
+          <div id="drinkIngredients" class="ingredient-rows"></div>
+        </section>
+        <p id="formError" class="error" role="alert"></p>
+        <div class="dialog-actions">
+          <button id="cancelDrinkButton" type="button">Cancel</button>
+          <button type="submit" class="primary">Ok</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="flavorDialog">
+      <form id="flavorForm">
+        <h2 id="flavorDialogTitle">Add flavor</h2>
+        <label>
+          Flavor profile name
+          <input id="flavorName" required />
+        </label>
+        <p id="flavorFormError" class="error" role="alert"></p>
+        <div class="dialog-actions">
+          <button id="cancelFlavorButton" type="button">Cancel</button>
+          <button type="submit" class="primary">Save flavor</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="/demo/editor.js?v=demo-1"></script>
+  </body>
+</html>

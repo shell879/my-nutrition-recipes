@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyNutrition Live Demo</title>
+    <meta name="description" content="Explore a fictional MyNutrition catalog and editor." />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/demo/catalog.css?v=demo-1" />
+    <link rel="manifest" href="/manifest.json" />
+    <script>navigator.serviceWorker.register('/service-worker.js')</script>
+  </head>
+  <body data-demo="true">
+    <header class="site-header">
+      <div class="brand-wrap">
+        <a href="/mynutrition-guide/">MyNutrition guide</a>
+        <h1 id="storeName">MyNutrition Demo</h1>
+      </div>
+      <div class="header-tools">
+        <a href="/demo/editor.html">Open Demo Editor</a>
+        <button id="openPickerButton" class="drink-picker-trigger" type="button" disabled>Pick One</button>
+        <button id="openSlideshowButton" class="drink-picker-trigger" type="button" disabled>Recipe slideshow</button>
+        <div class="search-wrap">
+          <label class="visually-hidden" for="searchInput">Search recipes</label>
+          <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
+          <button id="clearSearchButton" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
+        </div>
+      </div>
+    </header>
+    <p id="loadStatus" class="load-status" role="status" aria-live="polite"></p>
+    <main>
+      <nav id="categoryFilters" class="category-filters" aria-label="Recipe categories"></nav>
+      <details id="flavorFilterPanel" class="flavor-filter" open>
+        <summary>Filter by flavor</summary>
+        <div id="flavorFilters" class="flavor-options"></div>
+      </details>
+      <section id="recipeGrid" class="recipe-grid" aria-live="polite"></section>
+    </main>
+    <dialog id="drinkPicker" class="drink-picker-dialog" aria-labelledby="drinkPickerTitle">
+      <section class="drink-picker">
+        <button id="closePickerButton" class="drink-picker-close" type="button">Close</button>
+        <p class="eyebrow">Your next sip</p>
+        <h2 id="drinkPickerTitle">Pick One</h2>
+        <p class="drink-picker-intro">Can't decide? Let the recipes choose for you.</p>
+        <div id="drinkResult" class="drink-result" aria-live="polite" aria-atomic="true" aria-busy="false">
+          <p class="drink-result-label">Today's pick</p>
+          <button id="drinkName" class="drink-name" type="button" disabled>Loading recipes...</button>
+        </div>
+        <button id="pickButton" class="drink-picker-button" type="button" disabled>Pick One</button>
+        <p id="drinkCount" class="drink-count">Loading recipes...</p>
+      </section>
+    </dialog>
+    <script src="/demo/catalog.js?v=demo-1"></script>
+  </body>
+</html>
