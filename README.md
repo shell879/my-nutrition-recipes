@@ -7,8 +7,9 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 - A landing page at `/` with links to the menu and recipe administration
 - A public `/recipe-builder/` introduction with instructions and a link to the
   Access-protected Recipe Builder at `/Christmas/`
-- An HTML/CSS/JS storefront at `/callahannutrition` that reads recipe data from the same-origin `/api/data` endpoint
-- A separate `/admin/` maintenance page for editing categories and drinks
+- A public, static MyNutrition demo at `/demo/`, with fictional
+  catalog data and an editor isolated from the real store APIs
+- Move notices at `/callahannutrition/` and `/admin/` point to the demo
 - A `/Christmas/` admin page for the separate Christmas catalog
 - Recipe Builder can scan recipes, suggest a recipe from a food photo or a
   typed dish name, and lets users review the result before saving.
@@ -31,13 +32,17 @@ python -m http.server 8000
 
 Then open http://localhost:8000
 
-Open http://localhost:8000/callahannutrition to browse recipes or
-http://localhost:8000/admin/ to manage them. The admin page can load
-the local `data.json` file or the same-origin `/api/data` endpoint. Changes can
-be saved to the API with a `POST` to `/api/data`, saved as a browser draft, or
-downloaded as `data.json`; publish the downloaded file to update the public
-menu when needed. The storefront and admin API mode both read from `/api/data`;
-the API endpoint must support `GET` and `POST` with a JSON request body.
+Open http://localhost:8000/demo/ to try the demo. The website's default
+`data.json` contains fictional example recipes and is publicly accessible;
+do not publish private recipes in it. Replacing this file does not change the
+separately stored API data. The demo reads only its fictional
+`/demo/demo.json` and saves edits to browser local storage. Its
+Reset demo button removes those saved edits. Store joining, sharing and switching
+are not available in the demo; changes do not affect real stores.
+If you previously saved demo edits, reset the demo to see updated examples;
+resetting discards those saved edits.
+The demo has its own catalog and editor scripts, derived from the production
+pages; changes to production features are not automatically reflected in it.
 The Recipe Builder editor loads `christmas.json` in local mode. In API mode,
 Recipe Builder and MyNutrition use `/api/christmas` with separate app-specific
 store lists and active selections. MyNutrition's menu and admin share its
@@ -61,8 +66,10 @@ as import/local-data files only; editing either file does not update the live
 KV store. For live API data, use the editor for the relevant app.
 Edits in admin dialogs are staged in the page and do not call the API; use the
 top-level “Save all to API” button once to submit the complete dataset.
-Protect the admin URL and API with Cloudflare Access before sharing them; do
-not rely on the admin page itself for authentication.
+Protect the real admin pages and APIs with Cloudflare Access; do not rely on
+the pages themselves for authentication. Retiring the legacy `/admin/` page
+does not disable or remove its `/api/data` endpoint or stored data. Keep that
+endpoint protected or disable it separately.
 
 ## Search visibility
 
@@ -74,6 +81,13 @@ only the public home and introduction pages. Submit the sitemap in Google
 Search Console after deployment. Indexing and search rankings are not guaranteed.
 
 ## Deploy to GitHub Pages
+
+Before sharing the demo, configure Cloudflare Access to allow public access to
+`/demo/` and its assets. To make the legacy move notices visible without signing
+in, allow access to `/callahannutrition/`, `/callahannutrition/editor.html`,
+`/admin/`, and `/admin.html` as well. Verify overlapping policies.
+Keep the real MyNutrition pages and all private APIs (including `/api/data`)
+protected, and test the demo in a signed-out browser.
 
 1. Push this repo to GitHub.
 2. In the repository settings, enable GitHub Pages.

@@ -151,12 +151,17 @@ function changeSpeed(direction) {
 
 async function initialize() {
   try {
+    const isDemo = new URLSearchParams(location.search).get('demo') === '1';
     const raw = sessionStorage.getItem('mynutrition-slideshow');
     sessionStorage.removeItem('mynutrition-slideshow');
     if (raw) {
-      $('backLink').href = '/mynutrition/';
-      $('backLink').textContent = 'Back to MyNutrition';
+      $('backLink').href = isDemo ? '/demo/' : '/mynutrition/';
+      $('backLink').textContent = isDemo ? 'Back to demo' : 'Back to MyNutrition';
       startSlideshow(JSON.parse(raw));
+    } else if (isDemo) {
+      $('backLink').href = '/demo/';
+      $('backLink').textContent = 'Back to demo';
+      throw new Error('Open the slideshow from the demo catalog to display its recipes.');
     } else {
       await loadPublicStores();
     }
