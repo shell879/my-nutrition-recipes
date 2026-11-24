@@ -7,6 +7,7 @@
     <meta name="description" content="Public menu and recipe catalog for My Nutrition Recipes." />
     <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="/mynutrition/mynutrition.css?v=slideshow-3" />
+    <link rel="stylesheet" href="/navigation.css?v=1" />
     <link rel="manifest" href="/manifest.json">
     <script>navigator.serviceWorker.register('/service-worker.js')</script>
 
@@ -14,7 +15,10 @@
   <body>
     <header class="site-header">
       <div class="brand-wrap">
-        <a href="/">MyNutrition</a>
+        <nav class="site-nav" aria-label="Site navigation">
+          <a href="/">Home</a>
+          <a href="/mynutrition-guide/">MyNutrition guide</a>
+        </nav>
         <h1 id="storeName">MyNutrition</h1>
       </div>
       <div class="header-tools">

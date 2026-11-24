@@ -1,0 +1,20 @@
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.site-nav a { color: inherit; text-underline-offset: 0.2em; }
+.site-nav a:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+.site-nav .site-nav-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.45rem;
+  border-radius: 0.4rem;
+  color: #213854;
+  background: #fff;
+}
+.site-nav-home img { display: block; width: 5rem; height: auto; }

@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MyNutrition Admin</title>
     <link rel="stylesheet" href="./mynutrition-admin.css" />
+    <link rel="stylesheet" href="/navigation.css?v=1" />
     <link rel="manifest" href="/manifest.json">
     <script>navigator.serviceWorker.register('/service-worker.js')</script>
   </head>
   <body class="mynutrition-admin">
     <header>
-      <a href="/">Home</a>
+      <nav class="site-nav" aria-label="Site navigation">
+        <a href="/">Home</a>
+        <a href="/mynutrition/">MyNutrition</a>
+        <a href="/mynutrition-guide/">MyNutrition guide</a>
+      </nav>
       <div class="header-copy">
         <h1>MyNutrition Admin</h1>
         <p>Manage recipes and stores.</p>

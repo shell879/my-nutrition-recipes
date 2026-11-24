@@ -4,13 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MyNutrition Store Management</title>
-    <link rel="stylesheet" href="./store-management.css?v=shop-products-4">
+    <link rel="stylesheet" href="./store-management.css?v=brand-5">
   </head>
   <body>
+    <header class="site-header">
+      <a class="brand-link" href="/" aria-label="Shell Designz home"><img src="/logo.png" alt=""><span>Home</span></a>
+    </header>
     <main>
-      <a href="/">Back to Shell Designz</a>
-      <h1>MyNutrition Store Management</h1>
-      <p>Changes affect real stores. Ask affected users to stop making changes until you are finished.</p>
+      <div class="page-intro">
+        <p class="eyebrow">Shell Designz administration</p>
+        <h1>MyNutrition Store Management</h1>
+        <p class="notice">Changes affect real stores. Ask affected users to stop making changes until you are finished.</p>
+      </div>
       <section>
         <h2>MyNutrition access requests</h2>
         <p>Contact each requester by email, then remove the request when finished. Requests do not grant access automatically.</p>
@@ -40,9 +45,12 @@
         <p id="products-status" role="status" aria-live="polite">Loading products...</p>
         <fieldset id="products-editor" disabled>
           <legend>Product list</legend>
-          <p>Categories with products appear as headings on the shop. New categories can be removed; the original categories can be renamed.</p>
-          <button id="add-product-category" type="button">Add category</button>
-          <div id="product-category-controls"></div>
+          <details class="category-management">
+            <summary>Manage categories</summary>
+            <p>Categories with products appear as headings on the shop. New categories can be removed; the original categories can be renamed.</p>
+            <button id="add-product-category" type="button">Add category</button>
+            <div id="product-category-controls"></div>
+          </details>
           <div id="products"></div>
         </fieldset>
         <button id="add-product" type="button" disabled>Add product</button>
@@ -52,7 +60,7 @@
       </section>
       <p id="status" role="status" aria-live="polite"></p>
     </main>
-    <script src="./store-management.js?v=shop-products-4"></script>
+    <script src="./store-management.js?v=shop-products-6"></script>
     <script src="./access-requests.js?v=1"></script>
   </body>
 </html>

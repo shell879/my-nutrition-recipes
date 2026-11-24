@@ -1,3 +1,32 @@
+.shop-brand img {
+  display: block;
+  width: min(13rem, 55vw);
+  height: auto;
+}
+
+.shop-intro {
+  background: #f7f4fb;
+  border-color: #e4d9ef;
+}
+
+.shop-intro h1 {
+  max-width: none;
+  margin: 0;
+}
+
+.shop-intro > p:last-child { margin-bottom: 0; }
+.ingredient-section > p, .products-section > p { max-width: 70ch; }
+
+.retailer-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.retailer-field label { font-weight: 700; }
+
 .shopping-list {
   display: grid;
   gap: 0.75rem;
@@ -8,7 +37,11 @@
   display: flex;
   flex-wrap: wrap;
   align-items: end;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #e1e6ed;
+  border-radius: 12px;
+  background: #f8fafc;
 }
 
 .shopping-item label {
@@ -18,6 +51,8 @@
 .shopping-item input {
   display: block;
   width: 100%;
+  background: #fff;
+  color: #1f2937;
 }
 
 .shopping-item input,
@@ -37,6 +72,12 @@ button, .search-link {
   text-decoration: none;
 }
 
+button { font-weight: 700; }
+button:focus-visible, select:focus-visible, input:focus-visible {
+  outline: 3px solid #526c91;
+  outline-offset: 3px;
+}
+
 .search-link[aria-disabled="true"] {
   color: #4b5563;
   background: #e5e7eb;
@@ -44,5 +85,23 @@ button, .search-link {
 }
 
 .search-note {
+  max-width: 70ch;
   font-size: 0.9rem;
 }
+
+#curated-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+}
+
+#curated-products section {
+  margin: 0;
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+#curated-products h3 { margin-bottom: 0.75rem; }
+#curated-products ul { margin: 0; padding-left: 1.25rem; }
+#curated-products li + li { margin-top: 0.5rem; }

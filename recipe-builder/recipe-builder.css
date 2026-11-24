@@ -35,6 +35,14 @@ a:focus-visible {
   text-decoration: none;
 }
 
+.home-link img {
+  display: block;
+  width: min(13rem, 55vw);
+  height: auto;
+}
+.home-link { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 0.6rem; }
+.home-link span { text-decoration: underline; text-underline-offset: 0.2em; }
+
 .header-link { text-decoration: underline; text-underline-offset: 0.2em; }
 
 main {

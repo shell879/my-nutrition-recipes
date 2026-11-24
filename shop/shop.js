@@ -55,11 +55,11 @@ function updateLink(row) {
       search.textContent = matches.length ? 'See Amazon picks below' : 'No matching Amazon product';
       return;
     }
-    search.textContent = 'Suggested Amazon product (affiliate link)';
+    search.textContent = 'Suggested Amazon product';
     search.href = matches[0].value;
     search.rel = 'sponsored noopener';
     search.removeAttribute('aria-disabled');
-    search.setAttribute('aria-label', `View ${matches[0].name} on Amazon (affiliate link)`);
+    search.setAttribute('aria-label', `View ${matches[0].name} on Amazon`);
     return;
   }
   const url = new URL('https://www.walmart.com/search');
@@ -83,12 +83,7 @@ function addItem(value = '') {
   search.className = 'search-link';
   search.target = '_blank';
   search.rel = 'noopener noreferrer';
-  const remove = document.createElement('button');
-  remove.type = 'button';
-  remove.textContent = 'Remove';
-  remove.addEventListener('click', () => row.remove());
-
-  row.append(label, search, remove);
+  row.append(label, search);
   input.addEventListener('input', () => updateLink(row));
   updateLink(row);
   list.append(row);
@@ -123,11 +118,11 @@ try {
       throw new Error('The shopping list has an invalid format.');
     }
     handoff.items.forEach((item) => addItem(item));
-    setStatus(handoff.items.length ? 'Review your ingredients before shopping.' : 'No TOP ingredients were found. Add ingredients below.');
+    setStatus(handoff.items.length ? 'Review your ingredient suggestions below.' : 'No TOP ingredients were found. Add an ingredient or browse the product picks below.');
   } else {
-    setStatus('No recipe list was provided. Add ingredients below.');
+    setStatus('No recipe ingredients were provided. Add an ingredient or browse the product picks below.');
   }
 } catch (error) {
   console.error('Could not load shopping list:', error);
-  setStatus(`Could not load the shopping list: ${error.message} You can add ingredients below.`, true);
+  setStatus(`Could not load the recipe ingredients: ${error.message} You can still add an ingredient or browse the product picks below.`, true);
 }

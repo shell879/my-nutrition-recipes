@@ -1,27 +1,45 @@
 :root { font-family: "Segoe UI", Arial, sans-serif; color: #17212b; background: #f2f4f7; }
 * { box-sizing: border-box; }
-body { margin: 0; padding: 1.5rem; }
-main { max-width: 1100px; margin: auto; }
-section { margin: 1rem 0; padding: 1.5rem; border: 1px solid #dce3eb; border-radius: 14px; background: white; }
+body { margin: 0; line-height: 1.6; }
+.site-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem clamp(1.25rem, 5vw, 3rem); border-bottom: 1px solid #dce3eb; background: #fff; }
+.brand-link img { display: block; width: min(13rem, 55vw); height: auto; }
+.brand-link { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .6rem; color: #213854; font-weight: 700; text-underline-offset: .2em; }
+main { width: min(100% - 2rem, 1100px); margin: auto; padding: clamp(2rem, 6vw, 4rem) 0; }
+.page-intro, main > section { margin: 0 0 1.25rem; padding: clamp(1.5rem, 4vw, 2rem); border: 1px solid #dce3eb; border-radius: 20px; background: #fff; }
+.page-intro { border-color: #e4d9ef; background: #f7f4fb; }
+.eyebrow { margin: 0 0 .5rem; color: #536174; font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; letter-spacing: -.035em; }
+.notice { margin: 1rem 0 0; }
 h2 { margin-top: 0; }
 label { display: grid; gap: .35rem; margin: 1rem 0; font-weight: 600; }
 input, select, button { padding: .7rem; border: 1px solid #8493a3; border-radius: 6px; font: inherit; }
-button { color: white; background: #126e68; cursor: pointer; }
+input, select { min-width: 0; max-width: 100%; }
+button { min-height: 2.5rem; padding: .4rem .7rem; color: white; background: #126e68; font-size: .9rem; cursor: pointer; }
 button:disabled { opacity: .6; cursor: wait; }
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid #526c91; outline-offset: 3px; }
 li { margin: 1rem 0; overflow-wrap: anywhere; }
 li button { margin-left: .5rem; background: #922f2f; }
-li button.visibility-button { background: #126e68; }
+.visibility-toggle { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin: .5rem; cursor: pointer; }
+.visibility-toggle input { appearance: none; flex: none; width: 2.5rem; height: 1.4rem; margin: 0; padding: 0; border: 1px solid #6b7785; border-radius: 1rem; background: #dce3eb; cursor: pointer; }
+.visibility-toggle input::before { content: ""; display: block; width: 1rem; height: 1rem; margin: .15rem; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px #0005; transition: transform .15s ease; }
+.visibility-toggle input:checked { border-color: #126e68; background: #126e68; }
+.visibility-toggle input:checked::before { transform: translateX(1.1rem); }
+.visibility-toggle input:disabled { opacity: .6; cursor: wait; }
+.visibility-state { min-width: 2rem; }
+@media (prefers-reduced-motion: reduce) { .visibility-toggle input::before { transition: none; } }
 #status { white-space: pre-wrap; overflow-wrap: anywhere; }
 #status.error { color: #a32121; }
 #stores-status.error { color: #a32121; }
 #products-status.error { color: #a32121; }
-.product-group { margin: 1rem 0; padding: 0; border: 0; border-radius: 0; }
-.product-group h3 { margin: 0 0 .75rem; }
+.category-management, .product-group { margin: 1rem 0; padding: .8rem 1rem; border: 1px solid #dce3eb; border-radius: 12px; background: #f8fafc; }
+.category-management summary, .product-group summary { font-weight: 700; cursor: pointer; overflow-wrap: anywhere; }
+.category-management summary:focus-visible, .product-group summary:focus-visible { outline: 3px solid #526c91; outline-offset: 3px; }
+.product-group .product-grid { margin-top: 1rem; }
 .product-group-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: .5rem 0; }
 .product-group-actions span { min-width: 10rem; overflow-wrap: anywhere; }
 .product-group-actions button { padding: .4rem; }
 .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 1rem; }
-.product-row { min-width: 0; padding: 1rem; border: 1px solid #dce3eb; border-radius: 8px; }
+.product-row { min-width: 0; padding: 1rem; border: 1px solid #dce3eb; border-radius: 8px; background: #fff; }
 .product-row label:first-child { margin-top: 0; }
 .product-row input { width: 100%; }
 .product-row button { background: #922f2f; }
