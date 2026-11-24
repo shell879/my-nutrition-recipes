@@ -5,6 +5,8 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 ## What this repo includes
 
 - A landing page at `/` with links to the menu and recipe administration
+- Main app pages include a Shell Designz Home link and context-specific navigation;
+  slideshow navigation stays in its controls panel.
 - A public `/recipe-builder/` introduction with instructions and a link to the
   Access-protected Recipe Builder at `/Christmas/`
 - A public, static MyNutrition demo at `/demo/`, with fictional
@@ -15,7 +17,7 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 - A `/Christmas/` admin page for the separate Christmas catalog
 - Recipe Builder can scan recipes, suggest a recipe from a food photo or a
   typed dish name, and lets users review the result before saving.
-- Recipe Builder recipe cards can open `/shop/` with an editable list of that
+- Recipe Builder recipe cards can open `/shop/` with the editable TOP entries of that
   recipe's TOP entries. BOTTOM instructions and recipe names are not passed.
   Amazon links suggest saved affiliate products whose names appear in ingredients and do not add
   items to a retailer cart. Walmart is not currently offered in the retailer selector.
@@ -51,8 +53,8 @@ The demo has its own catalog and editor scripts, derived from the production
 pages; changes to production features are not automatically reflected in it.
 The public shop accepts a versioned list of item names via same-origin session
 storage and never loads store data or calls a shopping API. The handoff is
-consumed when the shop opens; edits remain on that page until it is closed or
-reloaded. A blocked pop-up or unavailable browser storage is reported in Recipe
+consumed when the shop opens; added or edited ingredients adjust product suggestions
+and remain on that page until it is closed or reloaded. A blocked pop-up or unavailable browser storage is reported in Recipe
 Builder. Amazon suggests saved affiliate products when their names appear as
 whole words in an ingredient, ignoring capitalization and simple plural forms.
 The most specific matching name is preferred; if several equally specific

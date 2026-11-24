@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MyNutrition Demo Editor</title>
     <link rel="stylesheet" href="/demo/editor.css?v=demo-1" />
+    <link rel="stylesheet" href="/navigation.css?v=1" />
     <link rel="manifest" href="/manifest.json">
     <script>navigator.serviceWorker.register('/service-worker.js')</script>
   </head>
   <body class="mynutrition-admin" data-demo="true">
     <header>
-      <a href="/demo/">Demo catalog</a>
+      <nav class="site-nav" aria-label="Site navigation">
+        <a class="site-nav-home" href="/"><img src="/logo.png" alt="" />Home</a>
+        <a href="/demo/">Demo catalog</a>
+        <a href="/mynutrition-guide/">MyNutrition guide</a>
+      </nav>
       <div class="header-copy">
         <h1>MyNutrition Demo Editor</h1>
         <p>Fictional recipes only. Save keeps changes in this browser; real stores are not affected.</p>

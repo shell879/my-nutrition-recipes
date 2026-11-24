@@ -44,25 +44,39 @@ async function refresh() {
     const others = store.members.filter((member) => !member.owner).map((member) => member.email);
     const details = document.createElement('span');
     details.textContent = `${store.name} (${store.id}) — Owner: ${owners.join(', ') || 'unknown'}; Other access: ${others.join(', ') || 'none'}`;
-    const visibility = document.createElement('button');
-    visibility.type = 'button';
-    visibility.className = 'visibility-button';
-    visibility.textContent = store.publicSlideshow ? 'Remove from public slideshow' : 'Add to public slideshow';
-    visibility.addEventListener('click', async () => {
-      if (busy) return;
-      const enabled = !store.publicSlideshow;
+    const visibilityLabel = document.createElement('label');
+    visibilityLabel.className = 'visibility-toggle';
+    const visibility = document.createElement('input');
+    visibility.type = 'checkbox';
+    visibility.setAttribute('role', 'switch');
+    visibility.checked = store.publicSlideshow;
+    const visibilityText = document.createElement('span');
+    visibilityText.textContent = 'Public slideshow';
+    const visibilityState = document.createElement('span');
+    visibilityState.className = 'visibility-state';
+    visibilityState.textContent = store.publicSlideshow ? 'On' : 'Off';
+    visibilityLabel.append(visibility, visibilityText, visibilityState);
+    visibility.addEventListener('change', async () => {
+      if (busy) {
+        visibility.checked = store.publicSlideshow;
+        return;
+      }
+      const enabled = visibility.checked;
       const prompt = enabled
         ? `Make "${store.name}" visible in the public slideshow? Its store name, flavors, categories and drink names will be public.`
         : `Remove "${store.name}" from the public slideshow?`;
-      if (!window.confirm(prompt)) return;
+      if (!window.confirm(prompt)) {
+        visibility.checked = store.publicSlideshow;
+        return;
+      }
       busy = true;
       visibility.disabled = true;
       try {
         await request('public-slideshow', { storeId: store.id, enabled });
         store.publicSlideshow = enabled;
-        visibility.textContent = enabled ? 'Remove from public slideshow' : 'Add to public slideshow';
+        visibilityState.textContent = enabled ? 'On' : 'Off';
         status(`"${store.name}" ${enabled ? 'added to' : 'removed from'} the public slideshow. Changes can take time to appear.`);
-      } catch (error) { status(error.message, true); }
+      } catch (error) { visibility.checked = store.publicSlideshow; status(error.message, true); }
       finally { busy = false; visibility.disabled = false; }
     });
     const button = document.createElement('button');
@@ -82,7 +96,7 @@ async function refresh() {
       finally { busy = false; button.disabled = false; }
     });
     item.appendChild(details);
-    item.appendChild(visibility);
+    item.appendChild(visibilityLabel);
     item.appendChild(button);
     $('stores').appendChild(item);
   }
@@ -246,7 +260,11 @@ function productControls() {
   $('reload-products').disabled = productsBusy;
 }
 
-function updateProductGroups() {
+function updateProductGroups(openCategoryIds = []) {
+  const openCategories = new Set([
+    ...[...$('products').querySelectorAll('.product-group[open]')].map((group) => group.dataset.categoryId),
+    ...openCategoryIds,
+  ]);
   const rows = [...$('products').querySelectorAll('.product-row')];
   for (const row of rows) {
     const select = row.querySelector('[data-field="category"]');
@@ -260,9 +278,11 @@ function updateProductGroups() {
     select.value = productCategories.some((category) => category.id === selected) ? selected : 'uncategorized';
   }
   const sections = productCategories.map((category) => {
-    const section = document.createElement('section');
+    const section = document.createElement('details');
     section.className = 'product-group';
-    const heading = document.createElement('h3');
+    section.dataset.categoryId = category.id;
+    section.open = openCategories.has(category.id);
+    const heading = document.createElement('summary');
     heading.textContent = category.name;
     const grid = document.createElement('div');
     grid.className = 'product-grid';
@@ -347,7 +367,7 @@ function addProduct(product = { name: '', value: '', category: 'uncategorized' }
   category.value = product.category ?? 'uncategorized';
   category.addEventListener('change', () => {
     productsDirty = true;
-    updateProductGroups();
+    updateProductGroups([category.value]);
     category.focus();
   });
   categoryLabel.appendChild(category);
@@ -391,7 +411,7 @@ async function loadProducts() {
 $('add-product').addEventListener('click', () => {
   const row = addProduct();
   productsDirty = true;
-  updateProductGroups();
+  updateProductGroups([row.querySelector('[data-field="category"]').value]);
   row.querySelector('input').focus();
 });
 $('add-starter-products').addEventListener('click', () => {
@@ -399,7 +419,7 @@ $('add-starter-products').addEventListener('click', () => {
     .map((input) => input.value.trim()));
   const additions = starterProducts.filter((product) => !existing.has(product.value));
   additions.forEach(addProduct);
-  updateProductGroups();
+  updateProductGroups(additions.map((product) => product.category));
   if (additions.length) productsDirty = true;
   productsStatus(additions.length
     ? 'Starter products added. Select Save products to publish them.'

@@ -37,7 +37,7 @@ async function loadProductPicks() {
       link.href = url.href;
       link.target = '_blank';
       link.rel = 'sponsored noopener';
-      link.textContent = `${product.name} (affiliate link)`;
+      link.textContent = product.name;
       item.appendChild(link);
       group.items.push(item);
       return { name: product.name, value: url.href, category: group.category };

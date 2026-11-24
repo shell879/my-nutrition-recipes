@@ -188,10 +188,12 @@ async function initialize() {
     if (raw) {
       $('backLink').href = isDemo ? '/demo/' : '/mynutrition/';
       $('backLink').textContent = isDemo ? 'Back to demo' : 'Back to MyNutrition';
+      $('homeLink').hidden = false;
       startSlideshow(JSON.parse(raw));
     } else if (isDemo) {
       $('backLink').href = '/demo/';
       $('backLink').textContent = 'Back to demo';
+      $('homeLink').hidden = false;
       throw new Error('Open the slideshow from the demo catalog to display its recipes.');
     } else {
       await loadPublicStores();

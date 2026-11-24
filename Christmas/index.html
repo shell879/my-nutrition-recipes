@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recipe Identification</title>
     <link rel="stylesheet" href="./christmas.css" />
+    <link rel="stylesheet" href="/navigation.css?v=1" />
     <link rel="manifest" href="/manifest.json">
     <script>navigator.serviceWorker.register('/service-worker.js')</script>
   </head>
   <body class="christmas-admin">
     <header>
-      <a href="/">Home</a>
+      <nav class="site-nav" aria-label="Site navigation">
+        <a href="/">Home</a>
+        <a href="/recipe-builder/">Recipe Builder guide</a>
+        <a href="/shop/">Shop</a>
+      </nav>
       <div class="header-copy">
         <h1>My Recipes</h1>
         <p>Store, organize, and identify your favorite recipes in seconds.</p>
