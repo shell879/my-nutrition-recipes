@@ -6,7 +6,7 @@ body {
   color: #fff;
   font-family: "Segoe UI", Arial, sans-serif;
 }
-.preview {
+.slideshow {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -14,7 +14,6 @@ body {
   padding: clamp(1rem, 3vw, 2rem);
   background: radial-gradient(ellipse at 50% 45%, #271144, #080618 70%);
 }
-.disclaimer { margin: 0; color: #d3c9e8; font-size: 0.9rem; }
 a { color: #b8f8ff; }
 button {
   border: 1px solid #af9bdd;
@@ -125,7 +124,7 @@ button:focus-visible, a:focus-visible, select:focus-visible, summary:focus-visib
 .drink:nth-child(4n + 2) { --neon: #00cce8; }
 .drink:nth-child(4n + 3) { --neon: #a754ff; }
 .drink:nth-child(4n) { --neon: #ff8a30; }
-.preview.is-paused .drink-text { animation-play-state: paused; }
+.slideshow.is-paused .drink-text { animation-play-state: paused; }
 .controls {
   position: fixed;
   z-index: 2;

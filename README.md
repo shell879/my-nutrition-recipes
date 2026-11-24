@@ -9,9 +9,8 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
   Access-protected Recipe Builder at `/Christmas/`
 - A public, static MyNutrition demo at `/demo/`, with fictional
   catalog data and an editor isolated from the real store APIs
-- A separate neon slideshow style preview at `/slideshow-neon-preview/`,
-  using fictional drinks. The slideshow at `/slideshow/` uses the same neon
-  appearance with public store data or the selected MyNutrition catalog.
+- A neon slideshow at `/slideshow/` showing public store data or the
+  selected MyNutrition catalog.
 - Move notices at `/callahannutrition/` and `/admin/` point to the demo
 - A `/Christmas/` admin page for the separate Christmas catalog
 - Recipe Builder can scan recipes, suggest a recipe from a food photo or a
