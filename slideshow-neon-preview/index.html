@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neon Slideshow Preview</title>
+    <link rel="stylesheet" href="../slideshow/neon.css?v=neon-1">
+  </head>
+  <body>
+    <main class="preview">
+      <section class="stage" aria-label="Neon slideshow preview">
+        <div id="storeWatermark" class="store-watermark" aria-hidden="true">MyNutrition Demo</div>
+        <svg class="drink-graphic drink-graphic--cup" viewBox="0 0 100 130" aria-hidden="true" focusable="false">
+          <path d="M24 39h52l-7 74H31z M20 39h60 M27 29h46l7 10H20z M49 29l8-21h17 M39 52v3 M61 52v3 M40 71q10 10 20 0" />
+          <path d="M10 19v10 M5 24h10" />
+        </svg>
+        <svg class="drink-graphic drink-graphic--glass" viewBox="0 0 100 130" aria-hidden="true" focusable="false">
+          <path d="M17 25h66L57 70v38 M43 70v38 M34 109h32 M26 42h48 M50 25l9-15h14 M38 53q12 8 24 0" />
+          <circle cx="73" cy="21" r="13" />
+          <path d="M85 65v10 M80 70h10" />
+        </svg>
+        <h2 id="flavor"></h2>
+        <p id="status" role="status"></p>
+        <div id="names" class="names"></div>
+      </section>
+
+      <details class="controls">
+        <summary aria-label="Slideshow controls"><span aria-hidden="true">+</span></summary>
+        <div class="controls-panel">
+          <h2>Slideshow controls</h2>
+          <p class="disclaimer">Preview with fictional drinks. Your current slideshow is unchanged.</p>
+          <label for="store">Choose a fictional store</label>
+          <select id="store">
+            <option value="0">MyNutrition Demo</option>
+            <option value="1">Sunshine Sips Demo</option>
+          </select>
+          <label for="speed">Time per slide</label>
+          <select id="speed">
+            <option value="4">4 seconds</option>
+            <option value="7" selected>7 seconds</option>
+            <option value="10">10 seconds</option>
+          </select>
+          <div class="panel-buttons">
+            <button id="pause" type="button">Pause</button>
+            <button id="stop" type="button">Stop</button>
+          </div>
+          <a href="/slideshow/">Open current slideshow</a>
+          <a href="/">Back to Home</a>
+        </div>
+      </details>
+    </main>
+    <script src="./preview.js?v=neon-1"></script>
+  </body>
+</html>

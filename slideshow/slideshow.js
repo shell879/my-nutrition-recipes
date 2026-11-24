@@ -3,34 +3,27 @@ let slides = [];
 let index = 0;
 let timer = null;
 let paused = false;
+let stopped = false;
 let publicStores = [];
-let secondsPerSlide = 2;
-const cardAnimations = ['flip-top', 'flip-bottom', 'flip-right', 'flip-left', 'card-fade', 'card-enter'];
+let secondsPerSlide = 7;
 
 function renderSlide() {
   const slide = slides[index];
   $('flavor').textContent = slide.flavor;
-  document.body.dataset.theme = String(index % 4);
   $('names').replaceChildren();
-  slide.entries.forEach((entry, cardIndex) => {
-    const card = document.createElement('article');
-    card.className = 'drink-card';
-    card.style.setProperty('--card-delay', `${cardIndex * 160 * Math.min(secondsPerSlide / 2, 1)}ms`);
-    card.style.setProperty('--animation-scale', Math.min(secondsPerSlide / 2, 1));
-    card.style.setProperty('--card-animation', cardAnimations[(index + cardIndex) % cardAnimations.length]);
+  slide.entries.forEach((entry) => {
+    const drink = document.createElement('article');
+    drink.className = 'drink';
+    const text = document.createElement('div');
+    text.className = 'drink-text';
     const category = document.createElement('p');
-    category.className = 'drink-category';
     category.textContent = entry.category;
     const name = document.createElement('h3');
     name.textContent = entry.name;
-    card.appendChild(category);
-    card.appendChild(name);
-    $('names').appendChild(card);
+    text.append(category, name);
+    drink.appendChild(text);
+    $('names').appendChild(drink);
   });
-  $('position').textContent = `Slide ${index + 1} of ${slides.length}`;
-  $('previous').disabled = slides.length <= 1;
-  $('next').disabled = slides.length <= 1;
-  $('pause').disabled = slides.length <= 1;
 }
 
 function stopTimer() {
@@ -42,27 +35,25 @@ function stopTimer() {
 
 function startTimer() {
   stopTimer();
-  if (!paused && slides.length > 1) {
-    timer = window.setInterval(() => changeSlide(1), secondsPerSlide * 1000);
+  if (!paused && !stopped && slides.length > 1) {
+    timer = window.setInterval(() => {
+      index = (index + 1) % slides.length;
+      renderSlide();
+    }, secondsPerSlide * 1000);
   }
-}
-
-function changeSlide(direction) {
-  index = (index + direction + slides.length) % slides.length;
-  renderSlide();
 }
 
 function stop() {
   stopTimer();
-  slides = [];
-  $('controls').hidden = true;
-  $('stop').disabled = true;
+  stopped = true;
+  paused = false;
+  $('slideshow').classList.remove('is-paused');
+  $('pause').textContent = 'Pause';
+  $('pause').disabled = true;
+  $('stop').textContent = 'Start';
   $('flavor').textContent = '';
   $('names').replaceChildren();
-  if (!$('storePicker').hidden) $('storeSelect').value = '';
-  $('status').textContent = $('storePicker').hidden
-    ? 'Slideshow stopped. You can close this tab or return to MyNutrition.'
-    : 'Slideshow stopped. Select a store to start again.';
+  $('status').textContent = 'Slideshow stopped. Select Start to play again.';
 }
 
 function startSlideshow(data) {
@@ -72,15 +63,25 @@ function startSlideshow(data) {
     throw new Error('The slideshow data is invalid.');
   }
   stopTimer();
-  slides = data.slides;
+  slides = data.slides.flatMap((slide) => {
+    const pages = [];
+    for (let offset = 0; offset < slide.entries.length; offset += 4) {
+      pages.push({ flavor: slide.flavor, entries: slide.entries.slice(offset, offset + 4) });
+    }
+    return pages;
+  });
   index = 0;
   paused = false;
+  stopped = false;
+  $('slideshow').classList.remove('is-paused');
   $('pause').textContent = 'Pause';
-  $('slideshowTitle').textContent = `${data.storeName} - Recipe slideshow`;
+  $('pause').disabled = !slides.length;
+  $('stop').textContent = 'Stop';
+  $('stop').disabled = !slides.length;
+  $('storeWatermark').textContent = data.storeName;
+  document.title = `${data.storeName} - Recipe slideshow`;
   $('flavor').textContent = '';
   $('names').replaceChildren();
-  $('controls').hidden = !slides.length;
-  $('stop').disabled = !slides.length;
   $('status').textContent = slides.length ? '' : 'This store has no drinks to display.';
   if (slides.length) {
     renderSlide();
@@ -90,7 +91,6 @@ function startSlideshow(data) {
 
 async function loadPublicStores() {
   $('storePicker').hidden = false;
-  $('stop').disabled = true;
   $('status').textContent = 'Loading stores...';
   const apiBase = location.hostname === '127.0.0.1' || location.hostname === 'localhost'
     ? 'http://127.0.0.1:8787' : '';
@@ -111,45 +111,76 @@ async function loadPublicStores() {
     $('storeSelect').appendChild(option);
   });
   $('storeSelect').disabled = !publicStores.length;
-  $('status').textContent = publicStores.length ? 'Select a store to start the slideshow.' : 'No stores are available.';
+  $('status').textContent = publicStores.length ? 'Open + to select a store.' : 'No stores are available.';
 }
 
 $('storeSelect').addEventListener('change', () => {
   if ($('storeSelect').value === '') {
-    stop();
+    stopTimer();
+    slides = [];
+    paused = false;
+    stopped = false;
+    $('slideshow').classList.remove('is-paused');
+    $('pause').textContent = 'Pause';
+    $('stop').textContent = 'Stop';
+    $('flavor').textContent = '';
+    $('names').replaceChildren();
+    $('storeWatermark').textContent = '';
+    $('pause').disabled = true;
+    $('stop').disabled = true;
+    $('status').textContent = 'Select a store to start the slideshow.';
     return;
   }
   try {
     startSlideshow(publicStores[Number($('storeSelect').value)]);
+    $('controlsPanel').open = false;
   } catch (error) {
     console.error('Could not start slideshow:', error);
-    stop();
+    stopTimer();
+    slides = [];
+    $('flavor').textContent = '';
+    $('names').replaceChildren();
+    $('storeWatermark').textContent = '';
+    $('pause').disabled = true;
+    $('stop').disabled = true;
     $('status').textContent = `Could not start slideshow: ${error.message}`;
   }
 });
-$('stop').addEventListener('click', stop);
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && slides.length) stop();
+$('stop').addEventListener('click', () => {
+  if (!stopped) {
+    stop();
+    return;
+  }
+  stopped = false;
+  index = 0;
+  $('status').textContent = '';
+  $('pause').disabled = false;
+  $('stop').textContent = 'Stop';
+  renderSlide();
+  startTimer();
 });
-$('previous').addEventListener('click', () => { changeSlide(-1); startTimer(); });
-$('next').addEventListener('click', () => { changeSlide(1); startTimer(); });
-$('slower').addEventListener('click', () => changeSpeed(1));
-$('faster').addEventListener('click', () => changeSpeed(-1));
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  if ($('controlsPanel').open) {
+    $('controlsPanel').open = false;
+    $('controlsPanel').querySelector('summary').focus();
+  } else if (slides.length && !stopped) {
+    stop();
+  }
+});
+$('speed').addEventListener('change', () => {
+  secondsPerSlide = Number($('speed').value);
+  startTimer();
+});
 $('pause').addEventListener('click', () => {
   paused = !paused;
   $('pause').textContent = paused ? 'Resume' : 'Pause';
+  $('slideshow').classList.toggle('is-paused', paused);
   startTimer();
 });
 
-function changeSpeed(direction) {
-  secondsPerSlide = Math.max(1, Math.min(8, secondsPerSlide + direction));
-  $('speed').textContent = `${secondsPerSlide} ${secondsPerSlide === 1 ? 'second' : 'seconds'} per slide`;
-  $('faster').disabled = secondsPerSlide === 1;
-  $('slower').disabled = secondsPerSlide === 8;
-  startTimer();
-}
-
 async function initialize() {
+  $('controlsPanel').open = false;
   try {
     const isDemo = new URLSearchParams(location.search).get('demo') === '1';
     const raw = sessionStorage.getItem('mynutrition-slideshow');
