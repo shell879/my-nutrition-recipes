@@ -13,6 +13,7 @@ li button { margin-left: .5rem; background: #922f2f; }
 li button.visibility-button { background: #126e68; }
 #status { white-space: pre-wrap; overflow-wrap: anywhere; }
 #status.error { color: #a32121; }
+#stores-status.error { color: #a32121; }
 #products-status.error { color: #a32121; }
 .product-row { border-top: 1px solid #dce3eb; padding: 1rem 0; }
 .product-row input { width: 100%; }

@@ -15,7 +15,13 @@ async function request(path, body) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   };
-  const response = await fetch(`${apiBase}/api/store-management/${path}`, options);
+  let response;
+  try {
+    response = await fetch(`${apiBase}/api/store-management/${path}`, options);
+  } catch (error) {
+    console.error('Store management request failed:', error);
+    throw new Error('Could not reach the store API. Check your connection and Cloudflare Access sign-in for both Store Management and its API.');
+  }
   if (!(response.headers.get('Content-Type') || '').toLowerCase().includes('application/json')) {
     throw new Error('The store API returned a page instead of data. Check that the Worker is running and that you are signed in when using the live site.');
   }
@@ -82,9 +88,15 @@ async function refresh() {
   }
 }
 
+function storesStatus(message, error = false) {
+  $('stores-status').textContent = message;
+  $('stores-status').classList.toggle('error', error);
+}
+
 $('refresh').addEventListener('click', async () => {
-  try { await refresh(); status('Store list refreshed.'); }
-  catch (error) { status(error.message, true); }
+  storesStatus('Loading stores...');
+  try { await refresh(); storesStatus('Store list refreshed.'); }
+  catch (error) { storesStatus(`Could not load stores: ${error.message}`, true); }
 });
 
 $('add-form').addEventListener('submit', async (event) => {
@@ -106,7 +118,8 @@ $('add-form').addEventListener('submit', async (event) => {
   finally { busy = false; button.disabled = false; }
 });
 
-refresh().catch((error) => status(error.message, true));
+refresh().then(() => storesStatus('Stores loaded.'))
+  .catch((error) => storesStatus(`Could not load stores: ${error.message}`, true));
 
 let productsReady = false;
 let productsBusy = false;
