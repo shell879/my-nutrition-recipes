@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MyNutrition Store Management</title>
-    <link rel="stylesheet" href="./store-management.css?v=shop-products-2">
+    <link rel="stylesheet" href="./store-management.css?v=shop-products-3">
   </head>
   <body>
     <main>
@@ -21,6 +21,7 @@
       <section>
         <h2>Stores</h2>
         <p>Choose which stores appear in the public slideshow. Stores are private there until added.</p>
+        <p id="stores-status" role="status" aria-live="polite">Loading stores...</p>
         <button id="refresh" type="button">Refresh stores</button>
         <ul id="stores"></ul>
       </section>
@@ -48,7 +49,7 @@
       </section>
       <p id="status" role="status" aria-live="polite"></p>
     </main>
-    <script src="./store-management.js?v=shop-products-2"></script>
+    <script src="./store-management.js?v=shop-products-3"></script>
     <script src="./access-requests.js?v=1"></script>
   </body>
 </html>
