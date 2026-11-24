@@ -524,6 +524,7 @@ function render() {
         return `<div class="item-row">
           ${drinkDetails}
           <div class="item-actions">
+            <button type="button" data-action="shop-drink" data-id="${escapeHtml(drink.id)}" aria-label="Shop ingredients for ${escapeHtml(drink.name)}">Shop</button>
             <button type="button" data-action="edit-drink" data-id="${escapeHtml(drink.id)}">Edit</button>
             <button type="button" data-action="delete-drink" data-id="${escapeHtml(drink.id)}">Delete</button>
           </div>
@@ -617,10 +618,40 @@ document.addEventListener('click', (event) => {
   if (button.dataset.action === 'edit-category') editCategory(id);
   if (button.dataset.action === 'delete-category') deleteCategory(id);
   if (button.dataset.action === 'edit-drink') openDrinkDialog(id);
+  if (button.dataset.action === 'shop-drink') shopRecipe(id);
   if (button.dataset.action === 'delete-drink') deleteDrink(id);
   if (button.dataset.action === 'edit-flavor') editFlavor(index);
   if (button.dataset.action === 'delete-flavor') deleteFlavor(index);
 });
+
+function shopRecipe(id) {
+  const recipe = storeDrinks().find((item) => item.id === id);
+  if (!recipe) {
+    setStatus('Recipe not found in this album.', true);
+    return;
+  }
+  const ingredients = (Array.isArray(recipe.ingredients) ? recipe.ingredients : [])
+    .filter((item) => String(item?.side || '').toUpperCase() === 'TOP')
+    .map((item) => typeof item.name === 'string' ? item.name.trim() : '')
+    .filter(Boolean);
+  const key = 'recipe-shopping-list';
+  let saved = false;
+  try {
+    sessionStorage.setItem(key, JSON.stringify({ version: 1, items: ingredients }));
+    saved = true;
+    const tab = window.open('/shop/', '_blank');
+    if (!tab) throw new Error('The shop tab was blocked. Allow pop-ups and try again.');
+    tab.opener = null;
+  } catch (error) {
+    console.error('Could not open shop:', error);
+    setStatus(`Could not open shop: ${error.message}`, true);
+  } finally {
+    if (saved) {
+      try { sessionStorage.removeItem(key); }
+      catch (error) { console.error('Could not clear shopping handoff:', error); }
+    }
+  }
+}
 
 function addCategory() {
   const name = prompt('Category name:');

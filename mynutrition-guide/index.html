@@ -28,8 +28,20 @@
         <p class="hero-copy">Learn how to get access, use your stores, and manage your recipes and data.</p>
         <a class="primary-link" href="/mynutrition/">Open MyNutrition</a>
         <a class="primary-link" href="/demo/">Live Site Demo</a>
+        <a class="primary-link" href="#request-access">Request Access</a>
         <p class="access-note">Access is required to use MyNutrition.</p>
         <p class="access-note">The public demo uses fictional recipes. Demo edits stay in your browser and do not affect real stores.</p>
+      </section>
+
+      <section id="request-access" aria-labelledby="request-access-heading">
+        <h2 id="request-access-heading">Request MyNutrition access</h2>
+        <p>Enter your email address to request access. I'll review your request and contact you by email. This does not grant access automatically.</p>
+        <form id="access-request-form">
+          <label for="request-email">Email address</label>
+          <input id="request-email" name="email" type="email" maxlength="254" autocomplete="email" required />
+          <button type="submit" disabled>Request access</button>
+        </form>
+        <p id="request-status" role="status" aria-live="polite">JavaScript is required to send a request.</p>
       </section>
 
       <section class="steps" aria-labelledby="how-it-works">
@@ -37,7 +49,7 @@
         <ol class="store-info-cards getting-started-cards">
           <li>
             <h3>Get access</h3>
-            <p>Give your administrator the email address you will use to sign in. You can log in after they grant that email address access.</p>
+            <p>Request access above, or give your administrator the email address you will use to sign in. You can log in after they grant that email address access.</p>
           </li>
           <li>
             <h3>Get your store code</h3>
@@ -152,5 +164,6 @@
       </section>
     </main>
     <footer><a href="/">Back to Shell Designz</a></footer>
+    <script src="/mynutrition-guide/access-request.js?v=1"></script>
   </body>
 </html>
