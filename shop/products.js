@@ -43,8 +43,10 @@ async function loadProductPicks() {
       return { name: product.name, value: url.href, category: group.category };
     });
     const sections = groups.filter((group) => group.items.length).map((group) => {
-      const section = document.createElement('section');
-      const heading = document.createElement('h3');
+      const section = document.createElement('details');
+      section.className = 'product-category';
+      section.open = group.category === 'ingredient' || group.category === 'supply';
+      const heading = document.createElement('summary');
       heading.textContent = group.title;
       const list = document.createElement('ul');
       list.append(...group.items);
