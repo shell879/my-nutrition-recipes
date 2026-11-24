@@ -9,11 +9,17 @@ async function loadProductPicks() {
     if (!response.ok) throw new Error(`Request failed (HTTP ${response.status}).`);
     const data = await response.json();
     if (!Array.isArray(data.products)) throw new Error('The product list is invalid.');
-    const groups = [
-      { category: 'ingredient', title: 'Ingredients', items: [] },
-      { category: 'supply', title: 'Kitchen supplies', items: [] },
-      { category: 'uncategorized', title: 'Uncategorized', items: [] },
-    ];
+    const categories = data.categories === undefined ? [
+      { id: 'ingredient', name: 'Ingredients' },
+      { id: 'supply', name: 'Kitchen supplies' },
+      { id: 'uncategorized', name: 'Uncategorized' },
+    ] : data.categories;
+    if (!Array.isArray(categories) || categories.some((category) =>
+      !category || typeof category.id !== 'string' || typeof category.name !== 'string') ||
+      new Set(categories.map((category) => category.id)).size !== categories.length) {
+      throw new Error('The product categories are invalid.');
+    }
+    const groups = categories.map((category) => ({ category: category.id, title: category.name, items: [] }));
     const availableProducts = data.products.map((product) => {
       if (!product || typeof product.name !== 'string' || typeof product.value !== 'string') {
         throw new Error('A product is invalid.');

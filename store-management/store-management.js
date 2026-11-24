@@ -124,6 +124,7 @@ refresh().then(() => storesStatus('Stores loaded.'))
 let productsReady = false;
 let productsBusy = false;
 let productsDirty = false;
+let productCategories = [];
 const starterProducts = [
   {
     name: 'Peppermint Mocha Coffee',
@@ -245,6 +246,79 @@ function productControls() {
   $('reload-products').disabled = productsBusy;
 }
 
+function updateProductGroups() {
+  const rows = [...$('products').querySelectorAll('.product-row')];
+  for (const row of rows) {
+    const select = row.querySelector('[data-field="category"]');
+    const selected = select.value;
+    select.replaceChildren(...productCategories.map(({ id, name }) => {
+      const option = document.createElement('option');
+      option.value = id;
+      option.textContent = name;
+      return option;
+    }));
+    select.value = productCategories.some((category) => category.id === selected) ? selected : 'uncategorized';
+  }
+  const sections = productCategories.map((category) => {
+    const section = document.createElement('section');
+    section.className = 'product-group';
+    const heading = document.createElement('h3');
+    heading.textContent = category.name;
+    const grid = document.createElement('div');
+    grid.className = 'product-grid';
+    rows.filter((row) => row.querySelector('[data-field="category"]').value === category.id)
+      .forEach((row) => grid.appendChild(row));
+    section.append(heading, grid);
+    return section;
+  });
+  $('products').replaceChildren(...sections);
+  $('product-category-controls').replaceChildren(...productCategories.map((category) => {
+    const line = document.createElement('div');
+    line.className = 'product-group-actions';
+    const name = document.createElement('span');
+    name.textContent = category.name;
+    const rename = document.createElement('button');
+    rename.type = 'button';
+    rename.textContent = 'Rename';
+    rename.addEventListener('click', () => {
+      const next = prompt('Rename category:', category.name);
+      if (next === null) return;
+      const trimmed = next.trim();
+      if (!validProductCategoryName(trimmed, category.id)) return;
+      category.name = trimmed;
+      productsDirty = true;
+      updateProductGroups();
+    });
+    line.append(name, rename);
+    if (category.id.startsWith('custom-')) {
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.textContent = 'Remove category';
+      remove.addEventListener('click', () => {
+        if (!confirm(`Remove "${category.name}"? Its products will become Uncategorized.`)) return;
+        productCategories = productCategories.filter((item) => item.id !== category.id);
+        productsDirty = true;
+        updateProductGroups();
+      });
+      line.append(remove);
+    }
+    return line;
+  }));
+}
+
+function validProductCategoryName(name, previous = '') {
+  if (!name || name.length > 80 || productCategories.some((category) =>
+    category.id !== previous && category.name.toLowerCase() === name.toLowerCase())) {
+    productsStatus('Category must be unique and between 1 and 80 characters.', true);
+    return false;
+  }
+  if (productCategories.length >= 103 && !previous) {
+    productsStatus('You can add up to 100 custom categories.', true);
+    return false;
+  }
+  return true;
+}
+
 function addProduct(product = { name: '', value: '', category: 'uncategorized' }) {
   const row = document.createElement('div');
   row.className = 'product-row';
@@ -264,14 +338,18 @@ function addProduct(product = { name: '', value: '', category: 'uncategorized' }
   categoryLabel.textContent = 'Category';
   const category = document.createElement('select');
   category.dataset.field = 'category';
-  for (const [value, text] of [['uncategorized', 'Uncategorized'], ['ingredient', 'Ingredient'], ['supply', 'Kitchen supply']]) {
+  for (const { id, name } of productCategories) {
     const option = document.createElement('option');
-    option.value = value;
-    option.textContent = text;
+    option.value = id;
+    option.textContent = name;
     category.appendChild(option);
   }
   category.value = product.category ?? 'uncategorized';
-  category.addEventListener('change', () => { productsDirty = true; });
+  category.addEventListener('change', () => {
+    productsDirty = true;
+    updateProductGroups();
+    category.focus();
+  });
   categoryLabel.appendChild(category);
   row.appendChild(categoryLabel);
   const remove = document.createElement('button');
@@ -280,6 +358,7 @@ function addProduct(product = { name: '', value: '', category: 'uncategorized' }
   remove.addEventListener('click', () => { row.remove(); productsDirty = true; });
   row.appendChild(remove);
   $('products').appendChild(row);
+  return row;
 }
 
 async function loadProducts() {
@@ -287,13 +366,17 @@ async function loadProducts() {
   productControls();
   try {
     const result = await request('shop-products');
-    if (!Array.isArray(result.products) || result.products.some((product) =>
+    if (!Array.isArray(result.categories) || result.categories.some((category) =>
+      !category || typeof category.id !== 'string' || typeof category.name !== 'string') ||
+      !Array.isArray(result.products) || result.products.some((product) =>
       !product || typeof product.name !== 'string' || typeof product.value !== 'string' ||
-      (product.category !== undefined && !['ingredient', 'supply', 'uncategorized'].includes(product.category)))) {
+      !result.categories.some((category) => category.id === (product.category ?? 'uncategorized')))) {
       throw new Error('The shop product response is invalid.');
     }
+    productCategories = result.categories;
     $('products').replaceChildren();
     result.products.forEach(addProduct);
+    updateProductGroups();
     productsReady = true;
     productsDirty = false;
     productsStatus('Products loaded.');
@@ -306,15 +389,17 @@ async function loadProducts() {
 }
 
 $('add-product').addEventListener('click', () => {
-  addProduct();
+  const row = addProduct();
   productsDirty = true;
-  $('products').lastElementChild.querySelector('input').focus();
+  updateProductGroups();
+  row.querySelector('input').focus();
 });
 $('add-starter-products').addEventListener('click', () => {
   const existing = new Set([...$('products').querySelectorAll('[data-field="value"]')]
     .map((input) => input.value.trim()));
   const additions = starterProducts.filter((product) => !existing.has(product.value));
   additions.forEach(addProduct);
+  updateProductGroups();
   if (additions.length) productsDirty = true;
   productsStatus(additions.length
     ? 'Starter products added. Select Save products to publish them.'
@@ -337,7 +422,7 @@ $('save-products').addEventListener('click', async () => {
   productsBusy = true;
   productControls();
   try {
-    await request('shop-products', { products });
+    await request('shop-products', { products, categories: productCategories });
     productsDirty = false;
     productsStatus('Products saved. Changes may take time to appear on the public shop.');
   } catch (error) {
@@ -346,6 +431,17 @@ $('save-products').addEventListener('click', async () => {
     productsBusy = false;
     productControls();
   }
+});
+
+$('add-product-category').addEventListener('click', () => {
+  const name = prompt('New category name:');
+  if (name === null) return;
+  const trimmed = name.trim();
+  if (!validProductCategoryName(trimmed)) return;
+  productCategories.push({ id: `custom-${crypto.randomUUID()}`, name: trimmed });
+  productsDirty = true;
+  updateProductGroups();
+  productsStatus('Category added. Select Save products to save changes.');
 });
 
 loadProducts();
