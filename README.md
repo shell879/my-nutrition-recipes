@@ -17,7 +17,7 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 - A `/Christmas/` admin page for the separate Christmas catalog
 - Recipe Builder can scan recipes, suggest a recipe from a food photo or a
   typed dish name, and lets users review the result before saving.
-- Recipe Builder recipe cards can open `/shop/` with the editable TOP entries of that
+- Recipe Builder recipe cards can open `/shop/` with the TOP entries of that
   recipe's TOP entries. BOTTOM instructions and recipe names are not passed.
   Amazon links suggest saved affiliate products whose names appear in ingredients and do not add
   items to a retailer cart. Walmart is not currently offered in the retailer selector.
@@ -53,8 +53,9 @@ The demo has its own catalog and editor scripts, derived from the production
 pages; changes to production features are not automatically reflected in it.
 The public shop accepts a versioned list of item names via same-origin session
 storage and never loads store data or calls a shopping API. The handoff is
-consumed when the shop opens; added or edited ingredients adjust product suggestions
-and remain on that page until it is closed or reloaded. A blocked pop-up or unavailable browser storage is reported in Recipe
+consumed when the shop opens; additional ingredients can be added to check for
+product suggestions and remain on that page until it is closed or reloaded.
+Ingredients already displayed cannot be edited on the shop page. A blocked pop-up or unavailable browser storage is reported in Recipe
 Builder. Amazon suggests saved affiliate products when their names appear as
 whole words in an ingredient, ignoring capitalization and simple plural forms.
 The most specific matching name is preferred; if several equally specific
@@ -66,7 +67,7 @@ The protected Store Management page edits a global list of Amazon product
 names, categories and SiteStripe URLs. The shop groups picks into Ingredients,
 Kitchen supplies, and, when needed, Uncategorized. Older products without a
 category remain Uncategorized until edited. Store Management supports editable
-categories; categories with products appear as headings on the public shop.
+categories; categories with products appear as expandable panels on the public shop.
 Original categories can be renamed, while custom categories can also be removed;
 their products then become Uncategorized. The original Kitchen supplies category
 is excluded from recipe ingredient suggestions; custom categories are eligible.

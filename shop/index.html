@@ -7,7 +7,7 @@
     <title>Shop Ingredients | Shell Designz</title>
     <meta name="description" content="Review a shopping list and explore saved ingredient product links." />
     <link rel="stylesheet" href="/recipe-builder/recipe-builder.css?v=brand-2" />
-    <link rel="stylesheet" href="/shop/shop.css?v=3" />
+    <link rel="stylesheet" href="/shop/shop.css?v=7" />
   </head>
   <body>
     <header class="site-header">
@@ -23,8 +23,8 @@
       </section>
       <section class="ingredient-section" aria-labelledby="ingredients-heading">
         <h2 id="ingredients-heading">Your ingredients</h2>
-        <p>Add or edit an ingredient to check for a saved Amazon product. Recipe instructions aren't included, and edits stay in this tab.</p>
-        <p>Suggestions may differ from your recipe, so check products before buying. If there are multiple matches, choose from the picks below. Links don't add items to a cart.</p>
+        <p>Ingredients from your recipe appear below. Add another ingredient to check for a saved Amazon product. Recipe instructions aren't included, and added ingredients stay in this tab.</p>
+        <p>Click a linked ingredient to view its suggested product. Suggestions may differ from your recipe, so check before buying. If there are multiple matches, open Amazon product picks below and choose a category. Links don't add items to a cart.</p>
         <div class="retailer-field">
           <label for="retailer">Retailer</label>
           <select id="retailer">
@@ -33,20 +33,28 @@
         </div>
         <p id="status" role="status" aria-live="polite"></p>
         <div id="shoppingList" class="shopping-list"></div>
-        <button id="addItem" type="button">Add ingredient</button>
+        <form id="addIngredientForm" class="add-ingredient">
+          <label for="newIngredient">Add an ingredient</label>
+          <div class="add-ingredient-controls">
+            <input id="newIngredient" type="text" required />
+            <button type="submit">Add ingredient</button>
+          </div>
+        </form>
       </section>
       <section class="products-section" aria-labelledby="curated-products-heading">
-        <h2 id="curated-products-heading">Amazon product picks</h2>
-        <p>Browse our growing collection of ingredient and kitchen picks.</p>
+        <details class="product-picks-panel" open>
+          <summary id="curated-products-heading">Amazon product picks</summary>
+          <p>Open a category to browse our growing collection of picks.</p>
+          <div id="curated-products"></div>
+        </details>
         <p id="products-status" role="status" aria-live="polite">Loading product picks...</p>
-        <div id="curated-products"></div>
       </section>
     </main>
     <footer>
       <p>As an Amazon Associate I earn from qualifying purchases.</p>
       <a href="/">Back to Shell Designz</a>
     </footer>
-    <script src="/shop/shop.js?v=5"></script>
-    <script src="/shop/products.js?v=5"></script>
+    <script src="/shop/shop.js?v=10"></script>
+    <script src="/shop/products.js?v=7"></script>
   </body>
 </html>

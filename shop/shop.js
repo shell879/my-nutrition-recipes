@@ -30,61 +30,63 @@ function matchingAmazonProducts(value) {
 }
 
 function updateLink(row) {
-  const input = row.querySelector('input');
-  const search = row.querySelector('a');
-  const value = input.value.trim();
-  search.removeAttribute('href');
-  search.removeAttribute('aria-label');
-  search.setAttribute('aria-disabled', 'true');
-  search.rel = 'noopener noreferrer';
+  const value = row.dataset.ingredient.trim();
+  const name = document.createElement('span');
+  name.className = 'ingredient-name';
+  name.textContent = row.dataset.ingredient;
+  let message;
+  let url;
+  let label;
+  let sponsored = false;
   if (!value) {
-    search.textContent = 'Enter an ingredient';
-    return;
-  }
-  if (retailer.value === 'amazon') {
+    message = 'No ingredient provided';
+  } else if (retailer.value === 'amazon') {
     if (amazonProductsFailed) {
-      search.textContent = 'Amazon products unavailable';
-      return;
+      message = 'Products unavailable';
+    } else if (amazonProducts === null) {
+      message = 'Checking for a product...';
+    } else {
+      const matches = matchingAmazonProducts(value);
+      if (matches.length === 1) {
+        url = matches[0].value;
+        label = `View ${matches[0].name} on Amazon`;
+        message = `View ${matches[0].name} on Amazon`;
+        sponsored = true;
+      } else {
+        message = matches.length ? 'Multiple matches - open product picks below' : '';
+      }
     }
-    if (amazonProducts === null) {
-      search.textContent = 'Loading Amazon products...';
-      return;
-    }
-    const matches = matchingAmazonProducts(value);
-    if (matches.length !== 1) {
-      search.textContent = matches.length ? 'See Amazon picks below' : 'No matching Amazon product';
-      return;
-    }
-    search.textContent = 'Suggested Amazon product';
-    search.href = matches[0].value;
-    search.rel = 'sponsored noopener';
-    search.removeAttribute('aria-disabled');
-    search.setAttribute('aria-label', `View ${matches[0].name} on Amazon`);
-    return;
+  } else {
+    const searchUrl = new URL('https://www.walmart.com/search');
+    searchUrl.searchParams.set('q', value);
+    url = searchUrl.href;
+    label = `Search Walmart for ${value}`;
+    message = 'Search Walmart';
   }
-  const url = new URL('https://www.walmart.com/search');
-  url.searchParams.set('q', value);
-  search.textContent = 'Search Walmart';
-  search.href = url.href;
-  search.removeAttribute('aria-disabled');
-  search.setAttribute('aria-label', `Search Walmart for ${value}`);
+  if (url) {
+    const link = document.createElement('a');
+    link.className = 'ingredient-name search-link';
+    link.href = url;
+    link.target = '_blank';
+    link.rel = sponsored ? 'sponsored noopener' : 'noopener noreferrer';
+    link.setAttribute('aria-label', `${row.dataset.ingredient}: ${label}`);
+    link.textContent = row.dataset.ingredient;
+    row.replaceChildren(link);
+  } else {
+    row.replaceChildren(name);
+    if (message) {
+      const note = document.createElement('span');
+      note.className = 'match-note';
+      note.textContent = message;
+      row.appendChild(note);
+    }
+  }
 }
 
-function addItem(value = '') {
+function addItem(value) {
   const row = document.createElement('div');
   row.className = 'shopping-item';
-  const label = document.createElement('label');
-  label.textContent = 'Ingredient';
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.value = value;
-  label.append(input);
-  const search = document.createElement('a');
-  search.className = 'search-link';
-  search.target = '_blank';
-  search.rel = 'noopener noreferrer';
-  row.append(label, search);
-  input.addEventListener('input', () => updateLink(row));
+  row.dataset.ingredient = value;
   updateLink(row);
   list.append(row);
 }
@@ -103,9 +105,21 @@ document.addEventListener('shop-products-error', () => {
   amazonProductsFailed = true;
   updateLinks();
 });
-document.getElementById('addItem').addEventListener('click', () => {
-  addItem();
-  list.lastElementChild.querySelector('input').focus();
+document.getElementById('addIngredientForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const input = document.getElementById('newIngredient');
+  const value = input.value.trim();
+  if (!value) {
+    input.setCustomValidity('Enter an ingredient.');
+    input.reportValidity();
+    return;
+  }
+  addItem(value);
+  input.value = '';
+  input.focus();
+});
+document.getElementById('newIngredient').addEventListener('input', (event) => {
+  event.currentTarget.setCustomValidity('');
 });
 
 try {
