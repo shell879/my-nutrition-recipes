@@ -4,34 +4,56 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MyNutrition Recipe Slideshow</title>
-    <link rel="stylesheet" href="./slideshow.css?v=cards-11">
+    <link rel="stylesheet" href="./neon.css?v=neon-2">
   </head>
   <body>
-    <main class="recipe-slideshow">
-      <header class="slideshow-header">
-        <h1 id="slideshowTitle">Recipe slideshow</h1>
-        <button id="stop" type="button">Stop</button>
-      </header>
-      <div id="storePicker" class="slideshow-store-picker" hidden>
-        <label for="storeSelect">Choose a store</label>
-        <select id="storeSelect" disabled>
-          <option value="">Loading stores...</option>
-        </select>
-      </div>
-      <p id="status" role="status" aria-live="polite"></p>
-      <h2 id="flavor" class="slideshow-flavor"></h2>
-      <div id="names" class="slideshow-names"></div>
-      <div id="controls" class="slideshow-controls" hidden>
-        <button id="previous" type="button">Previous</button>
-        <button id="pause" type="button">Pause</button>
-        <button id="next" type="button">Next</button>
-        <span id="position" aria-live="polite"></span>
-        <button id="slower" type="button">Slower</button>
-        <span id="speed" aria-live="polite">2 seconds per slide</span>
-        <button id="faster" type="button">Faster</button>
-      </div>
-      <a id="backLink" href="/">Back to Home</a>
+    <main class="slideshow" id="slideshow">
+      <section class="stage" aria-label="Recipe slideshow">
+        <div id="storeWatermark" class="store-watermark" aria-hidden="true"></div>
+        <svg class="drink-graphic drink-graphic--cup" viewBox="0 0 100 130" aria-hidden="true" focusable="false">
+          <path d="M24 39h52l-7 74H31z M20 39h60 M27 29h46l7 10H20z M49 29l8-21h17 M39 52v3 M61 52v3 M40 71q10 10 20 0" />
+          <path d="M10 19v10 M5 24h10" />
+        </svg>
+        <svg class="drink-graphic drink-graphic--glass" viewBox="0 0 100 130" aria-hidden="true" focusable="false">
+          <path d="M17 25h66L57 70v38 M43 70v38 M34 109h32 M26 42h48 M50 25l9-15h14 M38 53q12 8 24 0" />
+          <circle cx="73" cy="21" r="13" />
+          <path d="M85 65v10 M80 70h10" />
+        </svg>
+        <h1 id="flavor"></h1>
+        <p id="status" role="status" aria-live="polite"></p>
+        <div id="names" class="names"></div>
+      </section>
+
+      <details class="controls" id="controlsPanel">
+        <summary aria-label="Slideshow controls"><span aria-hidden="true">+</span></summary>
+        <div class="controls-panel">
+          <h2>Slideshow controls</h2>
+          <div id="storePicker" hidden>
+            <label for="storeSelect">Choose a store</label>
+            <select id="storeSelect" disabled>
+              <option value="">Loading stores...</option>
+            </select>
+          </div>
+          <label for="speed">Time per slide</label>
+          <select id="speed">
+            <option value="1">1 second</option>
+            <option value="2">2 seconds</option>
+            <option value="3">3 seconds</option>
+            <option value="4">4 seconds</option>
+            <option value="5">5 seconds</option>
+            <option value="6">6 seconds</option>
+            <option value="7" selected>7 seconds</option>
+            <option value="8">8 seconds</option>
+            <option value="10">10 seconds</option>
+          </select>
+          <div class="panel-buttons">
+            <button id="pause" type="button" disabled>Pause</button>
+            <button id="stop" type="button" disabled>Stop</button>
+          </div>
+          <a id="backLink" href="/">Back to Home</a>
+        </div>
+      </details>
     </main>
-    <script src="./slideshow.js?v=cards-11"></script>
+    <script src="./slideshow.js?v=neon-1"></script>
   </body>
 </html>
