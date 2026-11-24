@@ -24,7 +24,7 @@
 // When the browser sees a new version, it installs the new SW,
 // activates it, and deletes all caches from the old version.
 // Without this, users would be stuck on the old cached files.
-const CACHE_NAME = "shelldesignz-v26";
+const CACHE_NAME = "shelldesignz-v27";
 
 // ──────────────────────────────────────────────────────────────
 // Pre-cache list
@@ -50,8 +50,8 @@ const ASSETS = [
   "/logo.png",                      // Home page wordmark
   "/app.js",                        // Main app logic
   "/manifest.json",                 // PWA manifest
-  "/brand-icon-192.png",            // PWA icon (small)
-  "/brand-icon-512.png",            // PWA icon (large)
+  "/brand-icon-white-192.png",      // PWA icon (small)
+  "/brand-icon-white-512.png",      // PWA icon (large)
 ];
 
 // ──────────────────────────────────────────────────────────────

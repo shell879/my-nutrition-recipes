@@ -61,7 +61,14 @@ the list to the shop; TOP and BOTTOM have different meanings in the two apps.
 The protected Store Management page edits a global list of Amazon product
 names, categories and SiteStripe URLs. The shop groups picks into Ingredients,
 Kitchen supplies, and, when needed, Uncategorized. Older products without a
-category remain Uncategorized until edited. Saving publishes the list via the
+category remain Uncategorized until edited. Store Management supports editable
+categories; categories with products appear as headings on the public shop.
+Original categories can be renamed, while custom categories can also be removed;
+their products then become Uncategorized. The original Kitchen supplies category
+is excluded from recipe ingredient suggestions; custom categories are eligible.
+Save products persists the entire list and categories. Deploy the updated Worker
+before deploying the website.
+Saving publishes the product list via the
 read-only `/api/data/shop/products` endpoint. Walmart search code is retained
 but is not exposed in the retailer selector.
 Use SiteStripe links to specific Amazon product pages, not search pages.
