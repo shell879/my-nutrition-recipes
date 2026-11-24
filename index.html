@@ -34,6 +34,14 @@
           </div>
           <strong>Access required</strong>
         </div>
+        <div id="nutritionDemoCard" class="landing-card landing-card--nutrition">
+          <span class="landing-card-title">MyNutrition Demo</span>
+          <span>Try MyNutrition with fictional recipes. No access required.</span>
+          <div class="landing-card-actions">
+            <a id="openNutritionDemoLink" href="/demo/">Try the MyNutrition Demo</a>
+            <a href="/mynutrition-guide/#request-access">Request MyNutrition Access</a>
+          </div>
+        </div>
         <a class="landing-card landing-card--nutrition-admin" href="/mynutritionadmin/">
           <strong class="landing-card-access-top" aria-hidden="true">Access required</strong>
           <span class="landing-card-title">MyNutrition Admin</span>
@@ -62,6 +70,7 @@
       }
       makeCardClickable('recipeBuilderCard', 'openRecipeBuilderLink');
       makeCardClickable('nutritionCard', 'openNutritionLink');
+      makeCardClickable('nutritionDemoCard', 'openNutritionDemoLink');
     </script>
   </body>
 </html>

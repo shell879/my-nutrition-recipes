@@ -13,6 +13,10 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 - A `/Christmas/` admin page for the separate Christmas catalog
 - Recipe Builder can scan recipes, suggest a recipe from a food photo or a
   typed dish name, and lets users review the result before saving.
+- Recipe Builder recipe cards can open `/shop/` with an editable list of that
+  recipe's TOP entries. BOTTOM instructions and recipe names are not passed.
+  Amazon links suggest saved affiliate products whose names appear in ingredients and do not add
+  items to a retailer cart. Walmart is not currently offered in the retailer selector.
 - A `/mynutrition/` menu and `/mynutritionadmin/` editor with store switching
 - Recipe Builder and MyNutrition Admin can delete empty categories; move their recipes first and
   use Save to persist the deletion.
@@ -43,6 +47,28 @@ If you previously saved demo edits, reset the demo to see updated examples;
 resetting discards those saved edits.
 The demo has its own catalog and editor scripts, derived from the production
 pages; changes to production features are not automatically reflected in it.
+The public shop accepts a versioned list of item names via same-origin session
+storage and never loads store data or calls a shopping API. The handoff is
+consumed when the shop opens; edits remain on that page until it is closed or
+reloaded. A blocked pop-up or unavailable browser storage is reported in Recipe
+Builder. Amazon suggests saved affiliate products when their names appear as
+whole words in an ingredient, ignoring capitalization and simple plural forms.
+The most specific matching name is preferred; if several equally specific
+products match, choose from the product picks instead. Suggestions can differ
+from the recipe and should be checked before purchase. Future
+sources such as MyNutrition must select their own ingredients before handing
+the list to the shop; TOP and BOTTOM have different meanings in the two apps.
+The protected Store Management page edits a global list of Amazon product
+names, categories and SiteStripe URLs. The shop groups picks into Ingredients,
+Kitchen supplies, and, when needed, Uncategorized. Older products without a
+category remain Uncategorized until edited. Saving publishes the list via the
+read-only `/api/data/shop/products` endpoint. Walmart search code is retained
+but is not exposed in the retailer selector.
+Use SiteStripe links to specific Amazon product pages, not search pages.
+Use **Add starter products** to stage the included examples without replacing
+existing links, then select **Save products** to publish them.
+KV changes can take time to appear, and simultaneous edits can overwrite each
+other. For local testing, serve the site and run `wrangler dev` on port 8787.
 The Recipe Builder editor loads `christmas.json` in local mode. In API mode,
 Recipe Builder and MyNutrition use `/api/christmas` with separate app-specific
 store lists and active selections. MyNutrition's menu and admin share its
@@ -88,6 +114,18 @@ in, allow access to `/callahannutrition/`, `/callahannutrition/editor.html`,
 `/admin/`, and `/admin.html` as well. Verify overlapping policies.
 Keep the real MyNutrition pages and all private APIs (including `/api/data`)
 protected, and test the demo in a signed-out browser.
+Allow unauthenticated access to `/shop/`, its assets, and the read-only
+`/api/data/shop/products` endpoint as well, and test it
+from both the protected Recipe Builder and a signed-out browser. Do not expose
+`/api/data` or `/api/christmas` to make the static shop public. Any future
+retailer API or affiliate links need their own access and policy review.
+The public MyNutrition guide's request form also requires public POST access to
+the exact `/api/data/access-requests` route. Keep its listing and removal API
+under `/api/store-management/*` protected. The form collects an email address;
+it does not send an email or grant access. Review requests in Store Management
+and contact people manually. No automated spam protection is included.
+The single KV JSON list is eventually consistent; concurrent submissions and
+removals can overwrite or restore requests.
 
 1. Push this repo to GitHub.
 2. In the repository settings, enable GitHub Pages.
