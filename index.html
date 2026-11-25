@@ -5,75 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Preserve family recipes with Recipe Builder, or browse and manage recipes with MyNutrition." />
     <link rel="canonical" href="https://shelldesignz.com/" />
-    <link rel="manifest" href="/manifest.json">
-    <meta name='impact-site-verification' value='300d4261-94e2-4478-b73e-c83915b27c42'>
-<script>navigator.serviceWorker.register('/service-worker.js')</script>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="impact-site-verification" value="300d4261-94e2-4478-b73e-c83915b27c42" />
+    <script>navigator.serviceWorker.register('/service-worker.js')</script>
     <title>Shell Designz</title>
-    <link rel="stylesheet" href="styles.css?v=brand-logo-1" />
+    <link rel="stylesheet" href="/index2.css?v=photos-2" />
   </head>
-  <body class="landing-page">
-    <main class="landing-main">
-      <h1><img class="landing-logo" src="/logo.png" alt="Shell Designz" /></h1>
-      <p class="landing-intro">Where would you like to go?</p>
-      <nav class="landing-links" aria-label="Site navigation">
-        <div id="recipeBuilderCard" class="landing-card landing-card--recipes">
-          <span class="landing-card-title">Recipe Builder</span>
-          <span>Snap a photo of Grandma's recipe cards and let AI help capture the ingredients. Review and organize your family favorites in one place.</span>
-          <div class="landing-card-actions">
-            <a href="/recipe-builder/">See How It Works</a>
-            <a id="openRecipeBuilderLink" href="/Christmas/">Open Recipe Builder</a>
-            <a href="/recipe-builder-demo/">Try the Recipe Builder Demo</a>
-            <a href="/shop/">Shop (in progress)</a>
-          </div>
-        </div>
-        <div id="nutritionCard" class="landing-card landing-card--nutrition">
-          <strong class="landing-card-access-top" aria-hidden="true">Access required</strong>
-          <span class="landing-card-title">MyNutrition</span>
-          <span>Browse recipes and switch between stores.</span>
-          <div class="landing-card-actions">
-            <a href="/mynutrition-guide/">How to Use It</a>
-            <a id="openNutritionLink" href="/mynutrition/">Open MyNutrition</a>
-          </div>
-          <strong>Access required</strong>
-        </div>
-        <div id="nutritionDemoCard" class="landing-card landing-card--nutrition">
-          <span class="landing-card-title">MyNutrition Demo</span>
-          <span>Try MyNutrition with fictional recipes. No access required.</span>
-          <div class="landing-card-actions">
-            <a id="openNutritionDemoLink" href="/demo/">Try the MyNutrition Demo</a>
-            <a href="/mynutrition-guide/#request-access">Request MyNutrition Access</a>
-          </div>
-        </div>
-        <a class="landing-card landing-card--nutrition-admin" href="/mynutritionadmin/">
-          <strong class="landing-card-access-top" aria-hidden="true">Access required</strong>
-          <span class="landing-card-title">MyNutrition Admin</span>
-          <span>Manage recipes and stores.</span>
-          <strong>Access required</strong>
-        </a>
-        <a class="landing-card landing-card--callahan-admin" href="/store-management/">
-          <strong class="landing-card-access-top" aria-hidden="true">Access required</strong>
-          <span class="landing-card-title">Store Management</span>
-          <span>Manage MyNutrition stores and public slideshow access.</span>
-          <strong>Access required</strong>
-        </a>
-        <a class="landing-card landing-card--callahan" href="/slideshow/">
-          <span class="landing-card-title">MyNutrition Slideshow</span>
-          <span>Choose a store and explore its drinks by flavor.</span>
-        </a>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="header">
+      <a class="brand" href="/" aria-label="Shell Designz home">
+        <img src="/logo.png" alt="Shell Designz" />
+      </a>
+      <nav class="header-nav" aria-label="Quick access">
+        <a href="/Christmas/">Recipe Builder login</a>
+        <a href="/mynutrition/">MyNutrition login</a>
+        <a href="/mynutritionadmin/">MyNutrition admin</a>
       </nav>
-      <p>Questions? Email <a href="mailto:info@shelldesignz.com">info@shelldesignz.com</a>.</p>
+    </header>
+
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <p class="eyebrow">A little more organized. A lot more yours.</p>
+        <h1 id="hero-title">Good recipes deserve a place to live.</h1>
+        <p>Keep family favorites close, or bring your drink recipes together in one place. Find the tool that fits the way you work.</p>
+        <a class="text-link" href="#products">Explore the apps <span aria-hidden="true">&darr;</span></a>
+      </section>
+
+      <div id="products" class="products">
+        <section class="product wrap" aria-labelledby="recipe-title">
+          <div class="product-copy">
+            <p class="eyebrow"><span class="product-number">01</span> For your family favorites</p>
+            <h2 id="recipe-title">Recipe Builder</h2>
+            <p class="product-lead">Bring the recipes you love together.</p>
+            <p>Snap a photo of a handwritten recipe card and let AI help capture the details. Review, organize, and save your favorites in a collection of your own.</p>
+            <div class="actions">
+              <a class="button button-primary" href="/recipe-builder-demo/">Try the demo</a>
+              <a class="button button-outline" href="/recipe-builder/">See how it works</a>
+            </div>
+            <p class="access-note">Demo and guide: no login required. Your collection requires login.</p>
+            <div class="secondary-links">
+              <a href="/Christmas/">Open Recipe Builder</a>
+              <a href="/shop/">Shop ingredients &amp; picks</a>
+            </div>
+          </div>
+          <figure class="product-visual recipe-visual">
+            <div class="visual-label"><span>RECIPE BUILDER</span><span>Made for your favorites</span></div>
+            <img src="/images/preview-recipe-ai.jpg" alt="" width="1200" height="675" />
+            <figcaption>For the recipes worth keeping.</figcaption>
+          </figure>
+        </section>
+
+        <section class="product product-nutrition wrap" aria-labelledby="nutrition-title">
+          <div class="product-copy">
+            <p class="eyebrow"><span class="product-number">02</span> For your drink recipes</p>
+            <h2 id="nutrition-title">MyNutrition</h2>
+            <p class="product-lead">Your drinks, organized for your team.</p>
+            <p>Browse drink recipes in your store, or manage recipes, categories, and colors with admin access. Explore the demo to see how it works.</p>
+            <div class="actions">
+              <a class="button button-primary" href="/demo/">Try the demo</a>
+              <a class="button button-outline" href="/mynutrition-guide/">See how it works</a>
+            </div>
+            <p class="access-note">Demo and guide: no login required. MyNutrition requires approved access and login.</p>
+            <div class="secondary-links">
+              <a href="/mynutrition/">Open MyNutrition</a>
+              <a href="/mynutritionadmin/">Open MyNutrition Admin</a>
+              <a href="/mynutrition-guide/#request-access">Request access</a>
+              <a href="/slideshow/">View slideshow</a>
+            </div>
+          </div>
+          <figure class="product-visual nutrition-visual">
+            <div class="visual-label"><span>MYNUTRITION</span><span>Make your store your own</span></div>
+            <img src="/images/preview-drinks-ai.jpg" alt="" width="1200" height="900" loading="lazy" />
+            <figcaption>A home for your drink recipes.</figcaption>
+          </figure>
+        </section>
+      </div>
+
+      <section class="shop-strip wrap" aria-labelledby="shop-title">
+        <div>
+          <p class="eyebrow">A little something extra</p>
+          <h2 id="shop-title">Looking for ingredients or kitchen picks?</h2>
+          <p>Explore the growing collection in the shop.</p>
+        </div>
+        <a class="button button-outline" href="/shop/">Visit the shop <span aria-hidden="true">&rarr;</span></a>
+      </section>
     </main>
-    <script>
-      function makeCardClickable(cardId, linkId) {
-        document.getElementById(cardId).addEventListener('click', (event) => {
-          if (event.target.closest('a') || window.getSelection().toString()) return;
-          if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-          document.getElementById(linkId).click();
-        });
-      }
-      makeCardClickable('recipeBuilderCard', 'openRecipeBuilderLink');
-      makeCardClickable('nutritionCard', 'openNutritionLink');
-      makeCardClickable('nutritionDemoCard', 'openNutritionDemoLink');
-    </script>
+
+    <footer class="footer wrap">
+      <div>
+        <strong>Shell Designz</strong>
+        <p>Questions? <a href="mailto:info@shelldesignz.com">info@shelldesignz.com</a></p>
+      </div>
+      <a href="/store-management/">Store Management <span>Owner login</span></a>
+    </footer>
   </body>
 </html>

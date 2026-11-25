@@ -8,6 +8,7 @@ const state = {
   editingDrinkId: null,
   editingFlavorIndex: null,
   query: '',
+  categoryId: '',
 };
 
 const defaultFlavorProfiles = [];
@@ -80,6 +81,10 @@ $('#clearSearchButton').addEventListener('click', () => {
   render();
   $('#searchInput').focus();
 });
+$('#categoryFilter').addEventListener('change', (event) => {
+  state.categoryId = event.target.value;
+  render();
+});
 $('#cancelDrinkButton').addEventListener('click', () => $('#drinkDialog').close());
 $('#drinkForm').addEventListener('submit', saveDrink);
 $('#cancelFlavorButton').addEventListener('click', () => $('#flavorDialog').close());
@@ -88,6 +93,7 @@ $('#flavorForm').addEventListener('submit', saveFlavor);
 loadData();
 
 async function loadData() {
+  state.categoryId = '';
   try {
     let data;
     let restored = false;
@@ -192,6 +198,12 @@ function render() {
   });
 
   const categories = storeCategories();
+  if (!categories.some((category) => String(category.id) === state.categoryId)) state.categoryId = '';
+  $('#categoryFilterWrap').hidden = !categories.length;
+  $('#categoryFilter').innerHTML = '<option value="">All categories</option>' + categories.map((category) =>
+    `<option value="${escapeHtml(category.id)}">${escapeHtml(category.name)}${category.active === false ? ' (inactive)' : ''}</option>`
+  ).join('');
+  $('#categoryFilter').value = state.categoryId;
   $('#categoryList').innerHTML = categories.length
     ? categories.map((category) => `
         <div class="item-row">
@@ -221,7 +233,8 @@ function render() {
   const matchingDrinks = drinks.filter((drink) => {
     const ingredients = Array.isArray(drink.ingredients) ? drink.ingredients : [];
     const haystack = `${drink.name || ''} ${ingredients.map((item) => item.name || '').join(' ')}`;
-    return haystack.toLocaleLowerCase().includes(state.query);
+    return (!state.categoryId || String(drink.categoryId) === state.categoryId)
+      && haystack.toLocaleLowerCase().includes(state.query);
   });
   $('#drinkList').innerHTML = matchingDrinks.length
     ? matchingDrinks.map((drink) => {
@@ -253,7 +266,7 @@ function render() {
           </div>
         </div>`;
       }).join('')
-    : drinks.length ? '<p>No recipes match your search.</p>' : '<p>No recipes in this album.</p>';
+    : drinks.length ? '<p>No recipes match your search or category.</p>' : '<p>No recipes in this album.</p>';
 }
 
 function openDrinkPicker() {
@@ -321,6 +334,7 @@ function showPickedRecipe() {
   if (lastPickedIndex < 0) return;
 
   const drink = pickerDrinks[lastPickedIndex];
+  state.categoryId = '';
   state.query = drink.name.trim().toLocaleLowerCase();
   $('#searchInput').value = drink.name.trim();
   updateSearchClearButton();

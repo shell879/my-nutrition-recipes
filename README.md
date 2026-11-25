@@ -34,6 +34,9 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
 - MyNutrition Admin's Flavor profiles panel supports adding, editing, and
   removing the selected store's flavor filters; use Save to persist changes.
 - Category filtering and text search
+- Recipe Builder and its demo offer a compact category dropdown beside recipe
+  search when the album has categories. Search and category filters combine;
+  Pick One clears the category filter when showing its selection.
 - Mobile-friendly cards with ingredient grouping for TOP/BOTTOM items
 - Easy deployment to GitHub Pages, Cloudflare Pages, or Netlify
 
@@ -60,9 +63,8 @@ The demo has its own catalog and editor scripts, derived from the production
 pages; changes to production features are not automatically reflected in it.
 The public shop accepts a versioned list of item names via same-origin session
 storage and never loads store data or calls a shopping API. The handoff is
-consumed when the shop opens; additional ingredients can be added to check for
-product suggestions and remain on that page until it is closed or reloaded.
-Ingredients already displayed cannot be edited on the shop page. A blocked pop-up or unavailable browser storage is reported in Recipe
+consumed when the shop opens. Ingredients cannot be added or edited on the shop
+page. A blocked pop-up or unavailable browser storage is reported in Recipe
 Builder. Amazon suggests saved affiliate products when their names appear as
 whole words in an ingredient, ignoring capitalization and simple plural forms.
 The most specific matching name is preferred; if several equally specific

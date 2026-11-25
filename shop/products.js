@@ -50,7 +50,21 @@ async function loadProductPicks() {
       heading.textContent = group.title;
       const list = document.createElement('ul');
       list.append(...group.items);
-      section.append(heading, list);
+      section.append(heading);
+      if (group.category === 'ingredient' || group.category === 'supply') {
+        // Supply photo: https://www.pexels.com/photo/kitchen-tools-and-plate-6996301/
+        const image = document.createElement('img');
+        image.className = `shop-category-image shop-category-image--${group.category}`;
+        image.src = group.category === 'ingredient'
+          ? '/images/shop-cookie-ingredients-ai.jpg'
+          : '/images/shop-baking-tools.jpg';
+        image.alt = '';
+        image.width = group.category === 'ingredient' ? 1200 : 800;
+        image.height = group.category === 'ingredient' ? 800 : 1198;
+        image.loading = 'lazy';
+        section.append(image);
+      }
+      section.append(list);
       return section;
     });
     productList.replaceChildren(...sections);

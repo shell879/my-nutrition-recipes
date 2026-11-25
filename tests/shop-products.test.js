@@ -52,8 +52,15 @@ async function load(products, responseOk = true) {
   const sections = elements['curated-products'].children;
   assert.deepEqual(sections.map((section) => section.children[0].textContent),
     ['Ingredients', 'Kitchen supplies', 'Uncategorized']);
-  const link = sections[1].children[1].children[0].children[0];
-  assert.equal(link.textContent, 'Pan (affiliate link)');
+  assert.equal(sections[0].children[1].src, '/images/shop-cookie-ingredients-ai.jpg');
+  assert.equal(sections[0].children[1].alt, '');
+  assert.equal(sections[2].children.some((child) => child.tag === 'img'), false);
+  const image = sections[1].children[1];
+  assert.equal(image.tag, 'img');
+  assert.equal(image.src, '/images/shop-baking-tools.jpg');
+  assert.equal(image.alt, '');
+  const link = sections[1].children[2].children[0].children[0];
+  assert.equal(link.textContent, 'Pan');
   assert.equal(link.rel, 'sponsored noopener');
   assert.equal(new URL(link.href).searchParams.get('tag'), 'example-20');
   assert.equal(elements.events[0].type, 'shop-products-loaded');

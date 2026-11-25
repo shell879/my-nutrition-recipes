@@ -105,23 +105,6 @@ document.addEventListener('shop-products-error', () => {
   amazonProductsFailed = true;
   updateLinks();
 });
-document.getElementById('addIngredientForm').addEventListener('submit', (event) => {
-  event.preventDefault();
-  const input = document.getElementById('newIngredient');
-  const value = input.value.trim();
-  if (!value) {
-    input.setCustomValidity('Enter an ingredient.');
-    input.reportValidity();
-    return;
-  }
-  addItem(value);
-  input.value = '';
-  input.focus();
-});
-document.getElementById('newIngredient').addEventListener('input', (event) => {
-  event.currentTarget.setCustomValidity('');
-});
-
 try {
   const raw = sessionStorage.getItem(handoffKey);
   if (raw !== null) {
@@ -132,11 +115,11 @@ try {
       throw new Error('The shopping list has an invalid format.');
     }
     handoff.items.forEach((item) => addItem(item));
-    setStatus(handoff.items.length ? 'Review your ingredient suggestions below.' : 'No TOP ingredients were found. Add an ingredient or browse the product picks below.');
+    setStatus(handoff.items.length ? 'Review your ingredient suggestions below.' : 'No TOP ingredients were found. Browse the product picks below.');
   } else {
-    setStatus('No recipe ingredients were provided. Add an ingredient or browse the product picks below.');
+    setStatus('No recipe ingredients were provided. Browse the product picks below.');
   }
 } catch (error) {
   console.error('Could not load shopping list:', error);
-  setStatus(`Could not load the recipe ingredients: ${error.message} You can still add an ingredient or browse the product picks below.`, true);
+  setStatus(`Could not load the recipe ingredients: ${error.message} You can still browse the product picks below.`, true);
 }

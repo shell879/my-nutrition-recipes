@@ -32,6 +32,7 @@
 
 .christmas-admin .recipes-heading {
   margin-bottom: 0.8rem;
+  flex-wrap: wrap;
 }
 
 .christmas-admin .recipes-heading h2 {
@@ -44,6 +45,17 @@
 
 .christmas-admin .recipes-heading .search-wrap input {
   width: 100%;
+}
+
+.christmas-admin .recipe-category-filter:not([hidden]) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.christmas-admin .recipe-category-filter select {
+  max-width: min(16rem, 65vw);
 }
 
 .christmas-admin .image-upload {

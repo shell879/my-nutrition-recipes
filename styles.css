@@ -563,14 +563,6 @@ main {
   --card-shadow: rgba(54, 117, 153, 0.22);
   --card-background: #f1f8fb;
 }
-.landing-card--nutrition-admin {
-  --card-shadow: rgba(77, 120, 110, 0.22);
-  --card-background: #f2f7f5;
-}
-.landing-card--callahan {
-  --card-shadow: rgba(173, 125, 68, 0.22);
-  --card-background: #fbf7f0;
-}
 .landing-card--callahan-admin {
   --card-shadow: rgba(158, 95, 106, 0.22);
   --card-background: #faf4f5;
@@ -586,8 +578,7 @@ a.landing-card:focus-visible,
   box-shadow: 0 0 0 1px var(--card-shadow), 0 8px 20px var(--card-shadow);
 }
 
-.landing-card--recipes,
-.landing-card--nutrition {
+.landing-card--recipes {
   cursor: pointer;
 }
 
@@ -617,19 +608,15 @@ a.landing-card:focus-visible,
   text-underline-offset: 0.2em;
 }
 
-.landing-card strong {
-  align-self: flex-start;
-  margin-top: auto;
-  padding: 0.2rem 0.55rem;
-  border-radius: 5px;
-  color: #374151;
-  background: #e5e7eb;
+.landing-access-label {
+  display: block;
+  color: #4b5563;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 400;
 }
 
-.landing-card strong.landing-card-access-top {
-  margin-top: 0;
+.landing-card > .landing-access-label {
+  margin-top: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
