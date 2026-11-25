@@ -1,0 +1,280 @@
+{
+  "stores": [
+    { "id": 1, "name": "Christmas Favorites", "active": true, "textColor": "#f3ece0", "backgroundColor": "#2f4a3c", "cardBackgroundColor": "#f6efe3", "cardTextColor": "#3b2a2a", "buttonColor": "#8a3b3b", "buttonTextColor": "#ffffff", "flavorProfiles": [] }
+  ],
+  "categories": [
+    { "id": 1, "storeId": 1, "name": "Desserts", "displayOrder": 1, "active": true },
+    { "id": 2, "storeId": 1, "name": "Entrees", "displayOrder": 2, "active": true },
+    { "id": 3, "storeId": 1, "name": "Drinks", "displayOrder": 3, "active": true },
+    { "id": 4, "storeId": 1, "name": "Appetizers", "displayOrder": 4, "active": true },
+    { "id": 5, "storeId": 1, "name": "Sides", "displayOrder": 5, "active": true }
+  ],
+  "drinkRecipes": [
+    { "id": 1, "storeId": 1, "categoryId": 1, "name": "Classic Sugar Cookies", "ingredients": [
+      { "id": 1, "name": "2 3/4 cups Flour", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1 cup Butter, softened", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1 1/2 cups Sugar", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 Egg", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "2 tsp Vanilla Extract", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "1 tsp Baking Powder", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Cream butter and sugar, then beat in the egg and vanilla.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Mix in the flour and baking powder. Chill the dough for 1 hour.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Roll out, cut shapes, and bake at 375F for 8 to 10 minutes.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 2, "storeId": 1, "categoryId": 1, "name": "Gingerbread Cookies", "ingredients": [
+      { "id": 1, "name": "3 cups Flour", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "3/4 cup Butter, softened", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "3/4 cup Brown Sugar", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1/2 cup Molasses", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 Egg", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "2 tsp Ginger", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "1 tsp Cinnamon", "cost": 0, "side": "TOP", "displayOrder": 7 },
+      { "id": 8, "name": "1 tsp Baking Soda", "cost": 0, "side": "TOP", "displayOrder": 8 },
+      { "id": 9, "name": "Beat the butter, brown sugar, molasses and egg until smooth.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 },
+      { "id": 10, "name": "Stir in the flour, spices and baking soda. Chill for 2 hours.", "cost": 0, "side": "BOTTOM", "displayOrder": 10 },
+      { "id": 11, "name": "Roll out, cut shapes, and bake at 350F for 8 to 10 minutes.", "cost": 0, "side": "BOTTOM", "displayOrder": 11 }
+    ] },
+    { "id": 3, "storeId": 1, "categoryId": 1, "name": "Peppermint Bark", "ingredients": [
+      { "id": 1, "name": "12 oz Dark Chocolate Chips", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "12 oz White Chocolate", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/2 tsp Peppermint Extract", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1/2 cup Crushed Candy Canes", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "Line a baking sheet with Parchment Paper.", "cost": 0, "side": "BOTTOM", "displayOrder": 5 },
+      { "id": 6, "name": "Melt the dark chocolate and spread it thinly. Chill until firm.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Melt the white chocolate, stir in the extract, and spread over the top.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Sprinkle with candy canes, chill, and break into pieces.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 4, "storeId": 1, "categoryId": 1, "name": "Chocolate Fudge", "ingredients": [
+      { "id": 1, "name": "3 cups Chocolate Chips", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1 can Sweetened Condensed Milk", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/4 cup Butter", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 tsp Vanilla Extract", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 cup Walnuts, chopped", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Melt the chocolate chips, condensed milk and butter over low heat, stirring often.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Stir in the vanilla and walnuts.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Spread into a lined 8 inch pan, chill for 2 hours, and cut into squares.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 5, "storeId": 1, "categoryId": 1, "name": "Pecan Pie Bars", "ingredients": [
+      { "id": 1, "name": "2 cups Flour", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1 cup Butter, cold", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/2 cup Powdered Sugar", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 cup Brown Sugar", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "3 Eggs", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "3/4 cup Corn Syrup", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "2 cups Pecans, chopped", "cost": 0, "side": "TOP", "displayOrder": 7 },
+      { "id": 8, "name": "Mix the flour, 3/4 cup butter and powdered sugar. Press into a 9x13 Baking Dish and bake at 350F for 15 minutes.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Melt the remaining butter and whisk with the brown sugar, eggs and corn syrup.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 },
+      { "id": 10, "name": "Stir in the pecans, pour over the crust, and bake 25 minutes more. Cool before cutting.", "cost": 0, "side": "BOTTOM", "displayOrder": 10 }
+    ] },
+    { "id": 6, "storeId": 1, "categoryId": 2, "name": "Honey Glazed Ham", "ingredients": [
+      { "id": 1, "name": "8 lb Bone-In Ham, fully cooked", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1/2 cup Honey", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/2 cup Brown Sugar", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 tbsp Dijon Mustard", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1/2 tsp Cloves", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Heat the oven to 325F. Place the ham cut side down in a roasting pan and cover with foil.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Warm the honey, brown sugar, mustard and cloves until smooth.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Bake about 2 hours, brushing with glaze during the last 30 minutes.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 7, "storeId": 1, "categoryId": 2, "name": "Herb Roasted Turkey", "ingredients": [
+      { "id": 1, "name": "12 lb Turkey, thawed", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1/2 cup Butter, softened", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "2 tbsp Fresh Thyme", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 tbsp Fresh Rosemary", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 Onion, quartered", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "1 Lemon, halved", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "2 tsp Salt", "cost": 0, "side": "TOP", "displayOrder": 7 },
+      { "id": 8, "name": "Mix the butter and chopped herbs. Rub under and over the skin, then season with salt.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Fill the cavity with the onion and lemon.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 },
+      { "id": 10, "name": "Roast at 325F for about 3 hours, until a thermometer reads 165F in the thickest part. Rest 20 minutes before carving.", "cost": 0, "side": "BOTTOM", "displayOrder": 10 }
+    ] },
+    { "id": 8, "storeId": 1, "categoryId": 2, "name": "Garlic Herb Prime Rib", "ingredients": [
+      { "id": 1, "name": "5 lb Prime Rib Roast", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "6 cloves Garlic, minced", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "3 tbsp Olive Oil", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 tbsp Fresh Rosemary", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 tbsp Black Pepper", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "1 tbsp Salt", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Mix the garlic, oil, rosemary, pepper and salt, and rub over the roast. Rest at room temperature for 1 hour.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Roast at 450F for 20 minutes, then lower to 325F.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Continue until a thermometer reads 125F for medium rare, about 1 1/2 hours. Rest 20 minutes before slicing.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 9, "storeId": 1, "categoryId": 2, "name": "Orange Cranberry Chicken", "ingredients": [
+      { "id": 1, "name": "6 Chicken Thighs, bone-in", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1 cup Cranberry Sauce", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/2 cup Orange Juice", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 tbsp Brown Sugar", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 tsp Salt", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "1/2 tsp Black Pepper", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Season the chicken and arrange it in a baking dish.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Whisk the cranberry sauce, orange juice and brown sugar, and pour over the chicken.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Bake at 375F for 45 minutes, basting once, until the juices run clear.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 10, "storeId": 1, "categoryId": 2, "name": "Maple Glazed Salmon", "ingredients": [
+      { "id": 1, "name": "4 Salmon Fillets", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1/4 cup Maple Syrup", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "2 tbsp Soy Sauce", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 cloves Garlic, minced", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1/2 tsp Black Pepper", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Whisk the maple syrup, soy sauce, garlic and pepper.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Marinate the salmon for 15 minutes.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Bake on a Baking Sheet at 400F for 12 to 15 minutes, until it flakes easily.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 11, "storeId": 1, "categoryId": 3, "name": "Rich Hot Cocoa", "ingredients": [
+      { "id": 1, "name": "1/4 cup Cocoa Powder", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1/3 cup Sugar", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "4 cups Milk", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 tsp Vanilla Extract", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 pinch Salt", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Marshmallows", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Whisk the cocoa, sugar, salt and a splash of milk into a paste in a saucepan.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Add the remaining milk and heat gently, stirring, until steaming.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Stir in the vanilla and top with marshmallows.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 12, "storeId": 1, "categoryId": 3, "name": "Peppermint Mocha", "ingredients": [
+      { "id": 1, "name": "1 cup Strong Coffee", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1 cup Milk", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "2 tbsp Cocoa Powder", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 tbsp Sugar", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1/4 tsp Peppermint Extract", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Whipped Cream", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Warm the milk with the cocoa and sugar, whisking until smooth.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Stir in the coffee and peppermint extract.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Pour into two mugs and top with whipped cream.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 13, "storeId": 1, "categoryId": 3, "name": "Spiced Apple Cider", "ingredients": [
+      { "id": 1, "name": "1/2 gallon Apple Cider", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "3 Cinnamon Sticks", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1 tsp Whole Cloves", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 Orange, sliced", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "2 tbsp Brown Sugar", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Combine everything in a large pot.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Simmer on low for 30 minutes without boiling.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Strain and serve warm.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 14, "storeId": 1, "categoryId": 3, "name": "Cranberry Holiday Punch", "ingredients": [
+      { "id": 1, "name": "4 cups Cranberry Juice", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "2 cups Pineapple Juice", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1 liter Ginger Ale", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 cup Fresh Cranberries", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 Orange, sliced", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Chill the juices in a large bowl.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Add the ginger ale just before serving.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Float the cranberries and orange slices on top.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 15, "storeId": 1, "categoryId": 3, "name": "Hot Spiced Wassail", "ingredients": [
+      { "id": 1, "name": "1/2 gallon Apple Juice", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "2 cups Orange Juice", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1 cup Lemon Juice", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 Cinnamon Sticks", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 tsp Nutmeg", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "1/2 cup Honey", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Combine all ingredients in a slow cooker.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Heat on low for 2 hours.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Remove the cinnamon sticks and ladle into mugs.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 16, "storeId": 1, "categoryId": 4, "name": "Cranberry Pecan Cheese Ball", "ingredients": [
+      { "id": 1, "name": "16 oz Cream Cheese, softened", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1 cup Cheddar Cheese, shredded", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/2 cup Dried Cranberries", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 cup Pecans, chopped", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 tsp Garlic Powder", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Crackers", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Mix the cream cheese, cheddar, cranberries and garlic powder.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Shape into a ball, wrap, and chill for 2 hours.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Roll in the pecans and serve with crackers.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 17, "storeId": 1, "categoryId": 4, "name": "Stuffed Mushrooms", "ingredients": [
+      { "id": 1, "name": "24 Mushrooms, stems removed", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "8 oz Cream Cheese, softened", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/2 cup Parmesan Cheese", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 cloves Garlic, minced", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1/4 cup Bread Crumbs", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "2 tbsp Fresh Parsley", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Mix the cream cheese, Parmesan, garlic, bread crumbs and parsley.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Fill each mushroom cap and place on a Baking Sheet.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Bake at 400F for 18 to 20 minutes, until golden.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 18, "storeId": 1, "categoryId": 4, "name": "Bacon Wrapped Dates", "ingredients": [
+      { "id": 1, "name": "24 Medjool Dates, pitted", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "12 slices Bacon, halved", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/2 cup Almonds", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 tbsp Maple Syrup", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "Tuck an almond into each date and wrap with a piece of bacon.", "cost": 0, "side": "BOTTOM", "displayOrder": 5 },
+      { "id": 6, "name": "Secure with toothpicks and place on a Baking Sheet with a Cooling Rack.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Bake at 400F for 20 minutes, brush with maple syrup, and bake 5 more minutes.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 }
+    ] },
+    { "id": 19, "storeId": 1, "categoryId": 4, "name": "Shrimp Cocktail", "ingredients": [
+      { "id": 1, "name": "1 lb Large Shrimp, peeled", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1 Lemon, halved", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1 cup Ketchup", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 tbsp Horseradish", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 tsp Worcestershire Sauce", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Simmer the shrimp in salted water with the lemon for 3 minutes.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Chill the shrimp in ice water, then drain.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Stir the ketchup, horseradish and Worcestershire sauce for the dip and serve alongside.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 20, "storeId": 1, "categoryId": 4, "name": "Cranberry Brie Bites", "ingredients": [
+      { "id": 1, "name": "1 sheet Puff Pastry, thawed", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "8 oz Brie, cubed", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/2 cup Cranberry Sauce", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1/4 cup Pecans, chopped", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 tsp Fresh Rosemary", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Cut the pastry into 12 squares and press into a muffin tin.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Fill each with a cube of brie and a spoonful of cranberry sauce.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Bake at 400F for 15 minutes, then top with pecans and rosemary.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 21, "storeId": 1, "categoryId": 5, "name": "Creamy Mashed Potatoes", "ingredients": [
+      { "id": 1, "name": "3 lb Potatoes, peeled", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1/2 cup Butter", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "3/4 cup Warm Milk", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1/2 cup Sour Cream", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 1/2 tsp Salt", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Boil the potatoes in salted water until tender, about 20 minutes. Drain.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Mash with the butter, then mix in the milk and sour cream.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Season with salt and serve hot.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 22, "storeId": 1, "categoryId": 5, "name": "Green Bean Casserole", "ingredients": [
+      { "id": 1, "name": "1 1/2 lb Green Beans, trimmed", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1 can Cream of Mushroom Soup", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/2 cup Milk", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 tsp Soy Sauce", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1 1/3 cups Crispy Fried Onions", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Blanch the green beans for 4 minutes and drain.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Stir the soup, milk, soy sauce and half the onions into the beans.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Bake in a Baking Dish at 350F for 25 minutes, top with the remaining onions, and bake 5 minutes more.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] },
+    { "id": 23, "storeId": 1, "categoryId": 5, "name": "Sweet Potato Casserole", "ingredients": [
+      { "id": 1, "name": "3 lb Sweet Potatoes", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1/2 cup Brown Sugar", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1/4 cup Butter, melted", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "1 tsp Cinnamon", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1/2 tsp Nutmeg", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "2 cups Mini Marshmallows", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Bake the sweet potatoes at 400F until soft, about 50 minutes. Peel and mash.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Mix in the brown sugar, butter, cinnamon and nutmeg.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Spread in a Baking Dish, top with marshmallows, and bake at 350F for 20 minutes.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 24, "storeId": 1, "categoryId": 5, "name": "Cornbread Stuffing", "ingredients": [
+      { "id": 1, "name": "8 cups Cornbread, cubed and dried", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "1/2 cup Butter", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1 Onion, diced", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "3 stalks Celery, diced", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "2 cups Chicken Broth", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "2 tsp Dried Sage", "cost": 0, "side": "TOP", "displayOrder": 6 },
+      { "id": 7, "name": "Saute the onion and celery in the butter until soft.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Toss with the cornbread and sage, then moisten with the broth.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 },
+      { "id": 9, "name": "Bake in a Baking Dish at 350F for 35 minutes, until golden on top.", "cost": 0, "side": "BOTTOM", "displayOrder": 9 }
+    ] },
+    { "id": 25, "storeId": 1, "categoryId": 5, "name": "Roasted Brussels Sprouts", "ingredients": [
+      { "id": 1, "name": "2 lb Brussels Sprouts, halved", "cost": 0, "side": "TOP", "displayOrder": 1 },
+      { "id": 2, "name": "3 tbsp Olive Oil", "cost": 0, "side": "TOP", "displayOrder": 2 },
+      { "id": 3, "name": "1 tsp Salt", "cost": 0, "side": "TOP", "displayOrder": 3 },
+      { "id": 4, "name": "2 tbsp Balsamic Vinegar", "cost": 0, "side": "TOP", "displayOrder": 4 },
+      { "id": 5, "name": "1/2 cup Dried Cranberries", "cost": 0, "side": "TOP", "displayOrder": 5 },
+      { "id": 6, "name": "Toss the sprouts with the oil and salt.", "cost": 0, "side": "BOTTOM", "displayOrder": 6 },
+      { "id": 7, "name": "Roast on a Baking Sheet at 425F for 25 minutes, until crisp and browned.", "cost": 0, "side": "BOTTOM", "displayOrder": 7 },
+      { "id": 8, "name": "Drizzle with the balsamic vinegar and add the cranberries.", "cost": 0, "side": "BOTTOM", "displayOrder": 8 }
+    ] }
+  ]
+}

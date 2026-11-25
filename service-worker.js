@@ -120,6 +120,8 @@ self.addEventListener("fetch", (event) => {
     // Keep demo and legacy move notices network-only.
     url.pathname === "/demo" ||
     url.pathname.startsWith("/demo/") ||
+    url.pathname === "/recipe-builder-demo" ||
+    url.pathname.startsWith("/recipe-builder-demo/") ||
     url.pathname.startsWith("/callahannutrition") ||
     url.pathname.startsWith("/admin") ||
     url.pathname.startsWith("/Christmas") ||
