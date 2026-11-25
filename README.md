@@ -156,6 +156,7 @@ removals can overwrite or restore requests.
 ## Custom domain notes
 
 This repo is intentionally static so you can connect a custom domain to a static host. For GitHub Pages, use:
+force build:
 
 - A record or CNAME to the GitHub Pages host
 - A `CNAME` file in the repo root if you want the site to bind to a subdomain
