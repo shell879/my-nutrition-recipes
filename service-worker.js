@@ -24,7 +24,7 @@
 // When the browser sees a new version, it installs the new SW,
 // activates it, and deletes all caches from the old version.
 // Without this, users would be stuck on the old cached files.
-const CACHE_NAME = "shelldesignz-v27";
+const CACHE_NAME = "shelldesignz-v28";
 
 // ──────────────────────────────────────────────────────────────
 // Pre-cache list
@@ -46,6 +46,9 @@ const CACHE_NAME = "shelldesignz-v27";
 // so users always get fresh data when online.
 const ASSETS = [
   "/",                              // Home page
+  "/index2.css?v=photos-2",        // Home page styles
+  "/images/preview-recipe-ai.jpg", // Home page recipe image
+  "/images/preview-drinks-ai.jpg", // Home page drinks image
   "/styles.css",                    // Global styles
   "/logo.png",                      // Home page wordmark
   "/app.js",                        // Main app logic

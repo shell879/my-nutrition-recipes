@@ -7,7 +7,7 @@
     <title>Shop Ingredients | Shell Designz</title>
     <meta name="description" content="Review a shopping list and explore saved ingredient product links." />
     <link rel="stylesheet" href="/recipe-builder/recipe-builder.css?v=brand-2" />
-    <link rel="stylesheet" href="/shop/shop.css?v=7" />
+    <link rel="stylesheet" href="/shop/shop.css?v=12" />
   </head>
   <body>
     <header class="site-header">
@@ -16,45 +16,50 @@
     </header>
     <main>
       <section class="shop-intro">
-        <p class="eyebrow">From Recipe Builder</p>
-        <h1>Shop ingredients</h1>
-        <p>Find product suggestions for your recipe or browse our growing collection of picks.</p>
-        <p class="search-note">Amazon links on this page are affiliate links. If you buy through one, I may earn a commission at no extra cost to you.</p>
-      </section>
-      <section class="ingredient-section" aria-labelledby="ingredients-heading">
-        <h2 id="ingredients-heading">Your ingredients</h2>
-        <p>Ingredients from your recipe appear below. Add another ingredient to check for a saved Amazon product. Recipe instructions aren't included, and added ingredients stay in this tab.</p>
-        <p>Click a linked ingredient to view its suggested product. Suggestions may differ from your recipe, so check before buying. If there are multiple matches, open Amazon product picks below and choose a category. Links don't add items to a cart.</p>
-        <div class="retailer-field">
-          <label for="retailer">Retailer</label>
-          <select id="retailer">
-            <option value="amazon">Amazon</option>
-          </select>
-        </div>
-        <p id="status" role="status" aria-live="polite"></p>
-        <div id="shoppingList" class="shopping-list"></div>
-        <form id="addIngredientForm" class="add-ingredient">
-          <label for="newIngredient">Add an ingredient</label>
-          <div class="add-ingredient-controls">
-            <input id="newIngredient" type="text" required />
-            <button type="submit">Add ingredient</button>
+        <div class="shop-intro-copy">
+          <p class="eyebrow">From Recipe Builder</p>
+          <h1>Good recipes start here.</h1>
+          <p class="shop-lead">Shop ingredients &amp; kitchen picks</p>
+          <p>Explore our growing collection, or review product suggestions for ingredients from your recipe.</p>
+          <div class="shop-jump-links">
+            <a class="shop-primary-link" href="#curated-products-heading">Browse product picks</a>
+            <a class="shop-secondary-link" href="#ingredients-heading">Your recipe ingredients</a>
           </div>
-        </form>
+          <p class="search-note">Amazon links on this page are affiliate links. If you buy through one, I may earn a commission at no extra cost to you.</p>
+        </div>
+        <img class="shop-hero-image" src="/images/preview-recipe-ai.jpg" alt="" width="1200" height="675" />
       </section>
-      <section class="products-section" aria-labelledby="curated-products-heading">
-        <details class="product-picks-panel" open>
-          <summary id="curated-products-heading">Amazon product picks</summary>
-          <p>Open a category to browse our growing collection of picks.</p>
-          <div id="curated-products"></div>
-        </details>
-        <p id="products-status" role="status" aria-live="polite">Loading product picks...</p>
-      </section>
+      <div class="shop-content">
+        <section class="ingredient-section" aria-labelledby="ingredients-heading">
+          <p class="eyebrow">From your collection</p>
+          <h2 id="ingredients-heading">Your ingredients</h2>
+          <p id="status" role="status" aria-live="polite"></p>
+          <p>Ingredients from your recipe appear below. Recipe instructions aren't included.</p>
+          <p>Click a linked ingredient to view its suggested product. Suggestions may differ from your recipe, so check before buying. If there are multiple matches, open Amazon product picks and choose a category. Links don't add items to a cart.</p>
+          <div class="retailer-field">
+            <label for="retailer">Retailer</label>
+            <select id="retailer">
+              <option value="amazon">Amazon</option>
+            </select>
+          </div>
+          <div id="shoppingList" class="shopping-list"></div>
+        </section>
+        <section class="products-section" aria-labelledby="curated-products-heading">
+          <p class="eyebrow">Explore the collection</p>
+          <details class="product-picks-panel" open>
+            <summary id="curated-products-heading">Amazon product picks</summary>
+            <p>Open a category to browse our growing collection of picks.</p>
+            <div id="curated-products"></div>
+          </details>
+          <p id="products-status" role="status" aria-live="polite">Loading product picks...</p>
+        </section>
+      </div>
     </main>
     <footer>
       <p>As an Amazon Associate I earn from qualifying purchases.</p>
       <a href="/">Back to Shell Designz</a>
     </footer>
-    <script src="/shop/shop.js?v=10"></script>
-    <script src="/shop/products.js?v=7"></script>
+    <script src="/shop/shop.js?v=11"></script>
+    <script src="/shop/products.js?v=9"></script>
   </body>
 </html>

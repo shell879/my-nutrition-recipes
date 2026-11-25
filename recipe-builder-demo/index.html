@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recipe Builder Demo | Shell Designz</title>
     <meta name="description" content="Try a sample Christmas recipe album in the Recipe Builder demo. Edits stay in your browser." />
-    <link rel="stylesheet" href="./demo.css?v=1" />
+    <link rel="stylesheet" href="./demo.css?v=2" />
     <link rel="stylesheet" href="/navigation.css?v=1" />
   </head>
   <body class="christmas-admin">
@@ -106,6 +106,10 @@
               <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
               <button id="clearSearchButton" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
             </div>
+            <div id="categoryFilterWrap" class="recipe-category-filter" hidden>
+              <label for="categoryFilter">Category</label>
+              <select id="categoryFilter"></select>
+            </div>
           </div>
           <div id="drinkList" class="item-list"></div>
         </section>
@@ -168,6 +172,6 @@
       </form>
     </dialog>
 
-    <script src="./demo.js?v=1"></script>
+    <script src="./demo.js?v=2"></script>
   </body>
 </html>

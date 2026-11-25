@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recipe Identification</title>
-    <link rel="stylesheet" href="./christmas.css" />
+    <link rel="stylesheet" href="./christmas.css?v=category-filter-1" />
     <link rel="stylesheet" href="/navigation.css?v=1" />
     <link rel="manifest" href="/manifest.json">
     <script>navigator.serviceWorker.register('/service-worker.js')</script>
@@ -119,6 +119,10 @@
               <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
               <button id="clearSearchButton" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
             </div>
+            <div id="categoryFilterWrap" class="recipe-category-filter" hidden>
+              <label for="categoryFilter">Category</label>
+              <select id="categoryFilter"></select>
+            </div>
           </div>
           <div id="drinkList" class="item-list"></div>
         </section>
@@ -192,6 +196,6 @@
     </dialog>
 
     <script src="/store-sharing.js?v=app-stores-1"></script>
-    <script src="./christmas.js?v=shop-1"></script>
+    <script src="./christmas.js?v=category-filter-1"></script>
   </body>
 </html>

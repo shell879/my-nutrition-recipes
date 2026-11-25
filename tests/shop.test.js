@@ -7,6 +7,7 @@ const root = path.join(__dirname, '..');
 const shopHtml = fs.readFileSync(path.join(root, 'shop', 'index.html'), 'utf8');
 assert.match(shopHtml, /<option value="amazon">/);
 assert.doesNotMatch(shopHtml, /<option value="walmart"/);
+assert.doesNotMatch(shopHtml, /addIngredientForm|newIngredient|Add an ingredient/i);
 const recipeSource = fs.readFileSync(path.join(root, 'Christmas', 'christmas.js'), 'utf8');
 const start = recipeSource.indexOf('function shopRecipe(');
 const end = recipeSource.indexOf('function addCategory()', start);
@@ -68,6 +69,7 @@ class Element {
     this.children = [];
     this.listeners = {};
     this.attributes = {};
+    this.dataset = {};
     this.value = '';
   }
   append(...nodes) {
@@ -76,16 +78,14 @@ class Element {
       this.children.push(node);
     }
   }
+  appendChild(node) { this.append(node); }
   addEventListener(type, callback) {
     if (!this.listeners[type]) this.listeners[type] = [];
     this.listeners[type].push(callback);
   }
   trigger(type) { for (const callback of this.listeners[type] || []) callback({ target: this }); }
   setAttribute(name, value) { this.attributes[name] = value; }
-  removeAttribute(name) {
-    delete this.attributes[name];
-    if (name === 'href') delete this.href;
-  }
+  replaceChildren(...nodes) { this.children = []; this.append(...nodes); }
   querySelector(selector) {
     for (const child of this.children) {
       if (child.tag === selector) return child;
@@ -95,9 +95,6 @@ class Element {
     return null;
   }
   querySelectorAll(selector) { return selector === '.shopping-item' ? this.children : []; }
-  remove() { this.parent.children = this.parent.children.filter((child) => child !== this); }
-  focus() {}
-  get lastElementChild() { return this.children[this.children.length - 1]; }
 }
 
 function loadShop(raw) {
@@ -105,7 +102,6 @@ function loadShop(raw) {
     shoppingList: new Element('div'),
     status: new Element('p'),
     retailer: new Element('select'),
-    addItem: new Element('button'),
   };
   elements.retailer.value = 'walmart';
   const storage = new Map();
@@ -129,66 +125,50 @@ const { elements, storage, listeners } = loadShop(JSON.stringify({ version: 1, i
 assert.equal(storage.size, 0);
 assert.equal(elements.shoppingList.children.length, 2);
 const row = elements.shoppingList.children[0];
-const search = row.querySelector('a');
-assert.equal(new URL(search.href).searchParams.get('q'), 'Milk & sugar');
+assert.equal(new URL(row.querySelector('a').href).searchParams.get('q'), 'Milk & sugar');
 elements.retailer.value = 'amazon';
 elements.retailer.trigger('change');
-assert.match(search.textContent, /Loading/);
+assert.match(row.children[1].textContent, /Checking/);
 listeners['shop-products-loaded']({ detail: [
   { name: 'Flour', value: 'https://www.amazon.com/dp/B07Z78Q8TB?tag=example-20', category: 'ingredient' },
   { name: 'Milk & sugar', value: 'https://www.amazon.com/dp/B000000001', category: 'supply' },
 ] });
-assert.match(search.textContent, /No matching/);
-assert.equal(search.href, undefined);
+assert.equal(row.querySelector('a'), null);
 const flour = elements.shoppingList.children[1].querySelector('a');
 assert.equal(new URL(flour.href).pathname, '/dp/B07Z78Q8TB');
 assert.equal(new URL(flour.href).searchParams.get('tag'), 'example-20');
 assert.equal(flour.rel, 'sponsored noopener');
-elements.shoppingList.children[1].querySelector('input').value = ' FLOUR ';
-elements.shoppingList.children[1].querySelector('input').trigger('input');
-assert.equal(new URL(flour.href).pathname, '/dp/B07Z78Q8TB');
 listeners['shop-products-loaded']({ detail: [
   { name: 'Flour', value: 'https://amazon.com/dp/B000000001', category: 'ingredient' },
   { name: 'flour', value: 'https://amazon.com/dp/B000000002', category: 'ingredient' },
 ] });
-assert.equal(flour.href, undefined);
-assert.match(flour.textContent, /See Amazon picks/);
+assert.equal(elements.shoppingList.children[1].querySelector('a'), null);
+assert.match(elements.shoppingList.children[1].children[1].textContent, /Multiple matches/);
 listeners['shop-products-error']();
-assert.match(flour.textContent, /unavailable/);
-assert.equal(flour.href, undefined);
-listeners['shop-products-loaded']({ detail: [
+assert.match(elements.shoppingList.children[1].children[1].textContent, /unavailable/);
+const matching = loadShop(JSON.stringify({ version: 1, items: [
+  '2 cups semi-sweet chocolate chips', '1 chocolate chip', '2 tsp vanilla extract',
+  '1 cup brown sugar', 'vanilla', 'sugarcane',
+] }));
+matching.elements.retailer.value = 'amazon';
+matching.listeners['shop-products-loaded']({ detail: [
   { name: 'Chocolate Chips', value: 'https://amazon.com/dp/B00932F6BO', category: 'ingredient' },
   { name: 'Vanilla Extract', value: 'https://amazon.com/dp/B08CYCRF2W', category: 'ingredient' },
   { name: 'Vanilla Coffee Creamer', value: 'https://amazon.com/dp/B0H6C95CSY', category: 'ingredient' },
   { name: 'Sugar', value: 'https://amazon.com/dp/B07FTX5JC4', category: 'ingredient' },
   { name: 'Brown Sugar', value: 'https://amazon.com/dp/B0D1LC2WRY', category: 'ingredient' },
 ] });
-const ingredientInput = row.querySelector('input');
-for (const [ingredient, expected] of [
-  ['2 cups semi-sweet chocolate chips', '/dp/B00932F6BO'],
-  ['1 chocolate chip', '/dp/B00932F6BO'],
-  ['2 tsp vanilla extract', '/dp/B08CYCRF2W'],
-  ['1 cup brown sugar', '/dp/B0D1LC2WRY'],
-]) {
-  ingredientInput.value = ingredient;
-  ingredientInput.trigger('input');
-  assert.equal(new URL(search.href).pathname, expected, ingredient);
-  assert.match(search.textContent, /Suggested/);
+const rows = matching.elements.shoppingList.children;
+['/dp/B00932F6BO', '/dp/B00932F6BO', '/dp/B08CYCRF2W', '/dp/B0D1LC2WRY']
+  .forEach((expected, index) => assert.equal(new URL(rows[index].querySelector('a').href).pathname, expected));
+assert.equal(rows[4].querySelector('a'), null);
+assert.equal(rows[5].querySelector('a'), null);
+for (const raw of [null, '{invalid', JSON.stringify({ version: 1, items: [] })]) {
+  const result = loadShop(raw);
+  assert.match(result.elements.status.textContent, /browse the product picks/i);
+  assert.doesNotMatch(result.elements.status.textContent, /add an ingredient/i);
 }
-ingredientInput.value = 'vanilla';
-ingredientInput.trigger('input');
-assert.equal(search.href, undefined);
-ingredientInput.value = 'sugarcane';
-ingredientInput.trigger('input');
-assert.equal(search.href, undefined);
-elements.retailer.value = 'walmart';
-elements.retailer.trigger('change');
-assert.equal(new URL(search.href).searchParams.get('q'), 'sugarcane');
-assert.equal(search.rel, 'noopener noreferrer');
-row.querySelector('input').value = '';
-row.querySelector('input').trigger('input');
-assert.equal(search.attributes['aria-disabled'], 'true');
-assert.equal(search.href, undefined);
 assert.match(loadShop('{invalid').elements.status.textContent, /Could not load/);
-assert.match(loadShop(null).elements.status.textContent, /No recipe list/);
+assert.match(loadShop(null).elements.status.textContent, /No recipe ingredients/);
+assert.match(loadShop(JSON.stringify({ version: 1, items: [] })).elements.status.textContent, /No TOP ingredients/);
 console.log('Shop handoff and retailer link tests passed.');
