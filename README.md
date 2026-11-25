@@ -11,6 +11,13 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
   Access-protected Recipe Builder at `/Christmas/`
 - A public, static MyNutrition demo at `/demo/`, with fictional
   catalog data and an editor isolated from the real store APIs
+- A public Recipe Builder demo at `/recipe-builder-demo/` with a sample
+  Christmas album (25 original recipes in five categories). It has its own
+  `demo.js`, `demo.css` and `demo.json`, saves edits only to browser local
+  storage, and shows the AI scan, photo and name features disabled for full
+  members. It makes no API calls. Keep it outside any Cloudflare Access path;
+  it is derived from `/Christmas/`, so production changes are not
+  automatically reflected.
 - A neon slideshow at `/slideshow/` showing public store data or the
   selected MyNutrition catalog.
 - Move notices at `/callahannutrition/` and `/admin/` point to the demo

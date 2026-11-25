@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Builder Demo | Shell Designz</title>
+    <meta name="description" content="Try a sample Christmas recipe album in the Recipe Builder demo. Edits stay in your browser." />
+    <link rel="stylesheet" href="./demo.css?v=1" />
+    <link rel="stylesheet" href="/navigation.css?v=1" />
+  </head>
+  <body class="christmas-admin">
+    <header>
+      <nav class="site-nav" aria-label="Site navigation">
+        <a href="/">Home</a>
+        <a href="/recipe-builder/">Recipe Builder guide</a>
+        <a href="/shop/">Shop</a>
+      </nav>
+      <div class="header-copy">
+        <h1>Recipe Builder Demo</h1>
+        <p>Try a sample Christmas recipe album. Edits stay in this browser and nothing is sent to a server.</p>
+        <button id="downloadButton" type="button" class="quiet-button">Download Recipes</button>
+      </div>
+      <button id="pickOneButton" type="button" class="quiet-button">Pick One</button>
+      <div class="source-controls">
+        <button id="resetDraftButton" type="button" class="hidden">Reset demo</button>
+      </div>
+    </header>
+    <p id="loadStatus" class="load-status" role="status" aria-live="polite"></p>
+    <main>
+      <section id="editor" class="hidden">
+        <details class="panel category-panel album-panel">
+          <summary id="albumSummary">Album</summary>
+          <div id="storeInfo" class="store-info">
+            <label>Change Name<input type="text" data-field="name" /></label>
+          </div>
+          <details class="panel category-panel">
+            <summary>Screen colors</summary>
+            <div id="storeColors" class="store-colors">
+              <label>Page background<input type="color" data-color-field="backgroundColor" /></label>
+              <label>Page text<input type="color" data-color-field="textColor" /></label>
+              <label>Card background<input type="color" data-color-field="cardBackgroundColor" /></label>
+              <label>Card text<input type="color" data-color-field="cardTextColor" /></label>
+              <label>Button background<input type="color" data-color-field="buttonColor" /></label>
+              <label>Button text<input type="color" data-color-field="buttonTextColor" /></label>
+            </div>
+          </details>
+          <details class="panel category-panel">
+            <summary>Categories</summary>
+            <button id="addCategoryButton" type="button">Add Category</button>
+            <div id="categoryList" class="item-list"></div>
+          </details>
+        </details>
+        <div class="toolbar">
+          <button id="addDrinkButton" type="button" class="primary">Add Recipe</button>
+          <button id="saveButton" type="button">Save</button>
+        </div>
+        <div class="panel image-upload ai-locked">
+          <div class="image-upload-content">
+            <h2>Scan a written recipe</h2>
+            <p>AI reads the text from a photo of a recipe card or printed recipe.</p>
+            <p class="members-note"><strong>Full members only.</strong> Not available in the demo.</p>
+            <label for="selfie">Choose a photo of a written recipe</label>
+            <input id="selfie" type="file" accept="image/*" disabled>
+          </div>
+          <div class="image-upload-example">
+            <div class="image-upload-sample image-upload-sample--recipe" aria-hidden="true"></div>
+            <p>Example: a written or printed recipe</p>
+          </div>
+        </div>
+        <div class="panel image-upload ai-locked">
+          <div class="image-upload-content">
+            <h2>Create a recipe from a food photo</h2>
+            <p>AI identifies the dish and suggests a recipe. It cannot know the exact ingredients from the photo.</p>
+            <p class="members-note"><strong>Full members only.</strong> Not available in the demo.</p>
+            <label for="foodPic">Choose a photo of food</label>
+            <input id="foodPic" type="file" accept="image/*" disabled>
+          </div>
+          <div class="image-upload-example">
+            <div class="image-upload-sample image-upload-sample--food" aria-hidden="true"></div>
+            <p>Example: a photo of a finished dish</p>
+          </div>
+        </div>
+        <section class="panel recipe-from-name ai-locked">
+          <h2>Create a recipe from a name</h2>
+          <p>Enter a dish, such as cherry cake or Olive Garden lasagna, and AI will suggest a recipe. Restaurant-inspired recipes may not match the original.</p>
+          <p class="members-note"><strong>Full members only.</strong> Not available in the demo.</p>
+          <form id="recipeNameForm">
+            <label for="recipeNameInput">Recipe or dish name</label>
+            <input id="recipeNameInput" type="text" maxlength="200" placeholder="e.g. cherry cake" disabled>
+            <button id="generateRecipeButton" class="primary" type="submit" disabled>Generate Recipe</button>
+          </form>
+        </section>
+        <p class="image-upload-note">In the demo, use Add Recipe to write your own. Select Save to keep your changes in this browser.</p>
+        <section class="panel" hidden>
+          <div class="section-heading">
+            <h2>Flavor profiles</h2>
+            <button id="addFlavorButton" type="button">Add flavor</button>
+          </div>
+          <div id="flavorList" class="item-list"></div>
+        </section>
+        <section class="panel">
+          <div class="section-heading recipes-heading">
+            <h2>Recipes</h2>
+            <div class="search-wrap">
+              <label class="visually-hidden" for="searchInput">Search recipes or ingredients</label>
+              <input id="searchInput" type="search" placeholder="Search recipes or ingredients" />
+              <button id="clearSearchButton" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
+            </div>
+          </div>
+          <div id="drinkList" class="item-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="drinkPicker" class="drink-picker-dialog" aria-labelledby="drinkPickerTitle">
+      <section class="drink-picker">
+        <button id="closePickerButton" class="drink-picker-close" type="button">Close</button>
+        <p class="eyebrow">Your next recipe</p>
+        <h2 id="drinkPickerTitle">Pick One</h2>
+        <p class="drink-picker-intro">Can't decide? Let your recipes choose for you.</p>
+        <div id="drinkResult" class="drink-result" aria-live="polite" aria-atomic="true" aria-busy="false">
+          <p class="drink-result-label">Today's pick</p>
+          <button id="pickedDrinkName" class="drink-name" type="button" disabled>Tap the button to get started.</button>
+        </div>
+        <button id="pickButton" class="drink-picker-button" type="button">Pick One</button>
+        <p id="drinkCount" class="drink-count"></p>
+      </section>
+    </dialog>
+
+    <dialog id="drinkDialog">
+      <form id="drinkForm">
+        <h2 id="drinkDialogTitle">Add Recipe</h2>
+        <label>
+          Recipe name
+          <input id="drinkName" required />
+        </label>
+        <label>
+          Category
+          <select id="drinkCategory" required></select>
+        </label>
+        <section class="ingredient-editor" aria-labelledby="ingredientHeading">
+          <div class="section-heading">
+            <h3 id="ingredientHeading">Ingredients</h3>
+            <button id="addIngredientButton" type="button">Add ingredient</button>
+          </div>
+          <div id="drinkIngredients" class="ingredient-rows"></div>
+        </section>
+        <p id="formError" class="error" role="alert"></p>
+        <div class="dialog-actions">
+          <button id="cancelDrinkButton" type="button">Cancel</button>
+          <button type="submit" class="primary">Ok</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="flavorDialog">
+      <form id="flavorForm">
+        <h2 id="flavorDialogTitle">Add flavor</h2>
+        <label>
+          Flavor profile name
+          <input id="flavorName" required />
+        </label>
+        <p id="flavorFormError" class="error" role="alert"></p>
+        <div class="dialog-actions">
+          <button id="cancelFlavorButton" type="button">Cancel</button>
+          <button type="submit" class="primary">Save flavor</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./demo.js?v=1"></script>
+  </body>
+</html>
