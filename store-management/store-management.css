@@ -12,11 +12,12 @@ h1 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; letter-spac
 .notice { margin: 1rem 0 0; }
 h2 { margin-top: 0; }
 label { display: grid; gap: .35rem; margin: 1rem 0; font-weight: 600; }
-input, select, button { padding: .7rem; border: 1px solid #8493a3; border-radius: 6px; font: inherit; }
+input, select, textarea, button { padding: .7rem; border: 1px solid #8493a3; border-radius: 6px; font: inherit; }
 input, select { min-width: 0; max-width: 100%; }
+textarea { display: block; width: 100%; margin-bottom: 1rem; font-family: Consolas, monospace; }
 button { min-height: 2.5rem; padding: .4rem .7rem; color: white; background: #126e68; font-size: .9rem; cursor: pointer; }
 button:disabled { opacity: .6; cursor: wait; }
-button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid #526c91; outline-offset: 3px; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible { outline: 3px solid #526c91; outline-offset: 3px; }
 li { margin: 1rem 0; overflow-wrap: anywhere; }
 li button { margin-left: .5rem; background: #922f2f; }
 .visibility-toggle { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin: .5rem; cursor: pointer; }
@@ -29,6 +30,7 @@ li button { margin-left: .5rem; background: #922f2f; }
 @media (prefers-reduced-motion: reduce) { .visibility-toggle input::before { transition: none; } }
 #status { white-space: pre-wrap; overflow-wrap: anywhere; }
 #status.error { color: #a32121; }
+#drink-upload-status.error { color: #a32121; }
 #stores-status.error { color: #a32121; }
 #products-status.error { color: #a32121; }
 .category-management, .product-group { margin: 1rem 0; padding: .8rem 1rem; border: 1px solid #dce3eb; border-radius: 12px; background: #f8fafc; }

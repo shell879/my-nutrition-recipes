@@ -32,6 +32,7 @@ async function request(path, body) {
 
 async function refresh() {
   const { stores } = await request('stores');
+  updateDrinkUploadStores(stores);
   $('stores').replaceChildren();
   if (!stores.length) {
     const item = document.createElement('li');
@@ -134,6 +135,141 @@ $('add-form').addEventListener('submit', async (event) => {
 
 refresh().then(() => storesStatus('Stores loaded.'))
   .catch((error) => storesStatus(`Could not load stores: ${error.message}`, true));
+
+let drinkUploadStoreId = '';
+let drinkUploadRevision = null;
+let drinkUploadOriginalText = '';
+let drinkUploadBusy = false;
+
+function drinkUploadStatus(message, error = false) {
+  $('drink-upload-status').textContent = message;
+  $('drink-upload-status').classList.toggle('error', error);
+}
+
+function updateDrinkUploadStores(stores) {
+  const select = $('drink-upload-store');
+  const selected = select.value;
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.textContent = 'Choose a store';
+  const options = stores.map((store) => {
+    const option = document.createElement('option');
+    option.value = String(store.id);
+    option.textContent = `${store.name} (${store.id})`;
+    return option;
+  });
+  select.replaceChildren(placeholder, ...options);
+  if (stores.some((store) => String(store.id) === selected)) {
+    select.value = selected;
+  } else if (selected) {
+    drinkUploadRevision = null;
+    $('drink-upload-editor').readOnly = true;
+    $('drink-upload-submit').disabled = true;
+    drinkUploadStatus('The selected store is no longer available. Copy any unsaved edits before choosing another store.', true);
+  }
+  $('drink-upload-preview').disabled = drinkUploadBusy || !select.value;
+}
+
+function drinkEditorHasChanges() {
+  return $('drink-upload-editor').value !== drinkUploadOriginalText;
+}
+
+function setDrinkUploadBusy(value) {
+  drinkUploadBusy = value;
+  $('drink-upload-store').disabled = value;
+  $('drink-upload-preview').disabled = value || !$('drink-upload-store').value;
+  $('drink-upload-editor').readOnly = value || !drinkUploadRevision;
+  $('drink-upload-submit').disabled = value || !drinkUploadRevision;
+}
+
+$('drink-upload-store').addEventListener('change', () => {
+  const select = $('drink-upload-store');
+  if (drinkEditorHasChanges() && !window.confirm('Discard the unsaved drink editor changes?')) {
+    select.value = drinkUploadStoreId;
+    return;
+  }
+  drinkUploadStoreId = select.value;
+  drinkUploadRevision = null;
+  drinkUploadOriginalText = '';
+  $('drink-upload-editor').value = '';
+  $('drink-upload-categories').replaceChildren();
+  $('drink-upload-editor').readOnly = true;
+  $('drink-upload-submit').disabled = true;
+  $('drink-upload-preview').disabled = !select.value;
+  drinkUploadStatus('Preview the selected store before editing.');
+});
+
+$('drink-upload-preview').addEventListener('click', async () => {
+  if (drinkEditorHasChanges() && !window.confirm('Discard the unsaved drink editor changes and reload?')) return;
+  const storeId = $('drink-upload-store').value;
+  if (!storeId) return;
+  setDrinkUploadBusy(true);
+  drinkUploadStatus('Loading drink recipes...');
+  try {
+    const result = await request(`drink-recipes?storeId=${encodeURIComponent(storeId)}`);
+    if ($('drink-upload-store').value !== storeId) {
+      throw new Error('The selected store is no longer available.');
+    }
+    if (result.storeId !== Number(storeId) || !Array.isArray(result.drinkRecipes) ||
+        !Array.isArray(result.categories) || typeof result.revision !== 'string') {
+      throw new Error('The API returned an invalid drink preview.');
+    }
+    const categoryItems = result.categories.map((category) => {
+      const item = document.createElement('li');
+      item.textContent = `${category.id}: ${category.name}`;
+      return item;
+    });
+    if (!categoryItems.length) {
+      const item = document.createElement('li');
+      item.textContent = 'No categories are available for this store.';
+      categoryItems.push(item);
+    }
+    $('drink-upload-categories').replaceChildren(...categoryItems);
+    drinkUploadStoreId = storeId;
+    drinkUploadRevision = result.revision;
+    drinkUploadOriginalText = JSON.stringify(result.drinkRecipes, null, 2);
+    $('drink-upload-editor').value = drinkUploadOriginalText;
+    drinkUploadStatus(`Loaded ${result.drinkRecipes.length} drink recipe${result.drinkRecipes.length === 1 ? '' : 's'}. Edit or paste a JSON array, then replace the store's drinks.`);
+  } catch (error) {
+    drinkUploadStatus(`Could not preview drinks: ${error.message}`, true);
+  } finally {
+    setDrinkUploadBusy(false);
+  }
+});
+
+$('drink-upload-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  if (!drinkUploadRevision || $('drink-upload-store').value !== drinkUploadStoreId) {
+    drinkUploadStatus('Preview the selected store before replacing drinks.', true);
+    return;
+  }
+  let recipes;
+  try {
+    recipes = JSON.parse($('drink-upload-editor').value);
+    if (!Array.isArray(recipes)) throw new Error('Enter a JSON array of drink recipes.');
+  } catch (error) {
+    drinkUploadStatus(`Invalid drink JSON: ${error.message}`, true);
+    return;
+  }
+  const storeName = $('drink-upload-store').selectedOptions[0].textContent;
+  if (!window.confirm(`Replace all drinks for "${storeName}" with ${recipes.length} drink recipe${recipes.length === 1 ? '' : 's'}?${recipes.length ? '' : '\n\nThis will remove all existing drinks from the store.'}`)) return;
+  setDrinkUploadBusy(true);
+  drinkUploadStatus('Replacing drink recipes...');
+  try {
+    await request('drink-recipes', {
+      storeId: Number(drinkUploadStoreId),
+      revision: drinkUploadRevision,
+      drinkRecipes: recipes,
+    });
+    drinkUploadRevision = null;
+    drinkUploadOriginalText = $('drink-upload-editor').value;
+    drinkUploadStatus(`Replaced the drinks for "${storeName}". Preview again to make further changes.`);
+  } catch (error) {
+    drinkUploadStatus(`Could not replace drinks: ${error.message}`, true);
+  } finally {
+    setDrinkUploadBusy(false);
+  }
+});
 
 let productsReady = false;
 let productsBusy = false;

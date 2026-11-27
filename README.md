@@ -148,6 +148,14 @@ and contact people manually. No automated spam protection is included.
 The single KV JSON list is eventually consistent; concurrent submissions and
 removals can overwrite or restore requests.
 
+The Store Management drink editor previews the selected store's `drinkRecipes`
+as a JSON array. Edit or paste an array and choose **Replace store drinks** to
+replace those recipes while preserving the store's other data. Recipe IDs must
+be unique positive integers, and category IDs must already exist in that store.
+Deploy the updated data API Worker first. Ask store users to stop editing during
+replacement: a revision check detects changes since preview, but KV updates are
+eventually consistent and not atomic.
+
 1. Push this repo to GitHub.
 2. In the repository settings, enable GitHub Pages.
 3. Choose the `main` branch and the root folder.
