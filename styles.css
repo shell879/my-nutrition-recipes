@@ -563,11 +563,6 @@ main {
   --card-shadow: rgba(54, 117, 153, 0.22);
   --card-background: #f1f8fb;
 }
-.landing-card--callahan-admin {
-  --card-shadow: rgba(158, 95, 106, 0.22);
-  --card-background: #faf4f5;
-}
-
 a.landing-card:hover,
 a.landing-card:focus-visible,
 .landing-card--recipes:hover,

@@ -20,7 +20,6 @@ Static-site conversion of DrinkRecipeStudio for a public menu experience.
   automatically reflected.
 - A neon slideshow at `/slideshow/` showing public store data or the
   selected MyNutrition catalog.
-- Move notices at `/callahannutrition/` and `/admin/` point to the demo
 - A `/Christmas/` admin page for the separate Christmas catalog
 - Recipe Builder can scan recipes, suggest a recipe from a food photo or a
   typed dish name, and lets users review the result before saving.
@@ -114,9 +113,9 @@ KV store. For live API data, use the editor for the relevant app.
 Edits in admin dialogs are staged in the page and do not call the API; use the
 top-level “Save all to API” button once to submit the complete dataset.
 Protect the real admin pages and APIs with Cloudflare Access; do not rely on
-the pages themselves for authentication. Retiring the legacy `/admin/` page
-does not disable or remove its `/api/data` endpoint or stored data. Keep that
-endpoint protected or disable it separately.
+the pages themselves for authentication. The legacy `/api/data` endpoint and
+its stored data remain available; keep that endpoint protected or disable it
+separately.
 
 ## Search visibility
 
@@ -130,9 +129,7 @@ Search Console after deployment. Indexing and search rankings are not guaranteed
 ## Deploy to GitHub Pages
 
 Before sharing the demo, configure Cloudflare Access to allow public access to
-`/demo/` and its assets. To make the legacy move notices visible without signing
-in, allow access to `/callahannutrition/`, `/callahannutrition/editor.html`,
-`/admin/`, and `/admin.html` as well. Verify overlapping policies.
+`/demo/` and its assets. Verify overlapping policies.
 Keep the real MyNutrition pages and all private APIs (including `/api/data`)
 protected, and test the demo in a signed-out browser.
 Allow unauthenticated access to `/shop/`, its assets, and the read-only
