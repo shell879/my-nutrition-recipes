@@ -9,7 +9,8 @@ const API_BASE =
   location.hostname === '127.0.0.1' || location.hostname === 'localhost'
     ? 'http://127.0.0.1:8787'
     : '';
-const apiEndpoint = `${API_BASE}/api/christmas?app=myNutrition`;
+const storeApi = `${API_BASE}/api/mynutrition/inquiry`;
+const apiEndpoint = `${storeApi}/recipes`;
 
 const defaultFlavorProfiles = [
   'Apple',
@@ -137,7 +138,7 @@ async function loadData() {
 
 async function loadStoreSwitcher() {
   try {
-    const response = await fetch(`${API_BASE}/api/my-stores?app=myNutrition`, { cache: 'no-store' });
+    const response = await fetch(`${storeApi}/my-stores`, { cache: 'no-store' });
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.error || `Store list request failed (HTTP ${response.status}).`);
@@ -171,7 +172,7 @@ joinStoreButton.addEventListener('click', async () => {
 
   joinStoreButton.disabled = true;
   try {
-    const response = await fetch(`${API_BASE}/api/join-store?app=myNutrition`, {
+    const response = await fetch(`${storeApi}/join-store`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),
@@ -195,7 +196,7 @@ storeSwitcher.addEventListener('change', async () => {
 
   storeSwitcher.disabled = true;
   try {
-    const response = await fetch(`${API_BASE}/api/switch-store?app=myNutrition`, {
+    const response = await fetch(`${storeApi}/switch-store`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),

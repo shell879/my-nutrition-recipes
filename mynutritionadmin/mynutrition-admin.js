@@ -5,7 +5,8 @@ const apiBase = isLocalDevelopment
   ? 'http://127.0.0.1:8787'
   : '';
 
-const apiEndpoint = `${apiBase}/api/christmas?app=myNutrition`;
+const storeApi = `${apiBase}/api/mynutrition/admin`;
+const apiEndpoint = `${storeApi}/recipes`;
 
 const state = {
   data: null,
@@ -28,7 +29,6 @@ const $ = (selector) => document.querySelector(selector);
 const sourceModes = document.querySelectorAll('input[name="sourceMode"]');
 $('.source-controls').classList.toggle('hidden', !isLocalDevelopment);
 $('#localSourceOption').classList.toggle('hidden', !isLocalDevelopment);
-//const apiEndpoint = '/api/christmas';
 const localDataName = 'data.json';
 const localDataUrl = new URL('../data.json', window.location.href);
 const draftStorageKey = 'mnr-nutrition-admin-local-draft';
@@ -88,7 +88,7 @@ $('#addDrinkButton').addEventListener('click', () => openDrinkDialog());
 $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
-const storeSharing = initStoreSharing({ apiBase, app: 'myNutrition', getSourceMode: () => state.sourceMode, setStatus });
+const storeSharing = initStoreSharing({ storeApi, getSourceMode: () => state.sourceMode, setStatus });
 $('#addIngredientButton').addEventListener('click', () => addIngredientRow());
 $('#searchInput').addEventListener('input', (event) => {
   state.query = event.target.value.trim().toLocaleLowerCase();
@@ -197,7 +197,7 @@ $('#joinStoreButton').addEventListener('click', async (event) => {
   storeSharing.hide();
   button.disabled = true;
   try {
-    const response = await fetch(`${apiBase}/api/join-store?app=myNutrition`, {
+    const response = await fetch(`${storeApi}/join-store`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),
@@ -222,7 +222,7 @@ async function loadStoreSwitcher() {
   const select = $('#storeSwitcher');
   const generation = storeSharing.beginUpdate();
   try {
-    const response = await fetch(`${apiBase}/api/my-stores?app=myNutrition`, { cache: 'no-store' });
+    const response = await fetch(`${storeApi}/my-stores`, { cache: 'no-store' });
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.error || `Store list request failed (HTTP ${response.status}).`);
@@ -251,7 +251,7 @@ $('#storeSwitcher').addEventListener('change', async (event) => {
   storeSharing.hide();
   select.disabled = true;
   try {
-    const response = await fetch(`${apiBase}/api/switch-store?app=myNutrition`, {
+    const response = await fetch(`${storeApi}/switch-store`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),

@@ -88,16 +88,20 @@ Use SiteStripe links to specific Amazon product pages, not search pages.
 Use **Add starter products** to stage the included examples without replacing
 existing links, then select **Save products** to publish them.
 KV changes can take time to appear, and simultaneous edits can overwrite each
-other. For local testing, serve the site and run `wrangler dev` on port 8787.
+other. For local testing, serve the site and run `wrangler dev --var LOCAL_DEV_IDENTITY:enabled`
+on port 8787 using local KV.
 The Recipe Builder editor loads `christmas.json` in local mode. In API mode,
-Recipe Builder and MyNutrition use `/api/christmas` with separate app-specific
-store lists and active selections. MyNutrition's menu and admin share its
-stores. Existing stores are assigned to Recipe Builder; the first MyNutrition
+Recipe Builder uses `/api/recipe-builder/`, MyNutrition's menu uses
+`/api/mynutrition/inquiry/`, and its editor uses `/api/mynutrition/admin/`.
+The inquiry API permits recipe reads but not recipe writes; it still permits
+joining and switching stores. The three API prefixes must be protected by the
+corresponding Cloudflare Access applications. Deploy the updated Worker before
+the updated site. MyNutrition's menu and admin share its stores. Existing
+stores are assigned to Recipe Builder; the first MyNutrition
 visit creates a separate empty store. Store numbers cannot be joined across apps.
-MyNutrition also uses `/api/my-stores`, `/api/join-store`, and
-`/api/switch-store` for store listing, joining, and switching.
 The Christmas and MyNutrition editors offer **Share Number** in the album/store
-panel only for the user's own store, using the active ID returned by `/api/my-stores`. Someone who signs in
+panel only for the user's own store, using the active ID returned by their
+`my-stores` API. Someone who signs in
 can enter that number using **Join**. Share only with trusted people: the
 current join endpoint has no invitation or approval check, and shared access
 may include editing. A local browser draft has no shareable API store number.
