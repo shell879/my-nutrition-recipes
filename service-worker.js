@@ -24,7 +24,7 @@
 // When the browser sees a new version, it installs the new SW,
 // activates it, and deletes all caches from the old version.
 // Without this, users would be stuck on the old cached files.
-const CACHE_NAME = "shelldesignz-v28";
+const CACHE_NAME = "shelldesignz-v30";
 
 // ──────────────────────────────────────────────────────────────
 // Pre-cache list
@@ -33,7 +33,7 @@ const CACHE_NAME = "shelldesignz-v28";
 // so the app works offline on first load.
 //
 // IMPORTANT: Do NOT include Access-protected pages here.
-// Pages behind Cloudflare Access (/admin, /Christmas,
+// Pages behind Cloudflare Access (/Christmas,
 // /mynutrition/, /mynutritionadmin/, /store-management/) redirect to the Access login page, which
 // is on a different domain (cloudflareaccess.com). If the service
 // worker tries to cache that redirect, it gets a CORS error and
@@ -120,13 +120,11 @@ self.addEventListener("fetch", (event) => {
   // without calling respondWith(), the browser handles these
   // requests directly — Access can redirect to login normally.
   if (
-    // Keep demo and legacy move notices network-only.
+    // Keep demo pages network-only.
     url.pathname === "/demo" ||
     url.pathname.startsWith("/demo/") ||
     url.pathname === "/recipe-builder-demo" ||
     url.pathname.startsWith("/recipe-builder-demo/") ||
-    url.pathname.startsWith("/callahannutrition") ||
-    url.pathname.startsWith("/admin") ||
     url.pathname.startsWith("/Christmas") ||
     url.pathname === "/mynutrition" ||
     url.pathname.startsWith("/mynutrition/") ||
@@ -143,9 +141,6 @@ self.addEventListener("fetch", (event) => {
   // users see fresh data. If the network fails (offline), we
   // fall back to whatever is in the cache.
   //
-  // This fixes the issue where one user updates a record via
-  // /admin and another PWA user doesn't see the update because
-  // the service worker was serving the old cached JSON file.
   if (url.pathname.endsWith(".json")) {
     event.respondWith(
       fetch(event.request)

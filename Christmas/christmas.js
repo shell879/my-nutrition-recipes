@@ -4,7 +4,8 @@ const apiBase = isLocalDevelopment
   ? 'http://127.0.0.1:8787'
   : '';
 
-const apiEndpoint = `${apiBase}/api/christmas?app=recipeBuilder`;
+const storeApi = `${apiBase}/api/recipe-builder`;
+const apiEndpoint = `${storeApi}/recipes`;
 
 const state = {
   data: null,
@@ -34,7 +35,6 @@ let pickerDrinks = [];
 let lastPickedIndex = -1;
 $('.source-controls').classList.toggle('hidden', !isLocalDevelopment);
 $('#localSourceOption').classList.toggle('hidden', !isLocalDevelopment);
-//const apiEndpoint = '/api/christmas';
 const localDataName = 'christmas.json';
 const localDataUrl = new URL('../christmas.json', window.location.href);
 const draftStorageKey = 'mnr-christmas-admin-local-draft';
@@ -94,7 +94,7 @@ $('#addDrinkButton').addEventListener('click', () => openDrinkDialog());
 $('#addFlavorButton').addEventListener('click', addFlavor);
 $('#saveButton').addEventListener('click', saveData);
 $('#downloadButton').addEventListener('click', downloadData);
-const storeSharing = initStoreSharing({ apiBase, app: 'recipeBuilder', getSourceMode: () => state.sourceMode, setStatus });
+const storeSharing = initStoreSharing({ storeApi, getSourceMode: () => state.sourceMode, setStatus });
 $('#pickOneButton').addEventListener('click', openDrinkPicker);
 $('#closePickerButton').addEventListener('click', () => drinkPicker.close());
 pickButton.addEventListener('click', pickOneRecipe);
@@ -310,7 +310,7 @@ $('#joinStoreButton').addEventListener('click', async () => {
 
   storeSharing.hide();
   try {
-    const res = await fetch(`${apiBase}/api/join-store?app=recipeBuilder`, {
+    const res = await fetch(`${storeApi}/join-store`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId: Number(storeId) }),
@@ -330,7 +330,7 @@ $('#joinStoreButton').addEventListener('click', async () => {
 async function loadStoreSwitcher() {
   const generation = storeSharing.beginUpdate();
   try {
-    const res = await fetch(`${apiBase}/api/my-stores?app=recipeBuilder`, { cache: 'no-store' });
+    const res = await fetch(`${storeApi}/my-stores`, { cache: 'no-store' });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || `Store list request failed (HTTP ${res.status}).`);
     if (!Array.isArray(data.stores)) throw new Error('The store list response has an invalid format.');
@@ -349,7 +349,7 @@ $('#storeSwitcher').addEventListener('change', async (event) => {
   const storeId = Number(event.target.value);
   storeSharing.hide();
   try {
-    const res = await fetch(`${apiBase}/api/switch-store?app=recipeBuilder`, {
+    const res = await fetch(`${storeApi}/switch-store`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ storeId }),
