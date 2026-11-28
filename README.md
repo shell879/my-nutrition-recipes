@@ -117,9 +117,9 @@ KV store. For live API data, use the editor for the relevant app.
 Edits in admin dialogs are staged in the page and do not call the API; use the
 top-level “Save all to API” button once to submit the complete dataset.
 Protect the real admin pages and APIs with Cloudflare Access; do not rely on
-the pages themselves for authentication. The legacy `/api/data` endpoint and
-its stored data remain available; keep that endpoint protected or disable it
-separately.
+the pages themselves for authentication. The exact legacy `/api/data` endpoint
+returns HTTP 410 in the updated Worker; its stored data is not deleted. Its
+public shop-products and access-request subpaths must remain accessible.
 
 ## Search visibility
 
